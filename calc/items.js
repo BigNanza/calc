@@ -2,7 +2,7 @@
 "use strict";
 
 
-var util_1 = require("./util");
+
 
     'Electric Seed': 'def',
     'Grassy Seed': 'def',

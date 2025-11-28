@@ -1,7 +1,7 @@
 (function() {
 "use strict";
 
-var index_1 = require("../index");
+
 describe('Pokemon', function () {
     test('defaults', function () {
         var p = new index_1.Pokemon(7, 'Gengar');

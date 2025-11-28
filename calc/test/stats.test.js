@@ -1,9 +1,9 @@
 (function() {
 "use strict";
 
-var data_1 = require("../data");
-var stats_1 = require("../stats");
-var util_1 = require("../mechanics/util");
+
+
+
 describe('Stats', function () {
     test('displayStat', function () {
         expect(stats_1.Stats.displayStat('hp')).toBe('HP');

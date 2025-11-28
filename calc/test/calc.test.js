@@ -39,7 +39,7 @@ var __read = (this && this.__read) || function (o, n) {
     return ar;
 };
 
-var helper_1 = require("./helper");
+
 describe('calc', function () {
     describe('Multi-Gen', function () {
         (0, helper_1.inGens)(4, 7, function (_a) {

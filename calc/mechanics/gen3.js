@@ -27,9 +27,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 
 
-var items_1 = require("../items");
-var result_1 = require("../result");
-var util_1 = require("./util");
+
+
+
 function calculateADV(gen, attacker, defender, move, field) {
     var _a;
     (0, util_1.checkAirLock)(attacker, field);

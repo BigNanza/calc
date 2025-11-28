@@ -38,8 +38,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 
 
-var util_1 = require("../util");
-var stats_1 = require("../stats");
+
+
 var EV_ITEMS = [
     'Macho Brace',
     'Power Anklet',
