@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 
 function toID(text) {
-    var lcase = ('' + text).toLowerCase();
+    const lcase = ('' + text).toLowerCase();
     if (lcase === 'flabébé') {
         return 'flabebe';
     }
@@ -19,14 +19,14 @@ function error(err, msg) {
 }
 exports.error = error;
 function assignWithout(a, b, exclude) {
-    for (var key in b) {
+    for (const key in b) {
         if (Object.prototype.hasOwnProperty.call(b, key) && !exclude.has(key)) {
             a[key] = b[key];
         }
     }
 }
 exports.assignWithout = assignWithout;
-var class2Type = {
+const class2Type = {
     '[object Boolean]': 'boolean',
     '[object Number]': 'number',
     '[object String]': 'string',
@@ -35,10 +35,10 @@ var class2Type = {
     '[object Date]': 'date',
     '[object RegExp]': 'regexp',
     '[object Object]': 'object',
-    '[object Error]': 'error'
+    '[object Error]': 'error',
 };
-var coreToString = class2Type.toString;
-var coreHasOwn = class2Type.hasOwnProperty;
+const coreToString = class2Type.toString;
+const coreHasOwn = class2Type.hasOwnProperty;
 function isFunction(obj) {
     return getType(obj) === 'function';
 }
@@ -67,16 +67,12 @@ function isPlainObject(obj) {
     }
     return true;
 }
-function extend() {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    var options, name, src, copy, copyIsArray, clone;
-    var target = args[0] || {};
-    var i = 1;
-    var deep = false;
-    var length = args.length;
+function extend(...args) {
+    let options, name, src, copy, copyIsArray, clone;
+    let target = args[0] || {};
+    let i = 1;
+    let deep = false;
+    const length = args.length;
     if (typeof target === 'boolean') {
         deep = target;
         target = args[1] || {};

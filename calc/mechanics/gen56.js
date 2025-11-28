@@ -1,12 +1,11 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 
-var util_1 = require("../util");
-var items_1 = require("../items");
-var result_1 = require("../result");
-var util_2 = require("./util");
+const util_1 = require("../util");
+const items_1 = require("../items");
+const result_1 = require("../result");
+const util_2 = require("./util");
 function calculateBWXY(gen, attacker, defender, move, field) {
-    var _a;
     (0, util_2.checkAirLock)(attacker, field);
     (0, util_2.checkAirLock)(defender, field);
     (0, util_2.checkForecast)(attacker, field.weather);
@@ -25,13 +24,13 @@ function calculateBWXY(gen, attacker, defender, move, field) {
     (0, util_2.computeFinalStats)(gen, attacker, defender, field, 'atk', 'spa');
     (0, util_2.checkInfiltrator)(attacker, field.defenderSide);
     (0, util_2.checkInfiltrator)(defender, field.attackerSide);
-    var desc = {
+    const desc = {
         attackerName: attacker.name,
         moveName: move.name,
         defenderName: defender.name,
-        isWonderRoom: field.isWonderRoom
+        isWonderRoom: field.isWonderRoom,
     };
-    var result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
+    const result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
     if (move.category === 'Status' && !move.named('Nature Power')) {
         return result;
     }
@@ -40,17 +39,17 @@ function calculateBWXY(gen, attacker, defender, move, field) {
         return result;
     }
     if (move.name === 'Pain Split') {
-        var average = Math.floor((attacker.curHP() + defender.curHP()) / 2);
-        var damage_1 = Math.max(0, defender.curHP() - average);
-        result.damage = damage_1;
+        const average = Math.floor((attacker.curHP() + defender.curHP()) / 2);
+        const damage = Math.max(0, defender.curHP() - average);
+        result.damage = damage;
         return result;
     }
-    var defenderAbilityIgnored = defender.hasAbility('Aroma Veil', 'Aura Break', 'Battle Armor', 'Big Pecks', 'Bulletproof', 'Clear Body', 'Contrary', 'Damp', 'Dark Aura', 'Dry Skin', 'Fairy Aura', 'Filter', 'Flash Fire', 'Flower Gift', 'Flower Veil', 'Friend Guard', 'Fur Coat', 'Grass Pelt', 'Heatproof', 'Heavy Metal', 'Hyper Cutter', 'Immunity', 'Inner Focus', 'Insomnia', 'Keen Eye', 'Leaf Guard', 'Levitate', 'Light Metal', 'Lightning Rod', 'Limber', 'Magic Bounce', 'Magma Armor', 'Marvel Scale', 'Motor Drive', 'Multiscale', 'Oblivious', 'Overcoat', 'Own Tempo', 'Sand Veil', 'Sap Sipper', 'Shell Armor', 'Shield Dust', 'Simple', 'Snow Cloak', 'Solid Rock', 'Soundproof', 'Sticky Hold', 'Storm Drain', 'Sturdy', 'Suction Cups', 'Sweet Veil', 'Tangled Feet', 'Telepathy', 'Thick Fat', 'Unaware', 'Vital Spirit', 'Volt Absorb', 'Water Absorb', 'Water Veil', 'White Smoke', 'Wonder Guard', 'Wonder Skin');
+    const defenderAbilityIgnored = defender.hasAbility('Aroma Veil', 'Aura Break', 'Battle Armor', 'Big Pecks', 'Bulletproof', 'Clear Body', 'Contrary', 'Damp', 'Dark Aura', 'Dry Skin', 'Fairy Aura', 'Filter', 'Flash Fire', 'Flower Gift', 'Flower Veil', 'Friend Guard', 'Fur Coat', 'Grass Pelt', 'Heatproof', 'Heavy Metal', 'Hyper Cutter', 'Immunity', 'Inner Focus', 'Insomnia', 'Keen Eye', 'Leaf Guard', 'Levitate', 'Light Metal', 'Lightning Rod', 'Limber', 'Magic Bounce', 'Magma Armor', 'Marvel Scale', 'Motor Drive', 'Multiscale', 'Oblivious', 'Overcoat', 'Own Tempo', 'Sand Veil', 'Sap Sipper', 'Shell Armor', 'Shield Dust', 'Simple', 'Snow Cloak', 'Solid Rock', 'Soundproof', 'Sticky Hold', 'Storm Drain', 'Sturdy', 'Suction Cups', 'Sweet Veil', 'Tangled Feet', 'Telepathy', 'Thick Fat', 'Unaware', 'Vital Spirit', 'Volt Absorb', 'Water Absorb', 'Water Veil', 'White Smoke', 'Wonder Guard', 'Wonder Skin');
     if (attacker.hasAbility('Mold Breaker', 'Teravolt', 'Turboblaze') && defenderAbilityIgnored) {
         defender.ability = '';
         desc.attackerAbility = attacker.ability;
     }
-    var isCritical = move.isCrit && !defender.hasAbility('Battle Armor', 'Shell Armor') && move.timesUsed === 1;
+    const isCritical = move.isCrit && !defender.hasAbility('Battle Armor', 'Shell Armor') && move.timesUsed === 1;
     if (move.named('Weather Ball')) {
         move.type =
             field.hasWeather('Sun', 'Harsh Sunshine') ? 'Fire'
@@ -67,8 +66,8 @@ function calculateBWXY(gen, attacker, defender, move, field) {
     else if (move.named('Techno Blast') && attacker.item && attacker.item.includes('Drive')) {
         move.type = (0, items_1.getTechnoBlast)(attacker.item);
     }
-    else if (move.named('Natural Gift') && ((_a = attacker.item) === null || _a === void 0 ? void 0 : _a.endsWith('Berry'))) {
-        var gift = (0, items_1.getNaturalGift)(gen, attacker.item);
+    else if (move.named('Natural Gift') && attacker.item?.endsWith('Berry')) {
+        const gift = (0, items_1.getNaturalGift)(gen, attacker.item);
         move.type = gift.t;
         move.bp = gift.p;
         desc.attackerItem = attacker.item;
@@ -91,14 +90,14 @@ function calculateBWXY(gen, attacker, defender, move, field) {
         field.defenderSide.isReflect = false;
         field.defenderSide.isLightScreen = false;
     }
-    var hasAteAbilityTypeChange = false;
-    var isAerilate = false;
-    var isPixilate = false;
-    var isRefrigerate = false;
-    var isNormalize = false;
-    var noTypeChange = move.named('Judgment', 'Nature Power', 'Techo Blast', 'Natural Gift', 'Weather Ball', 'Struggle');
+    let hasAteAbilityTypeChange = false;
+    let isAerilate = false;
+    let isPixilate = false;
+    let isRefrigerate = false;
+    let isNormalize = false;
+    const noTypeChange = move.named('Judgment', 'Nature Power', 'Techo Blast', 'Natural Gift', 'Weather Ball', 'Struggle');
     if (!move.isZ && !noTypeChange) {
-        var normal = move.hasType('Normal');
+        const normal = move.hasType('Normal');
         if ((isAerilate = attacker.hasAbility('Aerilate') && normal)) {
             move.type = 'Flying';
         }
@@ -122,13 +121,13 @@ function calculateBWXY(gen, attacker, defender, move, field) {
         move.priority = 1;
         desc.attackerAbility = attacker.ability;
     }
-    var isGhostRevealed = attacker.hasAbility('Scrappy') || field.defenderSide.isForesight;
-    var isRingTarget = defender.hasItem('Ring Target') && !defender.hasAbility('Klutz');
-    var type1Effectiveness = (0, util_2.getMoveEffectiveness)(gen, move, defender.types[0], isGhostRevealed, field.isGravity, isRingTarget);
-    var type2Effectiveness = defender.types[1]
+    const isGhostRevealed = attacker.hasAbility('Scrappy') || field.defenderSide.isForesight;
+    const isRingTarget = defender.hasItem('Ring Target') && !defender.hasAbility('Klutz');
+    const type1Effectiveness = (0, util_2.getMoveEffectiveness)(gen, move, defender.types[0], isGhostRevealed, field.isGravity, isRingTarget);
+    const type2Effectiveness = defender.types[1]
         ? (0, util_2.getMoveEffectiveness)(gen, move, defender.types[1], isGhostRevealed, field.isGravity, isRingTarget)
         : 1;
-    var typeEffectiveness = type1Effectiveness * type2Effectiveness;
+    let typeEffectiveness = type1Effectiveness * type2Effectiveness;
     if (typeEffectiveness === 0 && move.named('Thousand Arrows')) {
         typeEffectiveness = 1;
     }
@@ -180,7 +179,7 @@ function calculateBWXY(gen, attacker, defender, move, field) {
         return result;
     }
     desc.HPEVs = (0, util_2.getStatDescriptionText)(gen, defender, 'hp');
-    var fixedDamage = (0, util_2.handleFixedDamageMoves)(attacker, move);
+    const fixedDamage = (0, util_2.handleFixedDamageMoves)(attacker, move);
     if (fixedDamage) {
         if (attacker.hasAbility('Parental Bond')) {
             result.damage = [fixedDamage, fixedDamage];
@@ -198,34 +197,34 @@ function calculateBWXY(gen, attacker, defender, move, field) {
     if (move.hits > 1) {
         desc.hits = move.hits;
     }
-    var basePower = calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc);
+    const basePower = calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc);
     if (basePower === 0) {
         return result;
     }
-    var attack = calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCritical);
-    var attackStat = move.category === 'Special' ? 'spa' : 'atk';
-    var defense = calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCritical);
-    var baseDamage = calculateBaseDamageBWXY(gen, attacker, basePower, attack, defense, move, field, desc, isCritical);
-    var stabMod = (0, util_2.getStabMod)(attacker, move, desc);
-    var applyBurn = attacker.hasStatus('brn') &&
+    const attack = calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCritical);
+    const attackStat = move.category === 'Special' ? 'spa' : 'atk';
+    const defense = calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCritical);
+    const baseDamage = calculateBaseDamageBWXY(gen, attacker, basePower, attack, defense, move, field, desc, isCritical);
+    let stabMod = (0, util_2.getStabMod)(attacker, move, desc);
+    const applyBurn = attacker.hasStatus('brn') &&
         move.category === 'Physical' &&
         !attacker.hasAbility('Guts') &&
         !(move.named('Facade') && gen.num === 6);
     desc.isBurned = applyBurn;
-    var finalMods = calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCritical, typeEffectiveness);
-    var finalMod = (0, util_2.chainMods)(finalMods, 41, 131072);
-    var isSpread = field.gameType !== 'Singles' &&
+    const finalMods = calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCritical, typeEffectiveness);
+    const finalMod = (0, util_2.chainMods)(finalMods, 41, 131072);
+    const isSpread = field.gameType !== 'Singles' &&
         ['allAdjacent', 'allAdjacentFoes'].includes(move.target);
-    var childDamage;
+    let childDamage;
     if (attacker.hasAbility('Parental Bond') && move.hits === 1 && !isSpread) {
-        var child = attacker.clone();
+        const child = attacker.clone();
         child.ability = 'Parental Bond (Child)';
         (0, util_2.checkMultihitBoost)(gen, child, defender, move, field, desc);
         childDamage = calculateBWXY(gen, child, defender, move, field).damage;
         desc.attackerAbility = attacker.ability;
     }
-    var damage = [];
-    for (var i = 0; i < 16; i++) {
+    const damage = [];
+    for (let i = 0; i < 16; i++) {
         damage[i] =
             (0, util_2.getFinalDamage)(baseDamage, i, typeEffectiveness, applyBurn, stabMod, finalMod);
     }
@@ -233,34 +232,34 @@ function calculateBWXY(gen, attacker, defender, move, field) {
     desc.attackBoost =
         move.named('Foul Play') ? defender.boosts[attackStat] : attacker.boosts[attackStat];
     if (move.timesUsed > 1 || move.hits > 1) {
-        var damageMatrix = [damage];
-        var origDefBoost = desc.defenseBoost;
-        var origAtkBoost = desc.attackBoost;
-        var numAttacks = 1;
+        const damageMatrix = [damage];
+        const origDefBoost = desc.defenseBoost;
+        const origAtkBoost = desc.attackBoost;
+        let numAttacks = 1;
         if (move.timesUsed > 1) {
-            desc.moveTurns = "over ".concat(move.timesUsed, " turns");
+            desc.moveTurns = `over ${move.timesUsed} turns`;
             numAttacks = move.timesUsed;
         }
         else {
             numAttacks = move.hits;
         }
-        var usedItems = [false, false];
-        for (var times = 1; times < numAttacks; times++) {
+        let usedItems = [false, false];
+        for (let times = 1; times < numAttacks; times++) {
             usedItems = (0, util_2.checkMultihitBoost)(gen, attacker, defender, move, field, desc, usedItems[0], usedItems[1]);
-            var newAtk = calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCritical);
-            var newDef = calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCritical);
+            const newAtk = calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCritical);
+            const newDef = calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCritical);
             hasAteAbilityTypeChange = hasAteAbilityTypeChange &&
                 attacker.hasAbility('Aerilate', 'Galvanize', 'Pixilate', 'Refrigerate');
             if (move.timesUsed > 1) {
                 stabMod = (0, util_2.getStabMod)(attacker, move, desc);
             }
-            var newBasePower = calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc);
-            var newBaseDamage = (0, util_2.getBaseDamage)(attacker.level, newBasePower, newAtk, newDef);
-            var newFinalMods = calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCritical, typeEffectiveness, times);
-            var newFinalMod = (0, util_2.chainMods)(newFinalMods, 41, 131072);
-            var damageArray = [];
-            for (var i = 0; i < 16; i++) {
-                var newFinalDamage = (0, util_2.getFinalDamage)(newBaseDamage, i, typeEffectiveness, applyBurn, stabMod, newFinalMod);
+            const newBasePower = calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc);
+            const newBaseDamage = (0, util_2.getBaseDamage)(attacker.level, newBasePower, newAtk, newDef);
+            const newFinalMods = calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCritical, typeEffectiveness, times);
+            const newFinalMod = (0, util_2.chainMods)(newFinalMods, 41, 131072);
+            const damageArray = [];
+            for (let i = 0; i < 16; i++) {
+                const newFinalDamage = (0, util_2.getFinalDamage)(newBaseDamage, i, typeEffectiveness, applyBurn, stabMod, newFinalMod);
                 damageArray[i] = newFinalDamage;
             }
             damageMatrix[times] = damageArray;
@@ -272,17 +271,16 @@ function calculateBWXY(gen, attacker, defender, move, field) {
     return result;
 }
 exports.calculateBWXY = calculateBWXY;
-function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc, hit) {
-    if (hit === void 0) { hit = 1; }
-    var basePower;
-    var turnOrder = attacker.stats.spe > defender.stats.spe ? 'first' : 'last';
+function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc, hit = 1) {
+    let basePower;
+    const turnOrder = attacker.stats.spe > defender.stats.spe ? 'first' : 'last';
     switch (move.name) {
         case 'Payback':
             basePower = move.bp * (turnOrder === 'last' ? 2 : 1);
             desc.moveBP = basePower;
             break;
         case 'Pursuit':
-            var switching = field.defenderSide.isSwitching === 'out';
+            const switching = field.defenderSide.isSwitching === 'out';
             basePower = move.bp * (switching ? 2 : 1);
             if (switching)
                 desc.isSwitching = 'out';
@@ -291,7 +289,7 @@ function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbil
         case 'Electro Ball':
             if (defender.stats.spe === 0)
                 defender.stats.spe = 1;
-            var r = Math.floor(attacker.stats.spe / defender.stats.spe);
+            const r = Math.floor(attacker.stats.spe / defender.stats.spe);
             basePower = r >= 4 ? 150 : r >= 3 ? 120 : r >= 2 ? 80 : r >= 1 ? 60 : 40;
             desc.moveBP = basePower;
             break;
@@ -307,7 +305,7 @@ function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbil
             break;
         case 'Low Kick':
         case 'Grass Knot':
-            var w = (0, util_2.getWeight)(defender, desc, 'defender');
+            const w = (0, util_2.getWeight)(defender, desc, 'defender');
             basePower = w >= 200 ? 120 : w >= 100 ? 100 : w >= 50 ? 80 : w >= 25 ? 60 : w >= 10 ? 40 : 20;
             desc.moveBP = basePower;
             break;
@@ -317,7 +315,7 @@ function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbil
             break;
         case 'Heavy Slam':
         case 'Heat Crash':
-            var wr = (0, util_2.getWeight)(attacker, desc, 'attacker') /
+            const wr = (0, util_2.getWeight)(attacker, desc, 'attacker') /
                 (0, util_2.getWeight)(defender, desc, 'defender');
             basePower = wr >= 5 ? 120 : wr >= 4 ? 100 : wr >= 3 ? 80 : wr >= 2 ? 60 : 40;
             desc.moveBP = basePower;
@@ -358,7 +356,7 @@ function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbil
             break;
         case 'Flail':
         case 'Reversal':
-            var p = Math.floor((48 * attacker.curHP()) / attacker.maxHP());
+            const p = Math.floor((48 * attacker.curHP()) / attacker.maxHP());
             basePower = p <= 1 ? 200 : p <= 4 ? 150 : p <= 9 ? 100 : p <= 16 ? 80 : p <= 32 ? 40 : 20;
             desc.moveBP = basePower;
             break;
@@ -407,23 +405,23 @@ function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbil
     if (basePower === 0) {
         return 0;
     }
-    var bpMods = calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePower, hasAteAbilityTypeChange, turnOrder, hit);
+    const bpMods = calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePower, hasAteAbilityTypeChange, turnOrder, hit);
     basePower = (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((basePower * (0, util_2.chainMods)(bpMods, 41, 2097152)) / 4096)));
     return basePower;
 }
 exports.calculateBasePowerBWXY = calculateBasePowerBWXY;
 function calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePower, hasAteAbilityTypeChange, turnOrder, hit) {
-    var bpMods = [];
-    var defenderItem = (defender.item && defender.item !== '')
+    const bpMods = [];
+    const defenderItem = (defender.item && defender.item !== '')
         ? defender.item : defender.disabledItem;
-    var resistedKnockOffDamage = !defenderItem ||
+    let resistedKnockOffDamage = !defenderItem ||
         (defender.named('Giratina-Origin') && defenderItem === 'Griseous Orb') ||
         (defender.name.includes('Arceus') && defenderItem.includes('Plate')) ||
         (defender.name.includes('Genesect') && defenderItem.includes('Drive')) ||
         (defender.named('Groudon', 'Groudon-Primal') && defenderItem === 'Red Orb') ||
         (defender.named('Kyogre', 'Kyogre-Primal') && defenderItem === 'Blue Orb');
     if (!resistedKnockOffDamage && defenderItem) {
-        var item = gen.items.get((0, util_1.toID)(defenderItem));
+        const item = gen.items.get((0, util_1.toID)(defenderItem));
         resistedKnockOffDamage = !!(item.megaEvolves && defender.name.includes(item.megaEvolves));
     }
     if (!resistedKnockOffDamage && hit > 1 && !defender.hasAbility('Sticky Hold')) {
@@ -497,7 +495,7 @@ function calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePow
         bpMods.push(4915);
         desc.attackerItem = attacker.item;
     }
-    else if (attacker.hasItem("".concat(move.type, " Gem"))) {
+    else if (attacker.hasItem(`${move.type} Gem`)) {
         bpMods.push(gen.num > 5 ? 5325 : 6144);
         desc.attackerItem = attacker.item;
     }
@@ -533,15 +531,15 @@ function calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePow
         bpMods.push(5325);
         desc.attackerAbility = attacker.ability;
     }
-    var aura = "".concat(move.type, " Aura");
-    var isAttackerAura = attacker.hasAbility(aura);
-    var isDefenderAura = defender.hasAbility(aura);
-    var isUserAuraBreak = attacker.hasAbility('Aura Break') || defender.hasAbility('Aura Break');
-    var isFieldAuraBreak = field.isAuraBreak;
-    var isFieldFairyAura = field.isFairyAura && move.type === 'Fairy';
-    var isFieldDarkAura = field.isDarkAura && move.type === 'Dark';
-    var auraActive = isAttackerAura || isDefenderAura || isFieldFairyAura || isFieldDarkAura;
-    var auraBreak = isFieldAuraBreak || isUserAuraBreak;
+    const aura = `${move.type} Aura`;
+    const isAttackerAura = attacker.hasAbility(aura);
+    const isDefenderAura = defender.hasAbility(aura);
+    const isUserAuraBreak = attacker.hasAbility('Aura Break') || defender.hasAbility('Aura Break');
+    const isFieldAuraBreak = field.isAuraBreak;
+    const isFieldFairyAura = field.isFairyAura && move.type === 'Fairy';
+    const isFieldDarkAura = field.isDarkAura && move.type === 'Dark';
+    const auraActive = isAttackerAura || isDefenderAura || isFieldFairyAura || isFieldDarkAura;
+    const auraBreak = isFieldAuraBreak || isUserAuraBreak;
     if (auraActive) {
         if (auraBreak) {
             bpMods.push(3072);
@@ -573,11 +571,10 @@ function calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePow
     return bpMods;
 }
 exports.calculateBPModsBWXY = calculateBPModsBWXY;
-function calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCritical) {
-    if (isCritical === void 0) { isCritical = false; }
-    var attack;
-    var attackSource = move.named('Foul Play') ? defender : attacker;
-    var attackStat = move.category === 'Special' ? 'spa' : 'atk';
+function calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCritical = false) {
+    let attack;
+    const attackSource = move.named('Foul Play') ? defender : attacker;
+    const attackStat = move.category === 'Special' ? 'spa' : 'atk';
     desc.attackEVs =
         move.named('Foul Play')
             ? (0, util_2.getStatDescriptionText)(gen, defender, attackStat, defender.nature)
@@ -602,13 +599,13 @@ function calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCriti
         attack = (0, util_2.pokeRound)((attack * 3) / 2);
         desc.attackerAbility = attacker.ability;
     }
-    var atMods = calculateAtModsBWXY(attacker, defender, move, field, desc);
+    const atMods = calculateAtModsBWXY(attacker, defender, move, field, desc);
     attack = (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((attack * (0, util_2.chainMods)(atMods, 410, 131072)) / 4096)));
     return attack;
 }
 exports.calculateAttackBWXY = calculateAttackBWXY;
 function calculateAtModsBWXY(attacker, defender, move, field, desc) {
-    var atMods = [];
+    const atMods = [];
     if (defender.hasAbility('Thick Fat') && move.hasType('Fire', 'Ice')) {
         atMods.push(2048);
         desc.defenderAbility = defender.ability;
@@ -676,12 +673,11 @@ function calculateAtModsBWXY(attacker, defender, move, field, desc) {
     return atMods;
 }
 exports.calculateAtModsBWXY = calculateAtModsBWXY;
-function calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCritical) {
-    if (isCritical === void 0) { isCritical = false; }
-    var defense;
-    var defenseStat = move.overrideDefensiveStat || move.category === 'Physical' ? 'def' : 'spd';
-    var hitsPhysical = defenseStat === 'def';
-    var boosts = defender.boosts[field.isWonderRoom ? defenseStat === 'spd' ? 'def' : 'spd' : defenseStat];
+function calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCritical = false) {
+    let defense;
+    const defenseStat = move.overrideDefensiveStat || move.category === 'Physical' ? 'def' : 'spd';
+    const hitsPhysical = defenseStat === 'def';
+    const boosts = defender.boosts[field.isWonderRoom ? defenseStat === 'spd' ? 'def' : 'spd' : defenseStat];
     if (field.defenderSide.isPowerTrick && hitsPhysical) {
         desc.isPowerTrickDefender = true;
         defender.rawStats[defenseStat] = defender.rawStats.atk;
@@ -704,15 +700,13 @@ function calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCrit
         defense = (0, util_2.pokeRound)((defense * 3) / 2);
         desc.weather = field.weather;
     }
-    var dfMods = calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical);
+    const dfMods = calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical);
     defense = (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((defense * (0, util_2.chainMods)(dfMods, 410, 131072)) / 4096)));
     return defense;
 }
 exports.calculateDefenseBWXY = calculateDefenseBWXY;
-function calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical) {
-    var _a;
-    if (hitsPhysical === void 0) { hitsPhysical = false; }
-    var dfMods = [];
+function calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical = false) {
+    const dfMods = [];
     if (defender.hasAbility('Marvel Scale') && defender.status && hitsPhysical) {
         dfMods.push(6144);
         desc.defenderAbility = defender.ability;
@@ -738,7 +732,7 @@ function calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical) {
     }
     if ((!hitsPhysical && defender.hasItem('Soul Dew') &&
         defender.named('Latios', 'Latias', 'Latios-Mega', 'Latias-Mega')) ||
-        (defender.hasItem('Eviolite') && ((_a = gen.species.get((0, util_1.toID)(defender.name))) === null || _a === void 0 ? void 0 : _a.nfe)) ||
+        (defender.hasItem('Eviolite') && gen.species.get((0, util_1.toID)(defender.name))?.nfe) ||
         (!hitsPhysical && defender.hasItem('Assault Vest'))) {
         dfMods.push(6144);
         desc.defenderItem = defender.item;
@@ -755,10 +749,9 @@ function calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical) {
     return dfMods;
 }
 exports.calculateDfModsBWXY = calculateDfModsBWXY;
-function calculateBaseDamageBWXY(gen, attacker, basePower, attack, defense, move, field, desc, isCritical) {
-    if (isCritical === void 0) { isCritical = false; }
-    var baseDamage = (0, util_2.getBaseDamage)(attacker.level, basePower, attack, defense);
-    var isSpread = field.gameType !== 'Singles' &&
+function calculateBaseDamageBWXY(gen, attacker, basePower, attack, defense, move, field, desc, isCritical = false) {
+    let baseDamage = (0, util_2.getBaseDamage)(attacker.level, basePower, attack, defense);
+    const isSpread = field.gameType !== 'Singles' &&
         ['allAdjacent', 'allAdjacentFoes'].includes(move.target);
     if (isSpread) {
         baseDamage = (0, util_2.pokeRound)((0, util_2.OF32)(baseDamage * 3072) / 4096);
@@ -782,10 +775,8 @@ function calculateBaseDamageBWXY(gen, attacker, basePower, attack, defense, move
     }
     return baseDamage;
 }
-function calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCritical, typeEffectiveness, hitCount) {
-    if (isCritical === void 0) { isCritical = false; }
-    if (hitCount === void 0) { hitCount = 0; }
-    var finalMods = [];
+function calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCritical = false, typeEffectiveness, hitCount = 0) {
+    const finalMods = [];
     if (field.defenderSide.isReflect && move.category === 'Physical' && !isCritical) {
         finalMods.push(field.gameType !== 'Singles' ? (gen.num > 5 ? 2732 : 2703) : 2048);
         desc.isReflect = true;
@@ -818,7 +809,7 @@ function calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCr
         desc.defenderAbility = defender.ability;
     }
     if (attacker.hasItem('Metronome') && move.timesUsedWithMetronome >= 1) {
-        var timesUsedWithMetronome = Math.floor(move.timesUsedWithMetronome);
+        const timesUsedWithMetronome = Math.floor(move.timesUsedWithMetronome);
         if (timesUsedWithMetronome <= 4) {
             finalMods.push(4096 + timesUsedWithMetronome * 819);
         }

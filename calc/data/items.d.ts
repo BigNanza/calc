@@ -1,8 +1,6 @@
 import type * as I from './interface';
 export declare const MEGA_STONES: {
-    [species: string]: string;
-} & {
-    [species: string]: string;
+    [x: string]: string;
 };
 export declare const ITEMS: string[][];
 export declare class Items implements I.Items {
