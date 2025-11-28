@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -15,7 +16,7 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-exports.__esModule = true;
+
 
 var Field = (function () {
     function Field(field) {
@@ -71,12 +72,12 @@ var Field = (function () {
             isBeadsOfRuin: this.isBeadsOfRuin,
             isSwordOfRuin: this.isSwordOfRuin,
             isTabletsOfRuin: this.isTabletsOfRuin,
-            isVesselOfRuin: this.isVesselOfRuin
+            isVesselOfRuin: this.isVesselOfRuin,
         });
     };
     return Field;
 }());
-exports.Field = Field;
+
 var Side = (function () {
     function Side(side) {
         if (side === void 0) { side = {}; }
@@ -109,5 +110,6 @@ var Side = (function () {
     };
     return Side;
 }());
-exports.Side = Side;
+
 //# sourceMappingURL=field.js.map
+})();

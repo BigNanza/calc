@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -15,7 +16,7 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-exports.__esModule = true;
+
 
 var result_1 = require("./result");
 var util_1 = require("./util");
@@ -33,7 +34,7 @@ function display(gen, attacker, defender, move, field, damage, rawDesc, notation
     var koChanceText = getKOChance(gen, attacker, defender, move, field, damage, err).text;
     return koChanceText ? "".concat(desc, ": ").concat(damageText, " -- ").concat(koChanceText) : "".concat(desc, ": ").concat(damageText);
 }
-exports.display = display;
+
 function displayMove(gen, attacker, defender, move, damage, notation) {
     if (notation === void 0) { notation = '%'; }
     var _a = __read((0, result_1.damageRange)(damage), 2), min = _a[0], max = _a[1];
@@ -44,7 +45,7 @@ function displayMove(gen, attacker, defender, move, damage, notation) {
     return "".concat(minDisplay, " - ").concat(maxDisplay).concat(notation).concat(recoveryText &&
         " (".concat(recoveryText, ")")).concat(recoilText && " (".concat(recoilText, ")"));
 }
-exports.displayMove = displayMove;
+
 function getRecovery(gen, attacker, defender, move, damage, notation) {
     var _a, _b;
     if (notation === void 0) { notation = '%'; }
@@ -105,7 +106,7 @@ function getRecovery(gen, attacker, defender, move, damage, notation) {
     text = "".concat(minHealthRecovered, " - ").concat(maxHealthRecovered).concat(notation, " ").concat(change);
     return { recovery: recovery, text: text };
 }
-exports.getRecovery = getRecovery;
+
 function getRecoil(gen, attacker, defender, move, damage, notation) {
     if (notation === void 0) { notation = '%'; }
     var _a = __read((0, result_1.damageRange)(damage), 2), min = _a[0], max = _a[1];
@@ -184,7 +185,7 @@ function getRecoil(gen, attacker, defender, move, damage, notation) {
     }
     return { recoil: recoil, text: text };
 }
-exports.getRecoil = getRecoil;
+
 function getKOChance(gen, attacker, defender, move, field, damageObj, err) {
     if (err === void 0) { err = true; }
     var _a = __read(combine(damageObj), 2), damage = _a[0], approximate = _a[1];
@@ -300,7 +301,7 @@ function getKOChance(gen, attacker, defender, move, field, damageObj, err) {
     }
     return { chance: 0, n: 0, text: '' };
 }
-exports.getKOChance = getKOChance;
+
 function combine(damage) {
     if (typeof damage === 'number')
         return [[damage], false];
@@ -912,3 +913,4 @@ function toDisplay(notation, a, b, f) {
     return notation === '%' ? Math.floor((a * (1000 / f)) / b) / 10 : Math.floor((a * (48 / f)) / b);
 }
 //# sourceMappingURL=desc.js.map
+})();

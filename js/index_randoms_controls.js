@@ -1,3 +1,4 @@
+(function() {
 $("#p2 .ability").bind("keyup change", function () {
 	autosetWeather($(this).val(), 1);
 	autosetTerrain($(this).val(), 1);
@@ -304,3 +305,5 @@ $("#mainResult").click(function () {
 		}, 2000);
 	});
 });
+
+})();

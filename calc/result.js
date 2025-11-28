@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -26,7 +27,7 @@ var __values = (this && this.__values) || function(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-exports.__esModule = true;
+
 
 var desc_1 = require("./desc");
 var Result = (function () {
@@ -69,7 +70,7 @@ var Result = (function () {
     };
     return Result;
 }());
-exports.Result = Result;
+
 function damageRange(damage) {
     var range = multiDamageRange(damage);
     if (typeof range[0] === 'number')
@@ -82,7 +83,7 @@ function damageRange(damage) {
     }
     return summedRange;
 }
-exports.damageRange = damageRange;
+
 function multiDamageRange(damage) {
     var e_1, _a;
     if (typeof damage === 'number')
@@ -100,7 +101,7 @@ function multiDamageRange(damage) {
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
         finally {
             try {
-                if (damage_1_1 && !damage_1_1.done && (_a = damage_1["return"])) _a.call(damage_1);
+                if (damage_1_1 && !damage_1_1.done && (_a = damage_1.return)) _a.call(damage_1);
             }
             finally { if (e_1) throw e_1.error; }
         }
@@ -112,5 +113,6 @@ function multiDamageRange(damage) {
     }
     return [d[0], d[d.length - 1]];
 }
-exports.multiDamageRange = multiDamageRange;
+
 //# sourceMappingURL=result.js.map
+})();

@@ -1,3 +1,4 @@
+(function() {
 /* global addBoxed, selectFirstMon, setupSideCollapsers */
 
 function placeBsBtn() {
@@ -394,3 +395,5 @@ $(document).ready(function () {
 	//adjust the side buttons that collapse the data wished to be hidden
 	setupSideCollapsers();
 });
+
+})();

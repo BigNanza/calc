@@ -1,3 +1,4 @@
+(function() {
 $.fn.DataTable.ColVis.prototype._fnDomColumnButton = function (i) {
 	var
 		that = this,
@@ -346,3 +347,5 @@ function calcDTDimensions() {
 function getBottomOffset(obj) {
 	return obj.offset().top + obj.outerHeight();
 }
+
+})();

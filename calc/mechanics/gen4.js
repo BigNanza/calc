@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -24,7 +25,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-exports.__esModule = true;
+
 
 var items_1 = require("../items");
 var result_1 = require("../result");
@@ -47,7 +48,7 @@ function calculateDPP(gen, attacker, defender, move, field) {
     var desc = {
         attackerName: attacker.name,
         moveName: move.name,
-        defenderName: defender.name
+        defenderName: defender.name,
     };
     var result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
     if (move.category === 'Status' && !move.named('Nature Power')) {
@@ -268,7 +269,7 @@ function calculateDPP(gen, attacker, defender, move, field) {
     }
     return result;
 }
-exports.calculateDPP = calculateDPP;
+
 function calculateBasePowerDPP(gen, attacker, defender, move, field, desc, hit) {
     if (hit === void 0) { hit = 1; }
     var basePower = move.bp;
@@ -359,7 +360,7 @@ function calculateBasePowerDPP(gen, attacker, defender, move, field, desc, hit) 
     }
     return basePower;
 }
-exports.calculateBasePowerDPP = calculateBasePowerDPP;
+
 function calculateBPModsDPP(attacker, defender, move, field, desc, basePower) {
     if (field.attackerSide.isHelpingHand) {
         basePower = Math.floor(basePower * 1.5);
@@ -423,7 +424,7 @@ function calculateBPModsDPP(attacker, defender, move, field, desc, basePower) {
     }
     return basePower;
 }
-exports.calculateBPModsDPP = calculateBPModsDPP;
+
 function calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var isPhysical = move.category === 'Physical';
@@ -491,7 +492,7 @@ function calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritic
     }
     return attack;
 }
-exports.calculateAttackDPP = calculateAttackDPP;
+
 function calculateDefenseDPP(gen, attacker, defender, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var isPhysical = move.category === 'Physical';
@@ -555,7 +556,7 @@ function calculateDefenseDPP(gen, attacker, defender, move, field, desc, isCriti
     }
     return defense;
 }
-exports.calculateDefenseDPP = calculateDefenseDPP;
+
 function calculateFinalModsDPP(baseDamage, attacker, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var isPhysical = move.category === 'Physical';
@@ -613,3 +614,4 @@ function getSimpleModifiedStat(stat, mod) {
         : simpleMod < 0 ? Math.floor((stat * 2) / (2 - simpleMod)) : stat;
 }
 //# sourceMappingURL=gen4.js.map
+})();

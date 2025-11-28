@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
@@ -24,7 +25,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-exports.__esModule = true;
+
 
 var items_1 = require("../items");
 var result_1 = require("../result");
@@ -42,7 +43,7 @@ function calculateADV(gen, attacker, defender, move, field) {
     var desc = {
         attackerName: attacker.name,
         moveName: move.name,
-        defenderName: defender.name
+        defenderName: defender.name,
     };
     var result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
     if (move.category === 'Status' && !move.named('Nature Power')) {
@@ -181,7 +182,7 @@ function calculateADV(gen, attacker, defender, move, field) {
     }
     return result;
 }
-exports.calculateADV = calculateADV;
+
 function calculateBasePowerADV(attacker, defender, move, desc, hit) {
     if (hit === void 0) { hit = 1; }
     var bp = move.bp;
@@ -222,7 +223,7 @@ function calculateBasePowerADV(attacker, defender, move, desc, hit) {
     }
     return bp;
 }
-exports.calculateBasePowerADV = calculateBasePowerADV;
+
 function calculateBPModsADV(attacker, move, desc, basePower) {
     if (attacker.curHP() <= attacker.maxHP() / 3 &&
         ((attacker.hasAbility('Overgrow') && move.hasType('Grass')) ||
@@ -234,7 +235,7 @@ function calculateBPModsADV(attacker, move, desc, basePower) {
     }
     return basePower;
 }
-exports.calculateBPModsADV = calculateBPModsADV;
+
 function calculateAttackADV(gen, attacker, defender, move, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var isPhysical = move.category === 'Physical';
@@ -281,7 +282,7 @@ function calculateAttackADV(gen, attacker, defender, move, desc, isCritical) {
     }
     return at;
 }
-exports.calculateAttackADV = calculateAttackADV;
+
 function calculateDefenseADV(gen, defender, move, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var isPhysical = move.category === 'Physical';
@@ -311,7 +312,7 @@ function calculateDefenseADV(gen, defender, move, desc, isCritical) {
     }
     return df;
 }
-exports.calculateDefenseADV = calculateDefenseADV;
+
 function calculateFinalModsADV(baseDamage, attacker, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var isPhysical = move.category === 'Physical';
@@ -371,3 +372,4 @@ function calculateFinalModsADV(baseDamage, attacker, move, field, desc, isCritic
     return baseDamage;
 }
 //# sourceMappingURL=gen3.js.map
+})();

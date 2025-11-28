@@ -1,5 +1,6 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 var index_1 = require("../index");
 describe('Move', function () {
     test('clone', function () {
@@ -12,3 +13,4 @@ describe('Move', function () {
     });
 });
 //# sourceMappingURL=move.test.js.map
+})();
