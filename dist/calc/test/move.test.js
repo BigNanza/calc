@@ -1,7 +1,7 @@
 (function() {
 "use strict";
 
-var index_1 = require("../index");
+
 describe('Move', function () {
     test('clone', function () {
         var m = new index_1.Move(7, 'Blizzard', { useZ: true });

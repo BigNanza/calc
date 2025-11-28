@@ -2,12 +2,12 @@
 "use strict";
 
 
-var field_1 = require("./field");
-var gen12_1 = require("./mechanics/gen12");
-var gen3_1 = require("./mechanics/gen3");
-var gen4_1 = require("./mechanics/gen4");
-var gen56_1 = require("./mechanics/gen56");
-var gen789_1 = require("./mechanics/gen789");
+
+
+
+
+
+
 var MECHANICS = [
     function () { },
     gen12_1.calculateRBYGSC,

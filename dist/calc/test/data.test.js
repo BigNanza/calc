@@ -51,10 +51,10 @@ var __read = (this && this.__read) || function (o, n) {
     return ar;
 };
 
-var adaptable_1 = require("../adaptable");
+
 var calc = __importStar(require("../index"));
-var dex_1 = require("@pkmn/dex");
-var gen_1 = require("./gen");
+
+
 var pkmn = { Generations: new gen_1.Generations(dex_1.Dex) };
 var gens = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 describe('Generations', function () {

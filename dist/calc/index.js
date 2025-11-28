@@ -40,7 +40,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 
 
-var data_1 = require("./data");
+
 var A = __importStar(require("./adaptable"));
 var Acalculate = exports.calculate;
 function calculate(gen, attacker, defender, move, field) {
@@ -72,29 +72,29 @@ function calcStat(gen, stat, base, iv, ev, level, nature) {
     return A.Stats.calcStat(typeof gen === 'number' ? data_1.Generations.get(gen) : gen, stat === 'spc' ? 'spa' : stat, base, iv, ev, level, nature);
 }
 
-var field_1 = require("./field");
 
 
-var result_1 = require("./result");
-
-var index_1 = require("./data/index");
-
-var util_1 = require("./util");
-
-var abilities_1 = require("./data/abilities");
-
-var items_1 = require("./data/items");
 
 
-var moves_1 = require("./data/moves");
 
-var species_1 = require("./data/species");
 
-var natures_1 = require("./data/natures");
 
-var types_1 = require("./data/types");
 
-var stats_1 = require("./stats");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //# sourceMappingURL=index.js.map

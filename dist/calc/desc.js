@@ -18,9 +18,9 @@ var __read = (this && this.__read) || function (o, n) {
 };
 
 
-var result_1 = require("./result");
-var util_1 = require("./util");
-var util_2 = require("./mechanics/util");
+
+
+
 function display(gen, attacker, defender, move, field, damage, rawDesc, notation, err) {
     if (notation === void 0) { notation = '%'; }
     if (err === void 0) { err = true; }

@@ -45,7 +45,7 @@ var __read = (this && this.__read) || function (o, n) {
 };
 
 
-var util_1 = require("../util");
+
 
     Adamant: ['atk', 'spa'],
     Bashful: ['spa', 'spa'],

@@ -41,7 +41,7 @@ var __values = (this && this.__values) || function(o) {
 var e_1, _a, e_2, _b;
 
 
-var util_1 = require("../util");
+
 var RBY = {
     '(No Move)': { bp: 0, category: 'Status', type: 'Normal' },
     Absorb: { bp: 20, type: 'Grass', drain: [1, 2] },

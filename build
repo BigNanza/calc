@@ -44,9 +44,11 @@ function cpdir(src, dest) {
 			fs.symlinkSync(symlink, path.join(dest, file));
 		} else if (file.endsWith('.js')) {
 			let contents = fs.readFileSync(path.join(src, file), 'utf8');
-			// Remove CommonJS exports
+			// Remove CommonJS exports and require statements
 			contents = contents.replace(/^exports\..*$/gm, '');
 			contents = contents.replace(/^Object\.defineProperty\(exports.*$/gm, '');
+			contents = contents.replace(/^var .+?_\d+ = require\(.+?\);$/gm, '');
+			contents = contents.replace(/^const .+?_\d+ = require\(.+?\);$/gm, '');
 			// Wrap in IIFE to avoid global variable conflicts
 			contents = `(function() {\n${contents}\n})();`;
 			fs.writeFileSync(path.join(dest, file), contents);

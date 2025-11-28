@@ -2,12 +2,12 @@
 "use strict";
 
 
-var abilities_1 = require("./abilities");
-var items_1 = require("./items");
-var moves_1 = require("./moves");
-var species_1 = require("./species");
-var types_1 = require("./types");
-var natures_1 = require("./natures");
+
+
+
+
+
+
 
     function class_1() {
     }

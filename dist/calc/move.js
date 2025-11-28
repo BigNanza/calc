@@ -2,7 +2,7 @@
 "use strict";
 
 
-var util_1 = require("./util");
+
 var SPECIAL = ['Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Psychic', 'Dark', 'Dragon'];
 var Move = (function () {
     function Move(gen, name, options) {

@@ -2,10 +2,10 @@
 "use strict";
 
 
-var util_1 = require("../util");
-var items_1 = require("../items");
-var result_1 = require("../result");
-var util_2 = require("./util");
+
+
+
+
 function calculateBWXY(gen, attacker, defender, move, field) {
     var _a;
     (0, util_2.checkAirLock)(attacker, field);

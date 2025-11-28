@@ -2,7 +2,7 @@
 "use strict";
 
 
-var util_1 = require("./util");
+
 var RBY = ['hp', 'atk', 'def', 'spc', 'spe'];
 var GSC = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
 var ADV = GSC;

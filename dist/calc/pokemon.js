@@ -24,8 +24,8 @@ var __values = (this && this.__values) || function(o) {
 };
 
 
-var stats_1 = require("./stats");
-var util_1 = require("./util");
+
+
 var STATS = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
 var SPC = new Set(['spc']);
 var Pokemon = (function () {

@@ -29,7 +29,7 @@ var __values = (this && this.__values) || function(o) {
 };
 
 
-var desc_1 = require("./desc");
+
 var Result = (function () {
     function Result(gen, attacker, defender, move, field, damage, rawDesc) {
         this.gen = gen;
