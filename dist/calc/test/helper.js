@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __values = (this && this.__values) || function(o) {
     var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
@@ -26,7 +27,7 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-exports.__esModule = true;
+
 
 var index_1 = require("../index");
 var field_1 = require("../field");
@@ -54,16 +55,16 @@ function inGen(gen, fn) {
         Move: move(gen),
         Pokemon: pokemon(gen),
         Field: field,
-        Side: side
+        Side: side,
     });
 }
-exports.inGen = inGen;
+
 function inGens(from, to, fn) {
     for (var gen = from; gen <= to; gen++) {
         inGen(gen, fn);
     }
 }
-exports.inGens = inGens;
+
 function tests() {
     var _a, _b, _c;
     var args = [];
@@ -106,7 +107,7 @@ function tests() {
         }
     });
 }
-exports.tests = tests;
+
 expect.extend({
     toMatch: function (received, gen, notation, diff) {
         var e_1, _a;
@@ -134,7 +135,7 @@ expect.extend({
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
         finally {
             try {
-                if (breakdowns_1_1 && !breakdowns_1_1.done && (_a = breakdowns_1["return"])) _a.call(breakdowns_1);
+                if (breakdowns_1_1 && !breakdowns_1_1.done && (_a = breakdowns_1.return)) _a.call(breakdowns_1);
             }
             finally { if (e_1) throw e_1.error; }
         }
@@ -169,6 +170,7 @@ expect.extend({
             }
         }
         return { pass: !this.isNot, message: function () { return ''; } };
-    }
+    },
 });
 //# sourceMappingURL=helper.js.map
+})();

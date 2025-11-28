@@ -1,5 +1,6 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 
 var abilities_1 = require("./abilities");
 var items_1 = require("./items");
@@ -7,7 +8,7 @@ var moves_1 = require("./moves");
 var species_1 = require("./species");
 var types_1 = require("./types");
 var natures_1 = require("./natures");
-exports.Generations = new ((function () {
+
     function class_1() {
     }
     class_1.prototype.get = function (gen) {
@@ -28,3 +29,4 @@ var Generation = (function () {
     return Generation;
 }());
 //# sourceMappingURL=index.js.map
+})();

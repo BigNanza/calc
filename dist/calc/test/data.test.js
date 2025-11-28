@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -49,7 +50,7 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-exports.__esModule = true;
+
 var adaptable_1 = require("../adaptable");
 var calc = __importStar(require("../index"));
 var dex_1 = require("@pkmn/dex");
@@ -368,3 +369,4 @@ describe('Adaptable', function () {
     });
 });
 //# sourceMappingURL=data.test.js.map
+})();

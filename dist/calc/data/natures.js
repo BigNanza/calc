@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __generator = (this && this.__generator) || function (thisArg, body) {
     var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
@@ -42,10 +43,10 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-exports.__esModule = true;
+
 
 var util_1 = require("../util");
-exports.NATURES = {
+
     Adamant: ['atk', 'spa'],
     Bashful: ['spa', 'spa'],
     Bold: ['def', 'atk'],
@@ -70,7 +71,7 @@ exports.NATURES = {
     Relaxed: ['def', 'spe'],
     Sassy: ['spd', 'spe'],
     Serious: ['spe', 'spe'],
-    Timid: ['spe', 'atk']
+    Timid: ['spe', 'atk'],
 };
 var Natures = (function () {
     function Natures() {
@@ -107,7 +108,7 @@ var Natures = (function () {
     };
     return Natures;
 }());
-exports.Natures = Natures;
+
 var Nature = (function () {
     function Nature(name, _a) {
         var _b = __read(_a, 2), plus = _b[0], minus = _b[1];
@@ -125,3 +126,4 @@ for (var nature in exports.NATURES) {
     NATURES_BY_ID[n.id] = n;
 }
 //# sourceMappingURL=natures.js.map
+})();

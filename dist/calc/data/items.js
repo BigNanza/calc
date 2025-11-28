@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __generator = (this && this.__generator) || function (thisArg, body) {
     var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
@@ -63,7 +64,7 @@ var __values = (this && this.__values) || function(o) {
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
 var e_1, _a, e_2, _b;
-exports.__esModule = true;
+
 
 var util_1 = require("../util");
 var RBY = [];
@@ -401,7 +402,7 @@ var GEN_6_MEGA_STONES = {
     Steelixite: 'Steelix',
     Swampertite: 'Swampert',
     Tyranitarite: 'Tyranitar',
-    Venusaurite: 'Venusaur'
+    Venusaurite: 'Venusaur',
 };
 var XY = BW.concat(__spreadArray(__spreadArray([], __read(Object.keys(GEN_6_MEGA_STONES)), false), [
     'Assault Vest',
@@ -544,7 +545,7 @@ var ZA_MEGA_STONES = {
     Skarmorite: 'Skarmory',
     Starminite: 'Starmie',
     Victreebelite: 'Victreebel',
-    Zygardite: 'Zygarde-Complete'
+    Zygardite: 'Zygarde-Complete',
 };
 var SV = SS.concat(__spreadArray(__spreadArray([], __read(Object.keys(ZA_MEGA_STONES)), false), [
     'Adamant Crystal',
@@ -646,10 +647,10 @@ var BERRIES = {
     'Watmel Berry': { t: 'Fire', p: 100 },
     'Wepear Berry': { t: 'Electric', p: 90 },
     'Wiki Berry': { t: 'Rock', p: 80 },
-    'Yache Berry': { t: 'Ice', p: 80 }
+    'Yache Berry': { t: 'Ice', p: 80 },
 };
-exports.MEGA_STONES = Object.assign({}, GEN_6_MEGA_STONES, ZA_MEGA_STONES);
-exports.ITEMS = [[], RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
+
+
 var Items = (function () {
     function Items(gen) {
         this.gen = gen;
@@ -686,7 +687,7 @@ var Items = (function () {
     };
     return Items;
 }());
-exports.Items = Items;
+
 var Item = (function () {
     function Item(name, gen) {
         this.kind = 'Item';
@@ -698,7 +699,7 @@ var Item = (function () {
             this.isBerry = true;
             this.naturalGift = {
                 basePower: gen < 6 ? berry.p - 20 : berry.p,
-                type: berry.t
+                type: berry.t,
             };
         }
     }
@@ -720,7 +721,7 @@ try {
         catch (e_2_1) { e_2 = { error: e_2_1 }; }
         finally {
             try {
-                if (items_1_1 && !items_1_1.done && (_b = items_1["return"])) _b.call(items_1);
+                if (items_1_1 && !items_1_1.done && (_b = items_1.return)) _b.call(items_1);
             }
             finally { if (e_2) throw e_2.error; }
         }
@@ -731,8 +732,9 @@ try {
 catch (e_1_1) { e_1 = { error: e_1_1 }; }
 finally {
     try {
-        if (ITEMS_1_1 && !ITEMS_1_1.done && (_a = ITEMS_1["return"])) _a.call(ITEMS_1);
+        if (ITEMS_1_1 && !ITEMS_1_1.done && (_a = ITEMS_1.return)) _a.call(ITEMS_1);
     }
     finally { if (e_1) throw e_1.error; }
 }
 //# sourceMappingURL=items.js.map
+})();

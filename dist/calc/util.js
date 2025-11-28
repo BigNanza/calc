@@ -1,5 +1,6 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 
 function toID(text) {
     var lcase = ('' + text).toLowerCase();
@@ -8,7 +9,7 @@ function toID(text) {
     }
     return lcase.replace(/[^a-z0-9]+/g, '');
 }
-exports.toID = toID;
+
 function error(err, msg) {
     if (err) {
         throw new Error(msg);
@@ -17,7 +18,7 @@ function error(err, msg) {
         console.log(msg);
     }
 }
-exports.error = error;
+
 function assignWithout(a, b, exclude) {
     for (var key in b) {
         if (Object.prototype.hasOwnProperty.call(b, key) && !exclude.has(key)) {
@@ -25,7 +26,7 @@ function assignWithout(a, b, exclude) {
         }
     }
 }
-exports.assignWithout = assignWithout;
+
 var class2Type = {
     '[object Boolean]': 'boolean',
     '[object Number]': 'number',
@@ -35,7 +36,7 @@ var class2Type = {
     '[object Date]': 'date',
     '[object RegExp]': 'regexp',
     '[object Object]': 'object',
-    '[object Error]': 'error'
+    '[object Error]': 'error',
 };
 var coreToString = class2Type.toString;
 var coreHasOwn = class2Type.hasOwnProperty;
@@ -115,5 +116,6 @@ function extend() {
     }
     return target;
 }
-exports.extend = extend;
+
 //# sourceMappingURL=util.js.map
+})();

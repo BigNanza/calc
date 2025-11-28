@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __generator = (this && this.__generator) || function (thisArg, body) {
     var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
@@ -38,7 +39,7 @@ var __values = (this && this.__values) || function(o) {
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
 var e_1, _a, e_2, _b;
-exports.__esModule = true;
+
 
 var util_1 = require("../util");
 var RBY = [];
@@ -370,7 +371,7 @@ var SV = SS.concat([
     'Wind Rider',
     'Zero to Hero',
 ]);
-exports.ABILITIES = [[], RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
+
 var Abilities = (function () {
     function Abilities(gen) {
         this.gen = gen;
@@ -407,7 +408,7 @@ var Abilities = (function () {
     };
     return Abilities;
 }());
-exports.Abilities = Abilities;
+
 var Ability = (function () {
     function Ability(name) {
         this.kind = 'Ability';
@@ -431,7 +432,7 @@ try {
         catch (e_2_1) { e_2 = { error: e_2_1 }; }
         finally {
             try {
-                if (abilities_1_1 && !abilities_1_1.done && (_b = abilities_1["return"])) _b.call(abilities_1);
+                if (abilities_1_1 && !abilities_1_1.done && (_b = abilities_1.return)) _b.call(abilities_1);
             }
             finally { if (e_2) throw e_2.error; }
         }
@@ -441,8 +442,9 @@ try {
 catch (e_1_1) { e_1 = { error: e_1_1 }; }
 finally {
     try {
-        if (ABILITIES_1_1 && !ABILITIES_1_1.done && (_a = ABILITIES_1["return"])) _a.call(ABILITIES_1);
+        if (ABILITIES_1_1 && !ABILITIES_1_1.done && (_a = ABILITIES_1.return)) _a.call(ABILITIES_1);
     }
     finally { if (e_1) throw e_1.error; }
 }
 //# sourceMappingURL=abilities.js.map
+})();

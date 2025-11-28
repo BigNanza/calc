@@ -1,5 +1,6 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 var util_1 = require("../util");
 describe('util', function () {
     test('extend', function () {
@@ -12,7 +13,7 @@ describe('util', function () {
             b: { c: 2 },
             d: { e: 3 },
             e: { f: 5 },
-            f: 4
+            f: 4,
         });
     });
     test('toID converts Flabébé to flabebe', function () {
@@ -20,3 +21,4 @@ describe('util', function () {
     });
 });
 //# sourceMappingURL=utils.test.js.map
+})();

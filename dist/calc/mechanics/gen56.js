@@ -1,5 +1,6 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 
 var util_1 = require("../util");
 var items_1 = require("../items");
@@ -29,7 +30,7 @@ function calculateBWXY(gen, attacker, defender, move, field) {
         attackerName: attacker.name,
         moveName: move.name,
         defenderName: defender.name,
-        isWonderRoom: field.isWonderRoom
+        isWonderRoom: field.isWonderRoom,
     };
     var result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
     if (move.category === 'Status' && !move.named('Nature Power')) {
@@ -271,7 +272,7 @@ function calculateBWXY(gen, attacker, defender, move, field) {
     }
     return result;
 }
-exports.calculateBWXY = calculateBWXY;
+
 function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc, hit) {
     if (hit === void 0) { hit = 1; }
     var basePower;
@@ -411,7 +412,7 @@ function calculateBasePowerBWXY(gen, attacker, defender, move, field, hasAteAbil
     basePower = (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((basePower * (0, util_2.chainMods)(bpMods, 41, 2097152)) / 4096)));
     return basePower;
 }
-exports.calculateBasePowerBWXY = calculateBasePowerBWXY;
+
 function calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePower, hasAteAbilityTypeChange, turnOrder, hit) {
     var bpMods = [];
     var defenderItem = (defender.item && defender.item !== '')
@@ -572,7 +573,7 @@ function calculateBPModsBWXY(gen, attacker, defender, move, field, desc, basePow
     }
     return bpMods;
 }
-exports.calculateBPModsBWXY = calculateBPModsBWXY;
+
 function calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var attack;
@@ -606,7 +607,7 @@ function calculateAttackBWXY(gen, attacker, defender, move, field, desc, isCriti
     attack = (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((attack * (0, util_2.chainMods)(atMods, 410, 131072)) / 4096)));
     return attack;
 }
-exports.calculateAttackBWXY = calculateAttackBWXY;
+
 function calculateAtModsBWXY(attacker, defender, move, field, desc) {
     var atMods = [];
     if (defender.hasAbility('Thick Fat') && move.hasType('Fire', 'Ice')) {
@@ -675,7 +676,7 @@ function calculateAtModsBWXY(attacker, defender, move, field, desc) {
     }
     return atMods;
 }
-exports.calculateAtModsBWXY = calculateAtModsBWXY;
+
 function calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var defense;
@@ -708,7 +709,7 @@ function calculateDefenseBWXY(gen, attacker, defender, move, field, desc, isCrit
     defense = (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((defense * (0, util_2.chainMods)(dfMods, 410, 131072)) / 4096)));
     return defense;
 }
-exports.calculateDefenseBWXY = calculateDefenseBWXY;
+
 function calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical) {
     var _a;
     if (hitsPhysical === void 0) { hitsPhysical = false; }
@@ -754,7 +755,7 @@ function calculateDfModsBWXY(gen, defender, field, desc, hitsPhysical) {
     }
     return dfMods;
 }
-exports.calculateDfModsBWXY = calculateDfModsBWXY;
+
 function calculateBaseDamageBWXY(gen, attacker, basePower, attack, defense, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var baseDamage = (0, util_2.getBaseDamage)(attacker.level, basePower, attack, defense);
@@ -845,3 +846,4 @@ function calculateFinalModsBWXY(gen, attacker, defender, move, field, desc, isCr
     return finalMods;
 }
 //# sourceMappingURL=gen56.js.map
+})();

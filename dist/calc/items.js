@@ -1,12 +1,13 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 
 var util_1 = require("./util");
-exports.SEED_BOOSTED_STAT = {
+
     'Electric Seed': 'def',
     'Grassy Seed': 'def',
     'Misty Seed': 'spd',
-    'Psychic Seed': 'spd'
+    'Psychic Seed': 'spd',
 };
 function getItemBoostType(item) {
     switch (item) {
@@ -74,7 +75,7 @@ function getItemBoostType(item) {
             return undefined;
     }
 }
-exports.getItemBoostType = getItemBoostType;
+
 function getBerryResistType(berry) {
     switch (berry) {
         case 'Chilan Berry':
@@ -117,7 +118,7 @@ function getBerryResistType(berry) {
             return undefined;
     }
 }
-exports.getBerryResistType = getBerryResistType;
+
 var FLING_120 = new Set([
     'TR24',
     'TR28',
@@ -405,13 +406,13 @@ function getFlingPower(item, gen) {
         return 10;
     return 0;
 }
-exports.getFlingPower = getFlingPower;
+
 function getNaturalGift(gen, item) {
     var _a;
     var gift = (_a = gen.items.get((0, util_1.toID)(item))) === null || _a === void 0 ? void 0 : _a.naturalGift;
     return gift ? { t: gift.type, p: gift.basePower } : { t: 'Normal', p: 1 };
 }
-exports.getNaturalGift = getNaturalGift;
+
 function getTechnoBlast(item) {
     switch (item) {
         case 'Burn Drive':
@@ -426,12 +427,13 @@ function getTechnoBlast(item) {
             return undefined;
     }
 }
-exports.getTechnoBlast = getTechnoBlast;
+
 function getMultiAttack(item) {
     if (item.includes('Memory')) {
         return item.substring(0, item.indexOf(' '));
     }
     return undefined;
 }
-exports.getMultiAttack = getMultiAttack;
+
 //# sourceMappingURL=items.js.map
+})();

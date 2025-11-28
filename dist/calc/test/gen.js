@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
@@ -62,12 +63,12 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-exports.__esModule = true;
+
 
 function toID(s) {
     return ('' + s).toLowerCase().replace(/[^a-z0-9]+/g, '');
 }
-exports.toID = toID;
+
 var GENERATIONS = Object.create(null);
 var Generations = (function () {
     function Generations(dex) {
@@ -80,7 +81,7 @@ var Generations = (function () {
     };
     return Generations;
 }());
-exports.Generations = Generations;
+
 var Generation = (function () {
     function Generation(dex) {
         this.dex = dex;
@@ -196,7 +197,7 @@ var Item = (function () {
         this.isBerry = item.isBerry;
         this.naturalGift = item.naturalGift && {
             basePower: item.naturalGift.basePower - (gen === 2 ? 20 : 0),
-            type: item.naturalGift.type
+            type: item.naturalGift.type,
         };
     }
     return Item;
@@ -389,7 +390,7 @@ function NoMove(dex) {
         target: 'any',
         flags: {},
         gen: 1,
-        priority: 0
+        priority: 0,
     }, dex);
 }
 var Specie = (function () {
@@ -458,7 +459,7 @@ function AegislashBoth(dex) {
         def: shield.baseStats.def,
         spa: blade.baseStats.spa,
         spd: shield.baseStats.spd,
-        spe: shield.baseStats.spe
+        spe: shield.baseStats.spe,
     };
     return new Specie(__assign(__assign({}, shield), { baseStats: baseStats, id: 'aegislashboth', name: 'Aegislash-Both' }), dex);
 }
@@ -470,7 +471,7 @@ var Types = (function () {
             kind: 'Type',
             id: '',
             name: '???',
-            effectiveness: {}
+            effectiveness: {},
         };
         this.byID = {};
         for (var id in this.dex.data.Types) {
@@ -521,7 +522,7 @@ var Types = (function () {
     };
     return Types;
 }());
-exports.Types = Types;
+
 var Natures = (function () {
     function Natures(dex) {
         this.dex = dex;
@@ -561,7 +562,7 @@ var Natures = (function () {
     };
     return Natures;
 }());
-exports.Natures = Natures;
+
 var Nature = (function () {
     function Nature(nature) {
         this.kind = 'Nature';
@@ -640,3 +641,4 @@ function exists(val, gen) {
     return !('tier' in val && ['Illegal', 'Unreleased'].includes(val.tier));
 }
 //# sourceMappingURL=gen.js.map
+})();

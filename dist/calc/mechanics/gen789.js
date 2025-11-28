@@ -1,5 +1,6 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 
 var util_1 = require("../util");
 var items_1 = require("../items");
@@ -47,7 +48,7 @@ function calculateSMSSSV(gen, attacker, defender, move, field) {
         moveName: move.name,
         defenderName: defender.name,
         isDefenderDynamaxed: defender.isDynamaxed,
-        isWonderRoom: field.isWonderRoom
+        isWonderRoom: field.isWonderRoom,
     };
     if (attacker.teraType !== 'Stellar' || move.name === 'Tera Blast' || move.isStellarFirstUse) {
         desc.isStellarFirstUse = attacker.name !== 'Terapagos-Stellar' && move.name === 'Tera Blast' &&
@@ -496,7 +497,7 @@ function calculateSMSSSV(gen, attacker, defender, move, field) {
     }
     return result;
 }
-exports.calculateSMSSSV = calculateSMSSSV;
+
 function calculateBasePowerSMSSSV(gen, attacker, defender, move, field, hasAteAbilityTypeChange, desc, hit) {
     var _a;
     if (hit === void 0) { hit = 1; }
@@ -717,7 +718,7 @@ function calculateBasePowerSMSSSV(gen, attacker, defender, move, field, hasAteAb
     }
     return basePower;
 }
-exports.calculateBasePowerSMSSSV = calculateBasePowerSMSSSV;
+
 function calculateBPModsSMSSSV(gen, attacker, defender, move, field, desc, basePower, hasAteAbilityTypeChange, turnOrder, hit) {
     var bpMods = [];
     var defenderItem = (defender.item && defender.item !== '')
@@ -926,7 +927,7 @@ function calculateBPModsSMSSSV(gen, attacker, defender, move, field, desc, baseP
     }
     return bpMods;
 }
-exports.calculateBPModsSMSSSV = calculateBPModsSMSSSV;
+
 function calculateAttackSMSSSV(gen, attacker, defender, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var attack;
@@ -962,7 +963,7 @@ function calculateAttackSMSSSV(gen, attacker, defender, move, field, desc, isCri
     attack = (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((attack * (0, util_2.chainMods)(atMods, 410, 131072)) / 4096)));
     return attack;
 }
-exports.calculateAttackSMSSSV = calculateAttackSMSSSV;
+
 function calculateAtModsSMSSSV(gen, attacker, defender, move, field, desc) {
     var atMods = [];
     if ((attacker.hasAbility('Slow Start') && attacker.abilityOn &&
@@ -1089,7 +1090,7 @@ function calculateAtModsSMSSSV(gen, attacker, defender, move, field, desc) {
     }
     return atMods;
 }
-exports.calculateAtModsSMSSSV = calculateAtModsSMSSSV;
+
 function calculateDefenseSMSSSV(gen, attacker, defender, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var defense;
@@ -1125,7 +1126,7 @@ function calculateDefenseSMSSSV(gen, attacker, defender, move, field, desc, isCr
     var dfMods = calculateDfModsSMSSSV(gen, attacker, defender, move, field, desc, isCritical, hitsPhysical);
     return (0, util_2.OF16)(Math.max(1, (0, util_2.pokeRound)((defense * (0, util_2.chainMods)(dfMods, 410, 131072)) / 4096)));
 }
-exports.calculateDefenseSMSSSV = calculateDefenseSMSSSV;
+
 function calculateDfModsSMSSSV(gen, attacker, defender, move, field, desc, isCritical, hitsPhysical) {
     var _a;
     if (isCritical === void 0) { isCritical = false; }
@@ -1194,7 +1195,7 @@ function calculateDfModsSMSSSV(gen, attacker, defender, move, field, desc, isCri
     }
     return dfMods;
 }
-exports.calculateDfModsSMSSSV = calculateDfModsSMSSSV;
+
 function calculateBaseDamageSMSSSV(gen, attacker, defender, basePower, attack, defense, move, field, desc, isCritical) {
     if (isCritical === void 0) { isCritical = false; }
     var baseDamage = (0, util_2.getBaseDamage)(attacker.level, basePower, attack, defense);
@@ -1322,8 +1323,9 @@ function calculateFinalModsSMSSSV(gen, attacker, defender, move, field, desc, is
     }
     return finalMods;
 }
-exports.calculateFinalModsSMSSSV = calculateFinalModsSMSSSV;
+
 function hasTerrainSeed(pokemon) {
     return pokemon.hasItem('Electric Seed', 'Misty Seed', 'Grassy Seed', 'Psychic Seed');
 }
 //# sourceMappingURL=gen789.js.map
+})();

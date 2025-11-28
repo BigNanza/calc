@@ -1,5 +1,6 @@
+(function() {
 "use strict";
-exports.__esModule = true;
+
 
 var field_1 = require("./field");
 var gen12_1 = require("./mechanics/gen12");
@@ -22,5 +23,6 @@ var MECHANICS = [
 function calculate(gen, attacker, defender, move, field) {
     return MECHANICS[gen.num](gen, attacker.clone(), defender.clone(), move.clone(), field ? field.clone() : new field_1.Field());
 }
-exports.calculate = calculate;
+
 //# sourceMappingURL=calc.js.map
+})();

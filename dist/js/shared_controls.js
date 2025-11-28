@@ -1,3 +1,4 @@
+(function() {
 /* global CURRENT_TRAINER_POKS:writable, TR_NAMES:writable, calculationsColors, allPokemon, topPokemonIcon, get_trainer_poks, loadDefaultLists, loadCustomList */
 /* eslint-disable no-extend-native */
 if (!Array.prototype.indexOf) {
@@ -2353,3 +2354,5 @@ $("#mainResult").click(function () {
 		}, 2000);
 	});
 });
+
+})();

@@ -1,3 +1,4 @@
+(function() {
 "use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
@@ -21,7 +22,7 @@ var __values = (this && this.__values) || function(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-exports.__esModule = true;
+
 
 var stats_1 = require("./stats");
 var util_1 = require("./util");
@@ -60,7 +61,7 @@ var Pokemon = (function () {
                 atk: this.ivs.atk,
                 def: this.ivs.def,
                 spe: this.ivs.spe,
-                spc: this.ivs.spa
+                spc: this.ivs.spa,
             }));
         }
         this.rawStats = {};
@@ -76,7 +77,7 @@ var Pokemon = (function () {
         catch (e_1_1) { e_1 = { error: e_1_1 }; }
         finally {
             try {
-                if (STATS_1_1 && !STATS_1_1.done && (_a = STATS_1["return"])) _a.call(STATS_1);
+                if (STATS_1_1 && !STATS_1_1.done && (_a = STATS_1.return)) _a.call(STATS_1);
             }
             finally { if (e_1) throw e_1.error; }
         }
@@ -139,7 +140,7 @@ var Pokemon = (function () {
         catch (e_2_1) { e_2 = { error: e_2_1 }; }
         finally {
             try {
-                if (types_1_1 && !types_1_1.done && (_a = types_1["return"])) _a.call(types_1);
+                if (types_1_1 && !types_1_1.done && (_a = types_1.return)) _a.call(types_1);
             }
             finally { if (e_2) throw e_2.error; }
         }
@@ -161,7 +162,7 @@ var Pokemon = (function () {
         catch (e_3_1) { e_3 = { error: e_3_1 }; }
         finally {
             try {
-                if (types_2_1 && !types_2_1.done && (_a = types_2["return"])) _a.call(types_2);
+                if (types_2_1 && !types_2_1.done && (_a = types_2.return)) _a.call(types_2);
             }
             finally { if (e_3) throw e_3.error; }
         }
@@ -194,7 +195,7 @@ var Pokemon = (function () {
             teraType: this.teraType,
             toxicCounter: this.toxicCounter,
             moves: this.moves.slice(),
-            overrides: this.species
+            overrides: this.species,
         });
     };
     Pokemon.prototype.calcStat = function (gen, stat) {
@@ -236,5 +237,6 @@ var Pokemon = (function () {
     };
     return Pokemon;
 }());
-exports.Pokemon = Pokemon;
+
 //# sourceMappingURL=pokemon.js.map
+})();

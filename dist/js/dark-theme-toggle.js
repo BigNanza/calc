@@ -1,3 +1,4 @@
+(function() {
 /*
 * Dark mode toggle
 *
@@ -42,3 +43,5 @@ function toggleTheme() {
 }
 
 darkThemeButton.addEventListener('click', toggleTheme);
+
+})();

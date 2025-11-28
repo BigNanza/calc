@@ -1,3 +1,4 @@
+(function() {
 var SETDEX_SS = {
 	Yungoos: {
 		"Lass Madison": {
@@ -24224,3 +24225,5 @@ var SETDEX_SS = {
 		},
 	},
 };
+
+})();
