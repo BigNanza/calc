@@ -1,10 +1,37 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+exports.__esModule = true;
 
-const items_1 = require("../items");
-const result_1 = require("../result");
-const util_1 = require("./util");
+var items_1 = require("../items");
+var result_1 = require("../result");
+var util_1 = require("./util");
 function calculateDPP(gen, attacker, defender, move, field) {
+    var _a;
+    var _b;
     (0, util_1.checkAirLock)(attacker, field);
     (0, util_1.checkAirLock)(defender, field);
     (0, util_1.checkForecast)(attacker, field.weather);
@@ -17,12 +44,12 @@ function calculateDPP(gen, attacker, defender, move, field) {
     (0, util_1.checkDownload)(defender, attacker);
     attacker.stats.spe = (0, util_1.getFinalSpeed)(gen, attacker, field, field.attackerSide);
     defender.stats.spe = (0, util_1.getFinalSpeed)(gen, defender, field, field.defenderSide);
-    const desc = {
+    var desc = {
         attackerName: attacker.name,
         moveName: move.name,
-        defenderName: defender.name,
+        defenderName: defender.name
     };
-    const result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
+    var result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
     if (move.category === 'Status' && !move.named('Nature Power')) {
         return result;
     }
@@ -31,17 +58,17 @@ function calculateDPP(gen, attacker, defender, move, field) {
         return result;
     }
     if (move.name === 'Pain Split') {
-        const average = Math.floor((attacker.curHP() + defender.curHP()) / 2);
-        const damage = Math.max(0, defender.curHP() - average);
-        result.damage = damage;
+        var average = Math.floor((attacker.curHP() + defender.curHP()) / 2);
+        var damage_1 = Math.max(0, defender.curHP() - average);
+        result.damage = damage_1;
         return result;
     }
-    const defenderAbilityIgnored = defender.hasAbility('Battle Armor', 'Clear Body', 'Damp', 'Dry Skin', 'Filter', 'Flash Fire', 'Flower Gift', 'Heatproof', 'Hyper Cutter', 'Immunity', 'Inner Focus', 'Insomnia', 'Keen Eye', 'Leaf Guard', 'Levitate', 'Lightning Rod', 'Limber', 'Magma Armor', 'Marvel Scale', 'Motor Drive', 'Oblivious', 'Own Tempo', 'Sand Veil', 'Shell Armor', 'Shield Dust', 'Simple', 'Snow Cloak', 'Solid Rock', 'Soundproof', 'Sticky Hold', 'Storm Drain', 'Sturdy', 'Suction Cups', 'Tangled Feet', 'Thick Fat', 'Unaware', 'Vital Spirit', 'Volt Absorb', 'Water Absorb', 'Water Veil', 'White Smoke', 'Wonder Guard');
+    var defenderAbilityIgnored = defender.hasAbility('Battle Armor', 'Clear Body', 'Damp', 'Dry Skin', 'Filter', 'Flash Fire', 'Flower Gift', 'Heatproof', 'Hyper Cutter', 'Immunity', 'Inner Focus', 'Insomnia', 'Keen Eye', 'Leaf Guard', 'Levitate', 'Lightning Rod', 'Limber', 'Magma Armor', 'Marvel Scale', 'Motor Drive', 'Oblivious', 'Own Tempo', 'Sand Veil', 'Shell Armor', 'Shield Dust', 'Simple', 'Snow Cloak', 'Solid Rock', 'Soundproof', 'Sticky Hold', 'Storm Drain', 'Sturdy', 'Suction Cups', 'Tangled Feet', 'Thick Fat', 'Unaware', 'Vital Spirit', 'Volt Absorb', 'Water Absorb', 'Water Veil', 'White Smoke', 'Wonder Guard');
     if (attacker.hasAbility('Mold Breaker') && defenderAbilityIgnored) {
         defender.ability = '';
         desc.attackerAbility = attacker.ability;
     }
-    const isCritical = move.isCrit && !defender.hasAbility('Battle Armor', 'Shell Armor');
+    var isCritical = move.isCrit && !defender.hasAbility('Battle Armor', 'Shell Armor');
     if (move.named('Weather Ball')) {
         move.type =
             field.hasWeather('Sun') ? 'Fire'
@@ -55,8 +82,8 @@ function calculateDPP(gen, attacker, defender, move, field) {
     else if (move.named('Judgment') && attacker.item && attacker.item.includes('Plate')) {
         move.type = (0, items_1.getItemBoostType)(attacker.item);
     }
-    else if (move.named('Natural Gift') && attacker.item?.endsWith('Berry')) {
-        const gift = (0, items_1.getNaturalGift)(gen, attacker.item);
+    else if (move.named('Natural Gift') && ((_b = attacker.item) === null || _b === void 0 ? void 0 : _b.endsWith('Berry'))) {
+        var gift = (0, items_1.getNaturalGift)(gen, attacker.item);
         move.type = gift.t;
         move.bp = gift.p;
         desc.attackerItem = attacker.item;
@@ -71,8 +98,8 @@ function calculateDPP(gen, attacker, defender, move, field) {
         move.type = 'Normal';
         desc.attackerAbility = attacker.ability;
     }
-    const isGhostRevealed = attacker.hasAbility('Scrappy') || field.defenderSide.isForesight;
-    const typeEffectivenessPrecedenceRules = [
+    var isGhostRevealed = attacker.hasAbility('Scrappy') || field.defenderSide.isForesight;
+    var typeEffectivenessPrecedenceRules = [
         'Normal',
         'Fire',
         'Water',
@@ -91,20 +118,20 @@ function calculateDPP(gen, attacker, defender, move, field) {
         'Dark',
         'Steel',
     ];
-    let firstDefenderType = defender.types[0];
-    let secondDefenderType = defender.types[1];
+    var firstDefenderType = defender.types[0];
+    var secondDefenderType = defender.types[1];
     if (secondDefenderType && firstDefenderType !== secondDefenderType) {
-        const firstTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(firstDefenderType);
-        const secondTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(secondDefenderType);
+        var firstTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(firstDefenderType);
+        var secondTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(secondDefenderType);
         if (firstTypePrecedence > secondTypePrecedence) {
-            [firstDefenderType, secondDefenderType] = [secondDefenderType, firstDefenderType];
+            _a = __read([secondDefenderType, firstDefenderType], 2), firstDefenderType = _a[0], secondDefenderType = _a[1];
         }
     }
-    let type1Effectiveness = (0, util_1.getMoveEffectiveness)(gen, move, firstDefenderType, isGhostRevealed, field.isGravity);
-    let type2Effectiveness = secondDefenderType
+    var type1Effectiveness = (0, util_1.getMoveEffectiveness)(gen, move, firstDefenderType, isGhostRevealed, field.isGravity);
+    var type2Effectiveness = secondDefenderType
         ? (0, util_1.getMoveEffectiveness)(gen, move, secondDefenderType, isGhostRevealed, field.isGravity)
         : 1;
-    let typeEffectiveness = type1Effectiveness * type2Effectiveness;
+    var typeEffectiveness = type1Effectiveness * type2Effectiveness;
     if (typeEffectiveness === 0 && move.hasType('Ground') &&
         (defender.hasItem('Iron Ball') && !defender.hasAbility('Klutz'))) {
         if (type1Effectiveness === 0) {
@@ -118,7 +145,7 @@ function calculateDPP(gen, attacker, defender, move, field) {
     if (typeEffectiveness === 0) {
         return result;
     }
-    const ignoresWonderGuard = move.hasType('???') || move.named('Fire Fang');
+    var ignoresWonderGuard = move.hasType('???') || move.named('Fire Fang');
     if ((!ignoresWonderGuard && defender.hasAbility('Wonder Guard') && typeEffectiveness <= 1) ||
         (move.hasType('Fire') && defender.hasAbility('Flash Fire')) ||
         (move.hasType('Water') && defender.hasAbility('Dry Skin', 'Water Absorb')) ||
@@ -130,7 +157,7 @@ function calculateDPP(gen, attacker, defender, move, field) {
         return result;
     }
     desc.HPEVs = (0, util_1.getStatDescriptionText)(gen, defender, 'hp');
-    const fixedDamage = (0, util_1.handleFixedDamageMoves)(attacker, move);
+    var fixedDamage = (0, util_1.handleFixedDamageMoves)(attacker, move);
     if (fixedDamage) {
         result.damage = fixedDamage;
         return result;
@@ -138,22 +165,22 @@ function calculateDPP(gen, attacker, defender, move, field) {
     if (move.hits > 1) {
         desc.hits = move.hits;
     }
-    const isPhysical = move.category === 'Physical';
-    let basePower = calculateBasePowerDPP(gen, attacker, defender, move, field, desc);
+    var isPhysical = move.category === 'Physical';
+    var basePower = calculateBasePowerDPP(gen, attacker, defender, move, field, desc);
     if (basePower === 0) {
         return result;
     }
     basePower = calculateBPModsDPP(attacker, defender, move, field, desc, basePower);
-    const attack = calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritical);
-    const defense = calculateDefenseDPP(gen, attacker, defender, move, field, desc, isCritical);
-    let baseDamage = Math.floor(Math.floor((Math.floor((2 * attacker.level) / 5 + 2) * basePower * attack) / 50) / defense);
+    var attack = calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritical);
+    var defense = calculateDefenseDPP(gen, attacker, defender, move, field, desc, isCritical);
+    var baseDamage = Math.floor(Math.floor((Math.floor((2 * attacker.level) / 5 + 2) * basePower * attack) / 50) / defense);
     if (attacker.hasStatus('brn') && isPhysical && !attacker.hasAbility('Guts')) {
         baseDamage = Math.floor(baseDamage * 0.5);
         desc.isBurned = true;
     }
     baseDamage = calculateFinalModsDPP(baseDamage, attacker, move, field, desc, isCritical);
-    let stabMod = 1;
-    if (move.hasType(...attacker.types)) {
+    var stabMod = 1;
+    if (move.hasType.apply(move, __spreadArray([], __read(attacker.types), false))) {
         if (attacker.hasAbility('Adaptability')) {
             stabMod = 2;
             desc.attackerAbility = attacker.ability;
@@ -162,29 +189,29 @@ function calculateDPP(gen, attacker, defender, move, field) {
             stabMod = 1.5;
         }
     }
-    let filterMod = 1;
+    var filterMod = 1;
     if (defender.hasAbility('Filter', 'Solid Rock') && typeEffectiveness > 1) {
         filterMod = 0.75;
         desc.defenderAbility = defender.ability;
     }
-    let ebeltMod = 1;
+    var ebeltMod = 1;
     if (attacker.hasItem('Expert Belt') && typeEffectiveness > 1) {
         ebeltMod = 1.2;
         desc.attackerItem = attacker.item;
     }
-    let tintedMod = 1;
+    var tintedMod = 1;
     if (attacker.hasAbility('Tinted Lens') && typeEffectiveness < 1) {
         tintedMod = 2;
         desc.attackerAbility = attacker.ability;
     }
-    let berryMod = 1;
+    var berryMod = 1;
     if (move.hasType((0, items_1.getBerryResistType)(defender.item)) &&
         (typeEffectiveness > 1 || move.hasType('Normal'))) {
         berryMod = 0.5;
         desc.defenderItem = defender.item;
     }
-    const damage = [];
-    for (let i = 0; i < 16; i++) {
+    var damage = [];
+    for (var i = 0; i < 16; i++) {
         damage[i] = Math.floor((baseDamage * (85 + i)) / 100);
         damage[i] = Math.floor(damage[i] * stabMod);
         damage[i] = Math.floor(damage[i] * type1Effectiveness);
@@ -197,33 +224,33 @@ function calculateDPP(gen, attacker, defender, move, field) {
     }
     result.damage = damage;
     if (move.timesUsed > 1 || move.hits > 1) {
-        const origDefBoost = desc.defenseBoost;
-        const origAtkBoost = desc.attackBoost;
-        let numAttacks = 1;
+        var origDefBoost = desc.defenseBoost;
+        var origAtkBoost = desc.attackBoost;
+        var numAttacks = 1;
         if (move.dropsStats && move.timesUsed > 1) {
-            desc.moveTurns = `over ${move.timesUsed} turns`;
+            desc.moveTurns = "over ".concat(move.timesUsed, " turns");
             numAttacks = move.timesUsed;
         }
         else {
             numAttacks = move.hits;
         }
-        let usedItems = [false, false];
-        const damageMatrix = [damage];
-        for (let times = 1; times < numAttacks; times++) {
+        var usedItems = [false, false];
+        var damageMatrix = [damage];
+        for (var times = 1; times < numAttacks; times++) {
             usedItems = (0, util_1.checkMultihitBoost)(gen, attacker, defender, move, field, desc, usedItems[0], usedItems[1]);
-            let newBasePower = calculateBasePowerDPP(gen, attacker, defender, move, field, desc);
+            var newBasePower = calculateBasePowerDPP(gen, attacker, defender, move, field, desc);
             newBasePower = calculateBPModsDPP(attacker, defender, move, field, desc, newBasePower);
-            const newAtk = calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritical);
-            let baseDamage = Math.floor(Math.floor((Math.floor((2 * attacker.level) / 5 + 2) * newBasePower * newAtk) / 50) / defense);
+            var newAtk = calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritical);
+            var baseDamage_1 = Math.floor(Math.floor((Math.floor((2 * attacker.level) / 5 + 2) * newBasePower * newAtk) / 50) / defense);
             if (attacker.hasStatus('brn') && isPhysical && !attacker.hasAbility('Guts')) {
-                baseDamage = Math.floor(baseDamage * 0.5);
+                baseDamage_1 = Math.floor(baseDamage_1 * 0.5);
                 desc.isBurned = true;
             }
-            baseDamage = calculateFinalModsDPP(baseDamage, attacker, move, field, desc, isCritical);
-            const damageArray = [];
-            for (let i = 0; i < 16; i++) {
-                let newFinalDamage = 0;
-                newFinalDamage = Math.floor((baseDamage * (85 + i)) / 100);
+            baseDamage_1 = calculateFinalModsDPP(baseDamage_1, attacker, move, field, desc, isCritical);
+            var damageArray = [];
+            for (var i = 0; i < 16; i++) {
+                var newFinalDamage = 0;
+                newFinalDamage = Math.floor((baseDamage_1 * (85 + i)) / 100);
                 newFinalDamage = Math.floor(newFinalDamage * stabMod);
                 newFinalDamage = Math.floor(newFinalDamage * type1Effectiveness);
                 newFinalDamage = Math.floor(newFinalDamage * type2Effectiveness);
@@ -242,9 +269,10 @@ function calculateDPP(gen, attacker, defender, move, field) {
     return result;
 }
 exports.calculateDPP = calculateDPP;
-function calculateBasePowerDPP(gen, attacker, defender, move, field, desc, hit = 1) {
-    let basePower = move.bp;
-    const turnOrder = attacker.stats.spe > defender.stats.spe ? 'first' : 'last';
+function calculateBasePowerDPP(gen, attacker, defender, move, field, desc, hit) {
+    if (hit === void 0) { hit = 1; }
+    var basePower = move.bp;
+    var turnOrder = attacker.stats.spe > defender.stats.spe ? 'first' : 'last';
     switch (move.name) {
         case 'Brine':
             if (defender.curHP() <= defender.maxHP() / 2) {
@@ -265,7 +293,7 @@ function calculateBasePowerDPP(gen, attacker, defender, move, field, desc, hit =
             break;
         case 'Flail':
         case 'Reversal':
-            const p = Math.floor((64 * attacker.curHP()) / attacker.maxHP());
+            var p = Math.floor((64 * attacker.curHP()) / attacker.maxHP());
             basePower = p <= 1 ? 200 : p <= 5 ? 150 : p <= 12 ? 100 : p <= 21 ? 80 : p <= 42 ? 40 : 20;
             desc.moveBP = basePower;
             break;
@@ -276,7 +304,7 @@ function calculateBasePowerDPP(gen, attacker, defender, move, field, desc, hit =
             break;
         case 'Grass Knot':
         case 'Low Kick':
-            const w = defender.weightkg;
+            var w = defender.weightkg;
             basePower = w >= 200 ? 120 : w >= 100 ? 100 : w >= 50 ? 80 : w >= 25 ? 60 : w >= 10 ? 40 : 20;
             desc.moveBP = basePower;
             break;
@@ -295,7 +323,7 @@ function calculateBasePowerDPP(gen, attacker, defender, move, field, desc, hit =
             desc.moveBP = basePower;
             break;
         case 'Pursuit':
-            const switching = field.defenderSide.isSwitching === 'out';
+            var switching = field.defenderSide.isSwitching === 'out';
             basePower = move.bp * (switching ? 2 : 1);
             if (switching)
                 desc.isSwitching = 'out';
@@ -341,7 +369,7 @@ function calculateBPModsDPP(attacker, defender, move, field, desc, basePower) {
         basePower = Math.floor(basePower * 1.5);
         desc.attackerAbility = attacker.ability;
     }
-    const isPhysical = move.category === 'Physical';
+    var isPhysical = move.category === 'Physical';
     if ((attacker.hasItem('Muscle Band') && isPhysical) ||
         (attacker.hasItem('Wise Glasses') && !isPhysical)) {
         basePower = Math.floor(basePower * 1.1);
@@ -396,13 +424,14 @@ function calculateBPModsDPP(attacker, defender, move, field, desc, basePower) {
     return basePower;
 }
 exports.calculateBPModsDPP = calculateBPModsDPP;
-function calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritical = false) {
-    const isPhysical = move.category === 'Physical';
-    const attackStat = isPhysical ? 'atk' : 'spa';
+function calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritical) {
+    if (isCritical === void 0) { isCritical = false; }
+    var isPhysical = move.category === 'Physical';
+    var attackStat = isPhysical ? 'atk' : 'spa';
     desc.attackEVs = (0, util_1.getStatDescriptionText)(gen, attacker, attackStat, attacker.nature);
-    let attack;
-    const attackBoost = attacker.boosts[attackStat];
-    let rawAttack = attacker.rawStats[attackStat];
+    var attack;
+    var attackBoost = attacker.boosts[attackStat];
+    var rawAttack = attacker.rawStats[attackStat];
     if (field.attackerSide.isPowerTrick && isPhysical) {
         desc.isPowerTrickAttacker = true;
         rawAttack = attacker.rawStats.def;
@@ -463,13 +492,14 @@ function calculateAttackDPP(gen, attacker, defender, move, field, desc, isCritic
     return attack;
 }
 exports.calculateAttackDPP = calculateAttackDPP;
-function calculateDefenseDPP(gen, attacker, defender, move, field, desc, isCritical = false) {
-    const isPhysical = move.category === 'Physical';
-    const defenseStat = isPhysical ? 'def' : 'spd';
+function calculateDefenseDPP(gen, attacker, defender, move, field, desc, isCritical) {
+    if (isCritical === void 0) { isCritical = false; }
+    var isPhysical = move.category === 'Physical';
+    var defenseStat = isPhysical ? 'def' : 'spd';
     desc.defenseEVs = (0, util_1.getStatDescriptionText)(gen, defender, defenseStat, defender.nature);
-    let defense;
-    const defenseBoost = defender.boosts[defenseStat];
-    let rawDefense = defender.rawStats[defenseStat];
+    var defense;
+    var defenseBoost = defender.boosts[defenseStat];
+    var rawDefense = defender.rawStats[defenseStat];
     if (field.defenderSide.isPowerTrick && isPhysical) {
         desc.isPowerTrickDefender = true;
         rawDefense = defender.rawStats.atk;
@@ -526,10 +556,11 @@ function calculateDefenseDPP(gen, attacker, defender, move, field, desc, isCriti
     return defense;
 }
 exports.calculateDefenseDPP = calculateDefenseDPP;
-function calculateFinalModsDPP(baseDamage, attacker, move, field, desc, isCritical = false) {
-    const isPhysical = move.category === 'Physical';
+function calculateFinalModsDPP(baseDamage, attacker, move, field, desc, isCritical) {
+    if (isCritical === void 0) { isCritical = false; }
+    var isPhysical = move.category === 'Physical';
     if (!isCritical) {
-        const screenMultiplier = field.gameType !== 'Singles' ? 2 / 3 : 1 / 2;
+        var screenMultiplier = field.gameType !== 'Singles' ? 2 / 3 : 1 / 2;
         if (isPhysical && field.defenderSide.isReflect) {
             baseDamage = Math.floor(baseDamage * screenMultiplier);
             desc.isReflect = true;
@@ -576,7 +607,7 @@ function calculateFinalModsDPP(baseDamage, attacker, move, field, desc, isCritic
     return baseDamage;
 }
 function getSimpleModifiedStat(stat, mod) {
-    const simpleMod = Math.min(6, Math.max(-6, mod * 2));
+    var simpleMod = Math.min(6, Math.max(-6, mod * 2));
     return simpleMod > 0
         ? Math.floor((stat * (2 + simpleMod)) / 2)
         : simpleMod < 0 ? Math.floor((stat * 2) / (2 - simpleMod)) : stat;

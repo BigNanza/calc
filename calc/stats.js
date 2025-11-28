@@ -1,22 +1,22 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 
-const util_1 = require("./util");
-const RBY = ['hp', 'atk', 'def', 'spc', 'spe'];
-const GSC = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
-const ADV = GSC;
-const DPP = GSC;
-const BW = GSC;
-const XY = GSC;
-const SM = GSC;
-const SS = GSC;
-const SV = GSC;
+var util_1 = require("./util");
+var RBY = ['hp', 'atk', 'def', 'spc', 'spe'];
+var GSC = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
+var ADV = GSC;
+var DPP = GSC;
+var BW = GSC;
+var XY = GSC;
+var SM = GSC;
+var SS = GSC;
+var SV = GSC;
 exports.STATS = [[], RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
-const HP_TYPES = [
+var HP_TYPES = [
     'Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel',
     'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark',
 ];
-const HP = {
+var HP = {
     Bug: { ivs: { atk: 30, def: 30, spd: 30 }, dvs: { atk: 13, def: 13 } },
     Dark: { ivs: {}, dvs: {} },
     Dragon: { ivs: { atk: 30 }, dvs: { def: 14 } },
@@ -32,10 +32,12 @@ const HP = {
     Psychic: { ivs: { atk: 30, spe: 30 }, dvs: { def: 12 } },
     Rock: { ivs: { def: 30, spd: 30, spe: 30 }, dvs: { atk: 13, def: 12 } },
     Steel: { ivs: { spd: 30 }, dvs: { atk: 13 } },
-    Water: { ivs: { atk: 30, def: 30, spa: 30 }, dvs: { atk: 14, def: 13 } },
+    Water: { ivs: { atk: 30, def: 30, spa: 30 }, dvs: { atk: 14, def: 13 } }
 };
-exports.Stats = new (class {
-    displayStat(stat) {
+exports.Stats = new ((function () {
+    function class_1() {
+    }
+    class_1.prototype.displayStat = function (stat) {
         switch (stat) {
             case 'hp':
                 return 'HP';
@@ -52,10 +54,10 @@ exports.Stats = new (class {
             case 'spc':
                 return 'Spc';
             default:
-                throw new Error(`unknown stat ${stat}`);
+                throw new Error("unknown stat ".concat(stat));
         }
-    }
-    shortForm(stat) {
+    };
+    class_1.prototype.shortForm = function (stat) {
         switch (stat) {
             case 'hp':
                 return 'hp';
@@ -72,47 +74,47 @@ exports.Stats = new (class {
             case 'spc':
                 return 'sl';
         }
-    }
-    getHPDV(ivs) {
+    };
+    class_1.prototype.getHPDV = function (ivs) {
         return ((this.IVToDV(ivs.atk) % 2) * 8 +
             (this.IVToDV(ivs.def) % 2) * 4 +
             (this.IVToDV(ivs.spe) % 2) * 2 +
             (this.IVToDV(ivs.spc) % 2));
-    }
-    IVToDV(iv) {
+    };
+    class_1.prototype.IVToDV = function (iv) {
         return Math.floor(iv / 2);
-    }
-    DVToIV(dv) {
+    };
+    class_1.prototype.DVToIV = function (dv) {
         return dv * 2;
-    }
-    DVsToIVs(dvs) {
-        const ivs = {};
-        let dv;
+    };
+    class_1.prototype.DVsToIVs = function (dvs) {
+        var ivs = {};
+        var dv;
         for (dv in dvs) {
             ivs[dv] = exports.Stats.DVToIV(dvs[dv]);
         }
         return ivs;
-    }
-    calcStat(gen, stat, base, iv, ev, level, nature) {
+    };
+    class_1.prototype.calcStat = function (gen, stat, base, iv, ev, level, nature) {
         if (gen.num < 1 || gen.num > 9)
-            throw new Error(`Invalid generation ${gen.num}`);
+            throw new Error("Invalid generation ".concat(gen.num));
         if (gen.num < 3)
             return this.calcStatRBY(stat, base, iv, level);
         return this.calcStatADV(gen.natures, stat, base, iv, ev, level, nature);
-    }
-    calcStatADV(natures, stat, base, iv, ev, level, nature) {
+    };
+    class_1.prototype.calcStatADV = function (natures, stat, base, iv, ev, level, nature) {
         if (stat === 'hp') {
             return base === 1
                 ? base
                 : Math.floor(((base * 2 + iv + Math.floor(ev / 4)) * level) / 100) + level + 10;
         }
         else {
-            let mods = [undefined, undefined];
+            var mods = [undefined, undefined];
             if (nature) {
-                const nat = natures.get((0, util_1.toID)(nature));
-                mods = [nat?.plus, nat?.minus];
+                var nat = natures.get((0, util_1.toID)(nature));
+                mods = [nat === null || nat === void 0 ? void 0 : nat.plus, nat === null || nat === void 0 ? void 0 : nat.minus];
             }
-            const n = mods[0] === stat && mods[1] === stat
+            var n = mods[0] === stat && mods[1] === stat
                 ? 1
                 : mods[0] === stat
                     ? 1.1
@@ -121,59 +123,61 @@ exports.Stats = new (class {
                         : 1;
             return Math.floor((Math.floor(((base * 2 + iv + Math.floor(ev / 4)) * level) / 100) + 5) * n);
         }
-    }
-    calcStatRBY(stat, base, iv, level) {
+    };
+    class_1.prototype.calcStatRBY = function (stat, base, iv, level) {
         return this.calcStatRBYFromDV(stat, base, this.IVToDV(iv), level);
-    }
-    calcStatRBYFromDV(stat, base, dv, level) {
+    };
+    class_1.prototype.calcStatRBYFromDV = function (stat, base, dv, level) {
         if (stat === 'hp') {
             return Math.floor((((base + dv) * 2 + 63) * level) / 100) + level + 10;
         }
         else {
             return Math.floor((((base + dv) * 2 + 63) * level) / 100) + 5;
         }
-    }
-    getHiddenPowerIVs(gen, hpType) {
-        const hp = HP[hpType];
+    };
+    class_1.prototype.getHiddenPowerIVs = function (gen, hpType) {
+        var hp = HP[hpType];
         if (!hp)
             return undefined;
         return gen.num === 2 ? exports.Stats.DVsToIVs(hp.dvs) : hp.ivs;
-    }
-    getHiddenPower(gen, ivs) {
-        const tr = (num, bits = 0) => {
+    };
+    class_1.prototype.getHiddenPower = function (gen, ivs) {
+        var tr = function (num, bits) {
+            if (bits === void 0) { bits = 0; }
             if (bits)
-                return (num >>> 0) % (2 ** bits);
+                return (num >>> 0) % (Math.pow(2, bits));
             return num >>> 0;
         };
-        const stats = { hp: 31, atk: 31, def: 31, spe: 31, spa: 31, spd: 31 };
+        var stats = { hp: 31, atk: 31, def: 31, spe: 31, spa: 31, spd: 31 };
         if (gen.num <= 2) {
-            const atkDV = tr(ivs.atk / 2);
-            const defDV = tr(ivs.def / 2);
-            const speDV = tr(ivs.spe / 2);
-            const spcDV = tr(ivs.spa / 2);
+            var atkDV = tr(ivs.atk / 2);
+            var defDV = tr(ivs.def / 2);
+            var speDV = tr(ivs.spe / 2);
+            var spcDV = tr(ivs.spa / 2);
             return {
                 type: HP_TYPES[4 * (atkDV % 4) + (defDV % 4)],
                 power: tr((5 * ((spcDV >> 3) +
                     (2 * (speDV >> 3)) +
                     (4 * (defDV >> 3)) +
                     (8 * (atkDV >> 3))) +
-                    (spcDV % 4)) / 2 + 31),
+                    (spcDV % 4)) / 2 + 31)
             };
         }
         else {
-            let hpTypeX = 0;
-            let hpPowerX = 0;
-            let i = 1;
-            for (const s in stats) {
+            var hpTypeX = 0;
+            var hpPowerX = 0;
+            var i = 1;
+            for (var s in stats) {
                 hpTypeX += i * (ivs[s] % 2);
                 hpPowerX += i * (tr(ivs[s] / 2) % 2);
                 i *= 2;
             }
             return {
                 type: HP_TYPES[tr(hpTypeX * 15 / 63)],
-                power: (gen.num && gen.num < 6) ? tr(hpPowerX * 40 / 63) + 30 : 60,
+                power: (gen.num && gen.num < 6) ? tr(hpPowerX * 40 / 63) + 30 : 60
             };
         }
-    }
-})();
+    };
+    return class_1;
+}()))();
 //# sourceMappingURL=stats.js.map

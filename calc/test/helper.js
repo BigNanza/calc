@@ -1,36 +1,80 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+exports.__esModule = true;
 
-const index_1 = require("../index");
-const field_1 = require("../field");
-const calc = (gen) => (attacker, defender, move, field) => (0, index_1.calculate)(gen, attacker, defender, move, field);
-const move = (gen) => (name, options = {}) => new index_1.Move(gen, name, options);
-const pokemon = (gen) => (name, options = {}) => new index_1.Pokemon(gen, name, options);
-const field = (field = {}) => new field_1.Field(field);
-const side = (side = {}) => new field_1.Side(side);
+var index_1 = require("../index");
+var field_1 = require("../field");
+var calc = function (gen) { return function (attacker, defender, move, field) { return (0, index_1.calculate)(gen, attacker, defender, move, field); }; };
+var move = function (gen) { return function (name, options) {
+    if (options === void 0) { options = {}; }
+    return new index_1.Move(gen, name, options);
+}; };
+var pokemon = function (gen) { return function (name, options) {
+    if (options === void 0) { options = {}; }
+    return new index_1.Pokemon(gen, name, options);
+}; };
+var field = function (field) {
+    if (field === void 0) { field = {}; }
+    return new field_1.Field(field);
+};
+var side = function (side) {
+    if (side === void 0) { side = {}; }
+    return new field_1.Side(side);
+};
 function inGen(gen, fn) {
     fn({
-        gen,
+        gen: gen,
         calculate: calc(gen),
         Move: move(gen),
         Pokemon: pokemon(gen),
         Field: field,
-        Side: side,
+        Side: side
     });
 }
 exports.inGen = inGen;
 function inGens(from, to, fn) {
-    for (let gen = from; gen <= to; gen++) {
+    for (var gen = from; gen <= to; gen++) {
         inGen(gen, fn);
     }
 }
 exports.inGens = inGens;
-function tests(...args) {
-    const name = args[0];
-    let from;
-    let to;
-    let fn;
-    let type = undefined;
+function tests() {
+    var _a, _b, _c;
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    var name = args[0];
+    var from;
+    var to;
+    var fn;
+    var type = undefined;
     if (typeof args[1] !== 'number') {
         from = 1;
         to = 9;
@@ -38,53 +82,64 @@ function tests(...args) {
         type = args[2];
     }
     else if (typeof args[2] !== 'number') {
-        from = args[1] ?? 1;
+        from = (_a = args[1]) !== null && _a !== void 0 ? _a : 1;
         to = 9;
         fn = args[2];
         type = args[3];
     }
     else {
-        from = args[1] ?? 1;
-        to = args[2] ?? 8;
+        from = (_b = args[1]) !== null && _b !== void 0 ? _b : 1;
+        to = (_c = args[2]) !== null && _c !== void 0 ? _c : 8;
         fn = args[3];
         type = args[4];
     }
-    inGens(from, to, gen => {
-        const n = `${name} (gen ${gen.gen})`;
+    inGens(from, to, function (gen) {
+        var n = "".concat(name, " (gen ").concat(gen.gen, ")");
         if (type === 'skip') {
-            test.skip(n, () => fn(gen));
+            test.skip(n, function () { return fn(gen); });
         }
         else if (type === 'only') {
-            test.only(n, () => fn(gen));
+            test.only(n, function () { return fn(gen); });
         }
         else {
-            test(n, () => fn(gen));
+            test(n, function () { return fn(gen); });
         }
     });
 }
 exports.tests = tests;
 expect.extend({
-    toMatch(received, gen, notation, diff) {
+    toMatch: function (received, gen, notation, diff) {
+        var e_1, _a;
         if (typeof notation !== 'string') {
             diff = notation;
             notation = '%';
         }
         if (!diff)
             throw new Error('toMatch called with no diff!');
-        const breakdowns = Object.entries(diff).sort();
-        const expected = { range: undefined, desc: '', result: '' };
-        for (const [g, { range, desc, result }] of breakdowns) {
-            if (Number(g) > gen)
-                break;
-            if (range)
-                expected.range = range;
-            if (desc)
-                expected.desc = desc;
-            if (result)
-                expected.result = result;
+        var breakdowns = Object.entries(diff).sort();
+        var expected = { range: undefined, desc: '', result: '' };
+        try {
+            for (var breakdowns_1 = __values(breakdowns), breakdowns_1_1 = breakdowns_1.next(); !breakdowns_1_1.done; breakdowns_1_1 = breakdowns_1.next()) {
+                var _b = __read(breakdowns_1_1.value, 2), g = _b[0], _c = _b[1], range = _c.range, desc = _c.desc, result = _c.result;
+                if (Number(g) > gen)
+                    break;
+                if (range)
+                    expected.range = range;
+                if (desc)
+                    expected.desc = desc;
+                if (result)
+                    expected.result = result;
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (breakdowns_1_1 && !breakdowns_1_1.done && (_a = breakdowns_1["return"])) _a.call(breakdowns_1);
+            }
+            finally { if (e_1) throw e_1.error; }
         }
         if (!(expected.range || expected.desc || expected.result)) {
-            throw new Error(`toMatch called with empty diff: ${diff}`);
+            throw new Error("toMatch called with empty diff: ".concat(diff));
         }
         if (expected.range) {
             if (this.isNot) {
@@ -95,7 +150,7 @@ expect.extend({
             }
         }
         if (expected.desc) {
-            const r = received.fullDesc(notation).split(': ')[0];
+            var r = received.fullDesc(notation).split(': ')[0];
             if (this.isNot) {
                 expect(r).not.toEqual(expected.desc);
             }
@@ -104,8 +159,8 @@ expect.extend({
             }
         }
         if (expected.result) {
-            const post = received.fullDesc(notation).split(': ')[1];
-            const r = `(${post.split('(')[1]}`;
+            var post = received.fullDesc(notation).split(': ')[1];
+            var r = "(".concat(post.split('(')[1]);
             if (this.isNot) {
                 expect(r).not.toEqual(expected.result);
             }
@@ -113,7 +168,7 @@ expect.extend({
                 expect(r).toEqual(expected.result);
             }
         }
-        return { pass: !this.isNot, message: () => '' };
-    },
+        return { pass: !this.isNot, message: function () { return ''; } };
+    }
 });
 //# sourceMappingURL=helper.js.map

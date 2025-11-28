@@ -1,9 +1,73 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var e_1, _a, e_2, _b;
+exports.__esModule = true;
 
-const util_1 = require("../util");
-const RBY = [];
-const GSC = [
+var util_1 = require("../util");
+var RBY = [];
+var GSC = [
     'Berry Juice',
     'Berry',
     'Berserk Gene',
@@ -68,7 +132,7 @@ const GSC = [
     'Up-Grade',
     'Water Stone',
 ];
-const GSC_ONLY = [
+var GSC_ONLY = [
     'Berry',
     'Berserk Gene',
     'Bitter Berry',
@@ -83,7 +147,7 @@ const GSC_ONLY = [
     'Polkadot Bow',
     'PSN Cure Berry',
 ];
-const ADV = GSC.filter(i => !GSC_ONLY.includes(i)).concat([
+var ADV = GSC.filter(function (i) { return !GSC_ONLY.includes(i); }).concat([
     'Aguav Berry',
     'Apicot Berry',
     'Aspear Berry',
@@ -151,7 +215,7 @@ const ADV = GSC.filter(i => !GSC_ONLY.includes(i)).concat([
     'White Herb',
     'Wiki Berry',
 ]);
-const DPP = ADV.concat([
+var DPP = ADV.concat([
     'Adamant Orb',
     'Armor Fossil',
     'Babiri Berry',
@@ -250,7 +314,7 @@ const DPP = ADV.concat([
     'Zap Plate',
     'Zoom Lens',
 ]);
-const BW = DPP.concat([
+var BW = DPP.concat([
     'Absorb Bulb',
     'Air Balloon',
     'Big Nugget',
@@ -289,7 +353,7 @@ const BW = DPP.concat([
     'Steel Gem',
     'Water Gem',
 ]);
-const GEN_6_MEGA_STONES = {
+var GEN_6_MEGA_STONES = {
     Absolite: 'Absol',
     Abomasite: 'Abomasnow',
     Aerodactylite: 'Aerodactyl',
@@ -337,10 +401,9 @@ const GEN_6_MEGA_STONES = {
     Steelixite: 'Steelix',
     Swampertite: 'Swampert',
     Tyranitarite: 'Tyranitar',
-    Venusaurite: 'Venusaur',
+    Venusaurite: 'Venusaur'
 };
-const XY = BW.concat([
-    ...Object.keys(GEN_6_MEGA_STONES),
+var XY = BW.concat(__spreadArray(__spreadArray([], __read(Object.keys(GEN_6_MEGA_STONES)), false), [
     'Assault Vest',
     'Blue Orb',
     'Fairy Gem',
@@ -357,8 +420,8 @@ const XY = BW.concat([
     'Snowball',
     'Weakness Policy',
     'Whipped Dream',
-].sort());
-const SM = XY.filter(i => i !== 'Old Amber').concat([
+], false).sort());
+var SM = XY.filter(function (i) { return i !== 'Old Amber'; }).concat([
     'Adrenaline Orb',
     'Aloraichium Z',
     'Beast Ball',
@@ -423,7 +486,7 @@ const SM = XY.filter(i => i !== 'Old Amber').concat([
     'Water Memory',
     'Waterium Z',
 ]);
-const SS = SM.concat([
+var SS = SM.concat([
     'Berry Sweet',
     'Blunder Policy',
     'Chipped Pot',
@@ -450,12 +513,12 @@ const SS = SM.concat([
     'Tart Apple',
     'Throat Spray',
 ]);
-for (let i = 0; i < 100; i++) {
-    SS.push(`TR${i < 10 ? `0${i}` : i}`);
+for (var i = 0; i < 100; i++) {
+    SS.push("TR".concat(i < 10 ? "0".concat(i) : i));
 }
 SS.push('Utility Umbrella', 'Vile Vial');
-SS.push(...GSC_ONLY, 'Old Amber');
-const ZA_MEGA_STONES = {
+SS.push.apply(SS, __spreadArray(__spreadArray([], __read(GSC_ONLY), false), ['Old Amber'], false));
+var ZA_MEGA_STONES = {
     Barbaracite: 'Barbaracle',
     Chandelurite: 'Chandelure',
     Chesnaughtite: 'Chesnaught',
@@ -481,10 +544,9 @@ const ZA_MEGA_STONES = {
     Skarmorite: 'Skarmory',
     Starminite: 'Starmie',
     Victreebelite: 'Victreebel',
-    Zygardite: 'Zygarde-Complete',
+    Zygardite: 'Zygarde-Complete'
 };
-const SV = SS.concat([
-    ...Object.keys(ZA_MEGA_STONES),
+var SV = SS.concat(__spreadArray(__spreadArray([], __read(Object.keys(ZA_MEGA_STONES)), false), [
     'Adamant Crystal',
     'Auspicious Armor',
     'Ability Shield',
@@ -506,8 +568,8 @@ const SV = SS.concat([
     'Syrupy Apple',
     'Unremarkable Teacup',
     'Wellspring Mask',
-].sort());
-const BERRIES = {
+], false).sort());
+var BERRIES = {
     'Aguav Berry': { t: 'Dragon', p: 80 },
     'Apicot Berry': { t: 'Ground', p: 100 },
     'Aspear Berry': { t: 'Ice', p: 80 },
@@ -584,49 +646,93 @@ const BERRIES = {
     'Watmel Berry': { t: 'Fire', p: 100 },
     'Wepear Berry': { t: 'Electric', p: 90 },
     'Wiki Berry': { t: 'Rock', p: 80 },
-    'Yache Berry': { t: 'Ice', p: 80 },
+    'Yache Berry': { t: 'Ice', p: 80 }
 };
-exports.MEGA_STONES = { ...GEN_6_MEGA_STONES, ...ZA_MEGA_STONES };
+exports.MEGA_STONES = Object.assign({}, GEN_6_MEGA_STONES, ZA_MEGA_STONES);
 exports.ITEMS = [[], RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
-class Items {
-    constructor(gen) {
+var Items = (function () {
+    function Items(gen) {
         this.gen = gen;
     }
-    get(id) {
+    Items.prototype.get = function (id) {
         return ITEMS_BY_ID[this.gen][id];
-    }
-    *[Symbol.iterator]() {
-        for (const id in ITEMS_BY_ID[this.gen]) {
-            yield this.get(id);
-        }
-    }
-}
+    };
+    Items.prototype[Symbol.iterator] = function () {
+        var _a, _b, _c, _i, id;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    _a = ITEMS_BY_ID[this.gen];
+                    _b = [];
+                    for (_c in _a)
+                        _b.push(_c);
+                    _i = 0;
+                    _d.label = 1;
+                case 1:
+                    if (!(_i < _b.length)) return [3, 4];
+                    _c = _b[_i];
+                    if (!(_c in _a)) return [3, 3];
+                    id = _c;
+                    return [4, this.get(id)];
+                case 2:
+                    _d.sent();
+                    _d.label = 3;
+                case 3:
+                    _i++;
+                    return [3, 1];
+                case 4: return [2];
+            }
+        });
+    };
+    return Items;
+}());
 exports.Items = Items;
-class Item {
-    constructor(name, gen) {
+var Item = (function () {
+    function Item(name, gen) {
         this.kind = 'Item';
         this.id = (0, util_1.toID)(name);
         this.name = name;
         this.megaEvolves = exports.MEGA_STONES[name];
-        const berry = BERRIES[name];
+        var berry = BERRIES[name];
         if (berry) {
             this.isBerry = true;
             this.naturalGift = {
                 basePower: gen < 6 ? berry.p - 20 : berry.p,
-                type: berry.t,
+                type: berry.t
             };
         }
     }
-}
-const ITEMS_BY_ID = [];
-let gen = 0;
-for (const items of exports.ITEMS) {
-    const map = {};
-    for (const item of items) {
-        const i = new Item(item, gen);
-        map[i.id] = i;
+    return Item;
+}());
+var ITEMS_BY_ID = [];
+var gen = 0;
+try {
+    for (var ITEMS_1 = __values(exports.ITEMS), ITEMS_1_1 = ITEMS_1.next(); !ITEMS_1_1.done; ITEMS_1_1 = ITEMS_1.next()) {
+        var items = ITEMS_1_1.value;
+        var map = {};
+        try {
+            for (var items_1 = (e_2 = void 0, __values(items)), items_1_1 = items_1.next(); !items_1_1.done; items_1_1 = items_1.next()) {
+                var item = items_1_1.value;
+                var i = new Item(item, gen);
+                map[i.id] = i;
+            }
+        }
+        catch (e_2_1) { e_2 = { error: e_2_1 }; }
+        finally {
+            try {
+                if (items_1_1 && !items_1_1.done && (_b = items_1["return"])) _b.call(items_1);
+            }
+            finally { if (e_2) throw e_2.error; }
+        }
+        ITEMS_BY_ID.push(map);
+        gen++;
     }
-    ITEMS_BY_ID.push(map);
-    gen++;
+}
+catch (e_1_1) { e_1 = { error: e_1_1 }; }
+finally {
+    try {
+        if (ITEMS_1_1 && !ITEMS_1_1.done && (_a = ITEMS_1["return"])) _a.call(ITEMS_1);
+    }
+    finally { if (e_1) throw e_1.error; }
 }
 //# sourceMappingURL=items.js.map

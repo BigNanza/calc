@@ -1,17 +1,43 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+exports.__esModule = true;
 
-const items_1 = require("../items");
-const result_1 = require("../result");
-const util_1 = require("./util");
+var items_1 = require("../items");
+var result_1 = require("../result");
+var util_1 = require("./util");
 function calculateRBYGSC(gen, attacker, defender, move, field) {
+    var _a;
     (0, util_1.computeFinalStats)(gen, attacker, defender, field, 'atk', 'def', 'spa', 'spd', 'spe');
-    const desc = {
+    var desc = {
         attackerName: attacker.name,
         moveName: move.name,
-        defenderName: defender.name,
+        defenderName: defender.name
     };
-    const result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
+    var result = new result_1.Result(gen, attacker, defender, move, field, 0, desc);
     if (move.category === 'Status') {
         return result;
     }
@@ -20,19 +46,19 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
         return result;
     }
     if (move.name === 'Pain Split') {
-        const average = Math.floor((attacker.curHP() + defender.curHP()) / 2);
-        const damage = Math.max(0, defender.curHP() - average);
-        result.damage = damage;
+        var average = Math.floor((attacker.curHP() + defender.curHP()) / 2);
+        var damage_1 = Math.max(0, defender.curHP() - average);
+        result.damage = damage_1;
         return result;
     }
     if (gen.num === 1) {
-        const fixedDamage = (0, util_1.handleFixedDamageMoves)(attacker, move);
+        var fixedDamage = (0, util_1.handleFixedDamageMoves)(attacker, move);
         if (fixedDamage) {
             result.damage = fixedDamage;
             return result;
         }
     }
-    const typeEffectivenessPrecedenceRules = [
+    var typeEffectivenessPrecedenceRules = [
         'Normal',
         'Fire',
         'Water',
@@ -51,25 +77,25 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
         'Dark',
         'Steel',
     ];
-    let firstDefenderType = defender.types[0];
-    let secondDefenderType = defender.types[1];
+    var firstDefenderType = defender.types[0];
+    var secondDefenderType = defender.types[1];
     if (secondDefenderType && firstDefenderType !== secondDefenderType && gen.num === 2) {
-        const firstTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(firstDefenderType);
-        const secondTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(secondDefenderType);
+        var firstTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(firstDefenderType);
+        var secondTypePrecedence = typeEffectivenessPrecedenceRules.indexOf(secondDefenderType);
         if (firstTypePrecedence > secondTypePrecedence) {
-            [firstDefenderType, secondDefenderType] = [secondDefenderType, firstDefenderType];
+            _a = __read([secondDefenderType, firstDefenderType], 2), firstDefenderType = _a[0], secondDefenderType = _a[1];
         }
     }
-    const type1Effectiveness = (0, util_1.getMoveEffectiveness)(gen, move, firstDefenderType, field.defenderSide.isForesight);
-    const type2Effectiveness = secondDefenderType
+    var type1Effectiveness = (0, util_1.getMoveEffectiveness)(gen, move, firstDefenderType, field.defenderSide.isForesight);
+    var type2Effectiveness = secondDefenderType
         ? (0, util_1.getMoveEffectiveness)(gen, move, secondDefenderType, field.defenderSide.isForesight)
         : 1;
-    const typeEffectiveness = type1Effectiveness * type2Effectiveness;
+    var typeEffectiveness = type1Effectiveness * type2Effectiveness;
     if (typeEffectiveness === 0) {
         return result;
     }
     if (gen.num === 2) {
-        const fixedDamage = (0, util_1.handleFixedDamageMoves)(attacker, move);
+        var fixedDamage = (0, util_1.handleFixedDamageMoves)(attacker, move);
         if (fixedDamage) {
             result.damage = fixedDamage;
             return result;
@@ -84,7 +110,7 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
     }
     if (move.named('Flail', 'Reversal')) {
         move.isCrit = false;
-        const p = Math.floor((48 * attacker.curHP()) / attacker.maxHP());
+        var p = Math.floor((48 * attacker.curHP()) / attacker.maxHP());
         move.bp = p <= 1 ? 200 : p <= 4 ? 150 : p <= 9 ? 100 : p <= 16 ? 80 : p <= 32 ? 40 : 20;
         desc.moveBP = move.bp;
     }
@@ -94,15 +120,15 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
     if (move.bp === 0) {
         return result;
     }
-    const isPhysical = move.category === 'Physical';
-    const attackStat = isPhysical ? 'atk' : 'spa';
-    const defenseStat = isPhysical ? 'def' : 'spd';
-    let at = attacker.stats[attackStat];
-    let df = defender.stats[defenseStat];
-    const ignoreMods = move.isCrit &&
+    var isPhysical = move.category === 'Physical';
+    var attackStat = isPhysical ? 'atk' : 'spa';
+    var defenseStat = isPhysical ? 'def' : 'spd';
+    var at = attacker.stats[attackStat];
+    var df = defender.stats[defenseStat];
+    var ignoreMods = move.isCrit &&
         (gen.num === 1 ||
             (gen.num === 2 && attacker.boosts[attackStat] <= defender.boosts[defenseStat]));
-    let lv = attacker.level;
+    var lv = attacker.level;
     if (ignoreMods) {
         at = attacker.rawStats[attackStat];
         df = defender.rawStats[defenseStat];
@@ -144,10 +170,10 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
         df = Math.floor(df / 4) % 256;
     }
     if (move.named('Present')) {
-        const lookup = {
+        var lookup = {
             Normal: 0, Fighting: 1, Flying: 2, Poison: 3, Ground: 4, Rock: 5, Bug: 7,
             Ghost: 8, Steel: 9, '???': 19, Fire: 20, Water: 21, Grass: 22, Electric: 23,
-            Psychic: 24, Ice: 25, Dragon: 26, Dark: 27,
+            Psychic: 24, Ice: 25, Dragon: 26, Dark: 27
         };
         at = 10;
         df = Math.max(lookup[attacker.types[1] ? attacker.types[1] : attacker.types[0]], 1);
@@ -157,7 +183,7 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
         df = Math.floor(df * 1.5);
         desc.defenderItem = defender.item;
     }
-    let baseDamage = Math.floor(Math.floor((Math.floor((2 * lv) / 5 + 2) * Math.max(1, at) * move.bp) / Math.max(1, df)) / 50);
+    var baseDamage = Math.floor(Math.floor((Math.floor((2 * lv) / 5 + 2) * Math.max(1, at) * move.bp) / Math.max(1, df)) / 50);
     if (gen.num === 2 && move.isCrit) {
         baseDamage *= 2;
         desc.isCritical = true;
@@ -166,7 +192,7 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
         baseDamage = Math.floor(baseDamage * 2);
         desc.isSwitching = 'out';
     }
-    const itemBoostType = attacker.hasItem('Dragon Fang')
+    var itemBoostType = attacker.hasItem('Dragon Fang')
         ? undefined
         : (0, items_1.getItemBoostType)(attacker.hasItem('Dragon Scale') ? 'Dragon Fang' : attacker.item);
     if (move.hasType(itemBoostType)) {
@@ -184,7 +210,7 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
         baseDamage = Math.floor(baseDamage / 2);
         desc.weather = field.weather;
     }
-    if (move.hasType(...attacker.types)) {
+    if (move.hasType.apply(move, __spreadArray([], __read(attacker.types), false))) {
         baseDamage = Math.floor(baseDamage * 1.5);
     }
     if (gen.num === 1) {
@@ -198,8 +224,8 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
         result.damage = baseDamage;
         return result;
     }
-    const damage = [];
-    for (let i = 217; i <= 255; i++) {
+    var damage = [];
+    for (var i = 217; i <= 255; i++) {
         if (gen.num === 2) {
             damage[i - 217] = Math.max(1, Math.floor((baseDamage * i) / 255));
         }
@@ -214,11 +240,11 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
     }
     result.damage = damage;
     if (move.hits > 1) {
-        const damageMatrix = [damage];
-        for (let times = 1; times < move.hits; times++) {
-            const damage = [];
-            for (let damageMultiplier = 217; damageMultiplier <= 255; damageMultiplier++) {
-                let newFinalDamage = 0;
+        var damageMatrix = [damage];
+        for (var times = 1; times < move.hits; times++) {
+            var damage_2 = [];
+            for (var damageMultiplier = 217; damageMultiplier <= 255; damageMultiplier++) {
+                var newFinalDamage = 0;
                 if (gen.num === 2) {
                     newFinalDamage = Math.max(1, Math.floor((baseDamage * damageMultiplier) / 255));
                 }
@@ -230,9 +256,9 @@ function calculateRBYGSC(gen, attacker, defender, move, field) {
                         newFinalDamage = Math.floor((baseDamage * damageMultiplier) / 255);
                     }
                 }
-                damage[damageMultiplier - 217] = newFinalDamage;
+                damage_2[damageMultiplier - 217] = newFinalDamage;
             }
-            damageMatrix[times] = damage;
+            damageMatrix[times] = damage_2;
         }
         result.damage = damageMatrix;
     }

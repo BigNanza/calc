@@ -1,17 +1,28 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+exports.__esModule = true;
 
 var calc_1 = require("./calc");
-Object.defineProperty(exports, "calculate", { enumerable: true, get: function () { return calc_1.calculate; } });
+__createBinding(exports, calc_1, "calculate");
 var pokemon_1 = require("./pokemon");
-Object.defineProperty(exports, "Pokemon", { enumerable: true, get: function () { return pokemon_1.Pokemon; } });
+__createBinding(exports, pokemon_1, "Pokemon");
 var move_1 = require("./move");
-Object.defineProperty(exports, "Move", { enumerable: true, get: function () { return move_1.Move; } });
+__createBinding(exports, move_1, "Move");
 var field_1 = require("./field");
-Object.defineProperty(exports, "Field", { enumerable: true, get: function () { return field_1.Field; } });
-Object.defineProperty(exports, "Side", { enumerable: true, get: function () { return field_1.Side; } });
+__createBinding(exports, field_1, "Field");
+__createBinding(exports, field_1, "Side");
 var result_1 = require("./result");
-Object.defineProperty(exports, "Result", { enumerable: true, get: function () { return result_1.Result; } });
+__createBinding(exports, result_1, "Result");
 var stats_1 = require("./stats");
-Object.defineProperty(exports, "Stats", { enumerable: true, get: function () { return stats_1.Stats; } });
+__createBinding(exports, stats_1, "Stats");
 //# sourceMappingURL=adaptable.js.map

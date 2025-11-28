@@ -1,12 +1,12 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 
-const util_1 = require("./util");
+var util_1 = require("./util");
 exports.SEED_BOOSTED_STAT = {
     'Electric Seed': 'def',
     'Grassy Seed': 'def',
     'Misty Seed': 'spd',
-    'Psychic Seed': 'spd',
+    'Psychic Seed': 'spd'
 };
 function getItemBoostType(item) {
     switch (item) {
@@ -118,7 +118,7 @@ function getBerryResistType(berry) {
     }
 }
 exports.getBerryResistType = getBerryResistType;
-const FLING_120 = new Set([
+var FLING_120 = new Set([
     'TR24',
     'TR28',
     'TR34',
@@ -130,7 +130,7 @@ const FLING_120 = new Set([
     'TR72',
     'TR73',
 ]);
-const FLING_100 = new Set([
+var FLING_100 = new Set([
     'Hard Stone',
     'Room Service',
     'Claw Fossil',
@@ -154,7 +154,7 @@ const FLING_100 = new Set([
     'TR31',
     'TR75',
 ]);
-const FLING_90 = new Set([
+var FLING_90 = new Set([
     'Deep Sea Tooth',
     'Thick Club',
     'TR02',
@@ -174,8 +174,8 @@ const FLING_90 = new Set([
     'TR90',
     'TR96',
 ]);
-const FLING_85 = new Set(['TR01', 'TR41', 'TR62', 'TR93', 'TR97', 'TR98']);
-const FLING_80 = new Set([
+var FLING_85 = new Set(['TR01', 'TR41', 'TR62', 'TR93', 'TR97', 'TR98']);
+var FLING_80 = new Set([
     'Assault Vest',
     'Blunder Policy',
     'Chipped Pot',
@@ -215,7 +215,7 @@ const FLING_80 = new Set([
     'TR95',
     'TR99',
 ]);
-const FLING_70 = new Set([
+var FLING_70 = new Set([
     'Poison Barb',
     'Dragon Fang',
     'Power Anklet',
@@ -225,7 +225,7 @@ const FLING_70 = new Set([
     'Power Lens',
     'Power Weight',
 ]);
-const FLING_60 = new Set([
+var FLING_60 = new Set([
     'Adamant Orb',
     'Damp Rock',
     'Heat Rock',
@@ -237,7 +237,7 @@ const FLING_60 = new Set([
     'Utility Umbrella',
     'Terrain Extender',
 ]);
-const FLING_30 = new Set([
+var FLING_30 = new Set([
     'Absorb Bulb',
     'Black Belt',
     'Black Sludge',
@@ -283,7 +283,7 @@ const FLING_30 = new Set([
     'Snowball',
     'Bottle Cap',
 ]);
-const FLING_10 = new Set([
+var FLING_10 = new Set([
     'Air Balloon',
     'Berry Sweet',
     'Choice Band',
@@ -367,7 +367,8 @@ const FLING_10 = new Set([
     'TR88',
     'TR91',
 ]);
-function getFlingPower(item, gen = 9) {
+function getFlingPower(item, gen) {
+    if (gen === void 0) { gen = 9; }
     if (!item)
         return 0;
     if (item === 'Big Nugget' && gen <= 7)
@@ -406,7 +407,8 @@ function getFlingPower(item, gen = 9) {
 }
 exports.getFlingPower = getFlingPower;
 function getNaturalGift(gen, item) {
-    const gift = gen.items.get((0, util_1.toID)(item))?.naturalGift;
+    var _a;
+    var gift = (_a = gen.items.get((0, util_1.toID)(item))) === null || _a === void 0 ? void 0 : _a.naturalGift;
     return gift ? { t: gift.type, p: gift.basePower } : { t: 'Normal', p: 1 };
 }
 exports.getNaturalGift = getNaturalGift;
