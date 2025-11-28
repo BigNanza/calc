@@ -1,3 +1,5 @@
+/* global CURRENT_TRAINER_POKS:writable, TR_NAMES:writable, calculationsColors, allPokemon, topPokemonIcon, get_trainer_poks, loadDefaultLists, loadCustomList */
+/* eslint-disable no-extend-native */
 if (!Array.prototype.indexOf) {
 	Array.prototype.indexOf = function (searchElement, fromIndex) {
 		// eslint-disable-line no-extend-native
@@ -526,7 +528,7 @@ $(".set-selector").change(function () {
 		var next_poks = CURRENT_TRAINER_POKS.sort(sortmons);
 
 		var trpok_html = "";
-		for (i in next_poks) {
+		for (var i in next_poks) {
 			if (next_poks[i][0].includes($("input.opposing").val())) {
 				continue;
 			}
@@ -1891,10 +1893,12 @@ function get_trainer_names() {
 	for (var pok_name in all_poks) {
 		var poks = all_poks[pok_name];
 		var pok_tr_names = Object.keys(poks);
-		for (i in pok_tr_names) {
+		for (var i in pok_tr_names) {
 			var index = poks[pok_tr_names[i]]["index"];
 			var trainer_name = pok_tr_names[i];
-			trainer_names.push("[" + index + "]" + pok_name + " (" + trainer_name + ")");
+			trainer_names.push(
+				"[" + index + "]" + pok_name + " (" + trainer_name + ")"
+			);
 		}
 	}
 	return trainer_names;
@@ -1921,7 +1925,11 @@ function getSrcImgPokemon(poke) {
 	if (poke.name == "Aegislash-Shield") {
 		return "https://raw.githubusercontent.com/May8th1995/sprites/master/Aegislash.png";
 	} else {
-		return "https://raw.githubusercontent.com/May8th1995/sprites/master/" + poke.name + ".png";
+		return (
+			"https://raw.githubusercontent.com/May8th1995/sprites/master/" +
+			poke.name +
+			".png"
+		);
 	}
 }
 
@@ -1929,7 +1937,7 @@ function get_trainer_poks(trainer_name) {
 	var true_name = trainer_name.split("(")[1].split("\n")[0].trim();
 	window.CURRENT_TRAINER = true_name.substring(0, true_name.length - 1);
 	var matches = [];
-	for (i in TR_NAMES) {
+	for (var i in TR_NAMES) {
 		if (TR_NAMES[i].includes(true_name)) {
 			matches.push(TR_NAMES[i]);
 		}
@@ -1962,7 +1970,7 @@ $(document).on("click", ".left-side", function () {
 //select first mon of the box when loading
 function selectFirstMon() {
 	var pMons = document.getElementsByClassName("trainer-pok left-side");
-	var set = pMons[i].getAttribute("data-id");
+	var set = pMons[0].getAttribute("data-id");
 	$(".player").val(set);
 	$(".player").change();
 	$(".player .select2-chosen").text(set);
@@ -1970,11 +1978,11 @@ function selectFirstMon() {
 
 function selectTrainer(value) {
 	localStorage.setItem("lasttimetrainer", value);
-	all_poks = SETDEX_SS;
+	var all_poks = SETDEX_SS;
 	for (var pok_name in all_poks) {
 		var poks = all_poks[pok_name];
 		var pok_tr_names = Object.keys(poks);
-		for (i in pok_tr_names) {
+		for (var i in pok_tr_names) {
 			var index = poks[pok_tr_names[i]]["index"];
 			if (index == value) {
 				var set = pok_name + " (" + pok_tr_names[i] + ")";
@@ -1987,22 +1995,23 @@ function selectTrainer(value) {
 }
 
 function nextTrainer() {
-	string = $(".trainer-pok-list-opposing").html();
-	initialSplit = string.split("[");
-	value = parseInt(initialSplit[initialSplit.length - 2].split("]")[0]) + 1;
+	var string = $(".trainer-pok-list-opposing").html();
+	var initialSplit = string.split("[");
+	var value = parseInt(initialSplit[initialSplit.length - 2].split("]")[0]) + 1;
 	selectTrainer(value);
 }
 
 function previousTrainer() {
-	string = $(".trainer-pok-list-opposing").html();
-	value = parseInt(string.split("]")[0].split("[")[1]) - 1;
+	var string = $(".trainer-pok-list-opposing").html();
+	var value = parseInt(string.split("]")[0].split("[")[1]) - 1;
 	selectTrainer(value);
 }
 
 function resetTrainer() {
 	if (
 		confirm(
-			"Are you sure you want to reset? This will clear all imported sets and change your current trainer back to Younger Calvin. This cannot be undone.")
+			"Are you sure you want to reset? This will clear all imported sets and change your current trainer back to Younger Calvin. This cannot be undone."
+		)
 	) {
 		selectTrainer(1);
 		localStorage.removeItem("customsets");
@@ -2038,13 +2047,14 @@ function colorCodeUpdate() {
 		var set = pMons[i].getAttribute("data-id");
 		var idColor = calculationsColors(set, p2);
 		if (speCheck && ohkoCheck) {
-			pMons[
-				i
-			].className = "trainer-pok left-side mon-speed-" + idColor.speed + " mon-dmg-" + idColor.code;
+			pMons[i].className =
+				"trainer-pok left-side mon-speed-" +
+				idColor.speed +
+				" mon-dmg-" +
+				idColor.code;
 		} else if (speCheck) {
-			pMons[
-				i
-			].className = "trainer-pok left-side mon-speed-" + idColor.speed;
+			pMons[i].className =
+				"trainer-pok left-side mon-speed-" + idColor.speed;
 		} else if (ohkoCheck) {
 			pMons[i].className = "trainer-pok left-side mon-dmg-" + idColor.code;
 		}
@@ -2100,7 +2110,7 @@ function TrashPokemon() {
 	//switch to the next pokemon automatically
 }
 function RemoveAllPokemon() {
-	document.getEle;
+	// TODO: implement this function
 }
 function allowDrop(ev) {
 	ev.preventDefault();
@@ -2116,9 +2126,8 @@ function drop(ev) {
 	if (ev.target.classList.contains("dropzone")) {
 		pokeDragged.parentNode.removeChild(pokeDragged);
 		ev.target.appendChild(pokeDragged);
-	}
-	// if it's a pokemon
-	else if (ev.target.classList.contains("left-side")) {
+	} else if (ev.target.classList.contains("left-side")) {
+		// if it's a pokemon
 		//And if a sibling switch them
 		if (ev.target.parentNode == pokeDragged.parentNode) {
 			var prev1 = ev.target.previousSibling || ev.target;
@@ -2126,9 +2135,8 @@ function drop(ev) {
 
 			prev1.after(pokeDragged);
 			prev2.after(ev.target);
-		}
-		//if not just append to the box it belongs
-		else {
+		} else {
+			//if not just append to the box it belongs
 			var prev1 = ev.target.previousSibling || ev.target;
 			prev1.after(pokeDragged);
 		}
@@ -2221,7 +2229,6 @@ function sideCollapsersCorrection(ev) {
 	if (prev) {
 		//since the position is absolute, this will prevent from eating fellows.
 		var prevLowPos = prev.offsetTop + prev.offsetHeight;
-		-relativeHeight;
 		if (offset == 0) {
 			// collapsed
 			offset = prevLowPos;
@@ -2332,7 +2339,7 @@ $(document).ready(function () {
 	//select last trainer
 	var last = localStorage.getItem("lasttimetrainer");
 	if (last != "") {
-		selectTrainer(parseInt(last, 10));
+		selectTrainer(parseInt(last));
 	}
 });
 
