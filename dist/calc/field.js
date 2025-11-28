@@ -91,14 +91,17 @@ var Side = (function () {
         this.isLightScreen = !!side.isLightScreen;
         this.isProtected = !!side.isProtected;
         this.isSeeded = !!side.isSeeded;
+        this.isSaltCured = !!side.isSaltCured;
         this.isForesight = !!side.isForesight;
         this.isTailwind = !!side.isTailwind;
         this.isHelpingHand = !!side.isHelpingHand;
         this.isFlowerGift = !!side.isFlowerGift;
+        this.isPowerTrick = !!side.isPowerTrick;
         this.isFriendGuard = !!side.isFriendGuard;
         this.isAuroraVeil = !!side.isAuroraVeil;
         this.isBattery = !!side.isBattery;
         this.isPowerSpot = !!side.isPowerSpot;
+        this.isSteelySpirit = !!side.isSteelySpirit;
         this.isSwitching = side.isSwitching;
     }
     Side.prototype.clone = function () {

@@ -146,7 +146,6 @@ var GSC_ONLY = [
     'Pink Bow',
     'Polkadot Bow',
     'PSN Cure Berry',
-    'Enigma Berry',
 ];
 var ADV = GSC.filter(function (i) { return !GSC_ONLY.includes(i); }).concat([
     'Aguav Berry',
@@ -318,6 +317,7 @@ var DPP = ADV.concat([
 var BW = DPP.concat([
     'Absorb Bulb',
     'Air Balloon',
+    'Big Nugget',
     'Binding Band',
     'Bug Gem',
     'Burn Drive',
@@ -342,6 +342,7 @@ var BW = DPP.concat([
     'Normal Gem',
     'Plume Fossil',
     'Poison Gem',
+    'Pretty Feather',
     'Prism Scale',
     'Psychic Gem',
     'Red Card',
@@ -352,7 +353,7 @@ var BW = DPP.concat([
     'Steel Gem',
     'Water Gem',
 ]);
-exports.MEGA_STONES = {
+var GEN_6_MEGA_STONES = {
     Absolite: 'Absol',
     Abomasite: 'Abomasnow',
     Aerodactylite: 'Aerodactyl',
@@ -402,7 +403,7 @@ exports.MEGA_STONES = {
     Tyranitarite: 'Tyranitar',
     Venusaurite: 'Venusaur'
 };
-var XY = BW.concat(__spreadArray(__spreadArray([], __read(Object.keys(exports.MEGA_STONES)), false), [
+var XY = BW.concat(__spreadArray(__spreadArray([], __read(Object.keys(GEN_6_MEGA_STONES)), false), [
     'Assault Vest',
     'Blue Orb',
     'Fairy Gem',
@@ -517,21 +518,57 @@ for (var i = 0; i < 100; i++) {
 }
 SS.push('Utility Umbrella', 'Vile Vial');
 SS.push.apply(SS, __spreadArray(__spreadArray([], __read(GSC_ONLY), false), ['Old Amber'], false));
-var SV = SS.concat([
+var ZA_MEGA_STONES = {
+    Barbaracite: 'Barbaracle',
+    Chandelurite: 'Chandelure',
+    Chesnaughtite: 'Chesnaught',
+    Clefablite: 'Clefable',
+    Delphoxite: 'Delphox',
+    Dragalgite: 'Dragalge',
+    Dragoninite: 'Dragonite',
+    Drampanite: 'Drampa',
+    Eelektrossite: 'Eelektross',
+    Emboarite: 'Emboar',
+    Excadrite: 'Excadrill',
+    Falinksite: 'Falinks',
+    Feraligite: 'Feraligatr',
+    Floettite: 'Floette-Eternal',
+    Froslassite: 'Froslass',
+    Greninjite: 'Greninja',
+    Hawluchanite: 'Hawlucha',
+    Malamarite: 'Malamar',
+    Meganiumite: 'Meganium',
+    Pyroarite: 'Pyroar',
+    Scolipite: 'Scolipede',
+    Scraftinite: 'Scrafty',
+    Skarmorite: 'Skarmory',
+    Starminite: 'Starmie',
+    Victreebelite: 'Victreebel',
+    Zygardite: 'Zygarde-Complete'
+};
+var SV = SS.concat(__spreadArray(__spreadArray([], __read(Object.keys(ZA_MEGA_STONES)), false), [
     'Adamant Crystal',
     'Auspicious Armor',
     'Ability Shield',
     'Booster Energy',
     'Clear Amulet',
+    'Cornerstone Mask',
     'Covert Cloak',
+    'Fairy Feather',
+    'Hearthflame Mask',
     'Loaded Dice',
     'Malicious Armor',
+    'Masterpiece Teacup',
+    'Metal Alloy',
     'Mirror Herb',
     'Punching Glove',
     'Lustrous Globe',
     'Griseous Core',
     'Strange Ball',
-]);
+    'Syrupy Apple',
+    'Unremarkable Teacup',
+    'Wellspring Mask',
+], false).sort());
 var BERRIES = {
     'Aguav Berry': { t: 'Dragon', p: 80 },
     'Apicot Berry': { t: 'Ground', p: 100 },
@@ -611,6 +648,7 @@ var BERRIES = {
     'Wiki Berry': { t: 'Rock', p: 80 },
     'Yache Berry': { t: 'Ice', p: 80 }
 };
+exports.MEGA_STONES = Object.assign({}, GEN_6_MEGA_STONES, ZA_MEGA_STONES);
 exports.ITEMS = [[], RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
 var Items = (function () {
     function Items(gen) {

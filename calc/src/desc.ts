@@ -1,8 +1,8 @@
-import {Generation, Weather, Terrain, TypeName, ID} from './data/interface';
-import {Field, Side} from './field';
-import {Move} from './move';
-import {Pokemon} from './pokemon';
-import {Damage, damageRange} from './result';
+import type {Generation, Weather, Terrain, TypeName, ID} from './data/interface';
+import type {Field, Side} from './field';
+import type {Move} from './move';
+import type {Pokemon} from './pokemon';
+import {type Damage, damageRange, multiDamageRange} from './result';
 import {error} from './util';
 // NOTE: This needs to come last to simplify bundling
 import {isGrounded} from './mechanics/util';
@@ -23,6 +23,7 @@ export interface RawDesc {
   defenseEVs?: string;
   hits?: number;
   alliesFainted?: number;
+  isStellarFirstUse?: boolean;
   isBeadsOfRuin?: boolean;
   isSwordOfRuin?: boolean;
   isTabletsOfRuin?: boolean;
@@ -30,6 +31,9 @@ export interface RawDesc {
   isAuroraVeil?: boolean;
   isFlowerGiftAttacker?: boolean;
   isFlowerGiftDefender?: boolean;
+  isPowerTrickAttacker?: boolean;
+  isPowerTrickDefender?: boolean;
+  isSteelySpiritAttacker?: boolean;
   isFriendGuard?: boolean;
   isHelpingHand?: boolean;
   isCritical?: boolean;
@@ -62,9 +66,7 @@ export function display(
   notation = '%',
   err = true
 ) {
-  const [minDamage, maxDamage] = damageRange(damage);
-  const min = (typeof minDamage === 'number' ? minDamage : minDamage[0] + minDamage[1]) * move.hits;
-  const max = (typeof maxDamage === 'number' ? maxDamage : maxDamage[0] + maxDamage[1]) * move.hits;
+  const [min, max] = damageRange(damage);
 
   const minDisplay = toDisplay(notation, min, defender.maxHP());
   const maxDisplay = toDisplay(notation, max, defender.maxHP());
@@ -85,9 +87,7 @@ export function displayMove(
   damage: Damage,
   notation = '%'
 ) {
-  const [minDamage, maxDamage] = damageRange(damage);
-  const min = (typeof minDamage === 'number' ? minDamage : minDamage[0] + minDamage[1]) * move.hits;
-  const max = (typeof maxDamage === 'number' ? maxDamage : maxDamage[0] + maxDamage[1]) * move.hits;
+  const [min, max] = damageRange(damage);
 
   const minDisplay = toDisplay(notation, min, defender.maxHP());
   const maxDisplay = toDisplay(notation, max, defender.maxHP());
@@ -108,8 +108,14 @@ export function getRecovery(
   notation = '%'
 ) {
   const [minDamage, maxDamage] = damageRange(damage);
-  const minD = typeof minDamage === 'number' ? [minDamage] : minDamage;
-  const maxD = typeof maxDamage === 'number' ? [maxDamage] : maxDamage;
+  let minD;
+  let maxD;
+  if (move.timesUsed && move.timesUsed > 1) {
+    [minD, maxD] = multiDamageRange(damage) as [number[], number[]];
+  } else {
+    minD = [minDamage];
+    maxD = [maxDamage];
+  }
 
   const recovery = [0, 0] as [number, number];
   let text = '';
@@ -117,23 +123,44 @@ export function getRecovery(
   const ignoresShellBell =
     gen.num === 3 && move.named('Doom Desire', 'Future Sight');
   if (attacker.hasItem('Shell Bell') && !ignoresShellBell) {
-    const max = Math.round(defender.maxHP() / 8);
     for (let i = 0; i < minD.length; i++) {
-      recovery[0] += Math.min(Math.round(minD[i] * move.hits / 8), max);
-      recovery[1] += Math.min(Math.round(maxD[i] * move.hits / 8), max);
+      recovery[0] += minD[i] > 0 ? Math.max(Math.round(minD[i] / 8), 1) : 0;
+      recovery[1] += maxD[i] > 0 ? Math.max(Math.round(maxD[i] / 8), 1) : 0;
     }
+    // This is incorrect if the opponent heals during your damage
+    // Ex: Sitrus Berry procs in the middle of multi-hit move
+    const maxHealing = Math.round(defender.curHP() / 8);
+    recovery[0] = Math.min(recovery[0], maxHealing);
+    recovery[1] = Math.min(recovery[1], maxHealing);
   }
 
   if (move.named('G-Max Finale')) {
-    recovery[0] = recovery[1] = Math.round(attacker.maxHP() / 6);
+    recovery[0] += Math.round(attacker.maxHP() / 6);
+    recovery[1] += Math.round(attacker.maxHP() / 6);
+  }
+
+  if (move.named('Pain Split')) {
+    const average = Math.floor((attacker.curHP() + defender.curHP()) / 2);
+    recovery[0] = recovery[1] = average - attacker.curHP();
   }
 
   if (move.drain) {
+    // Parental Bond counts as multiple heals for drain moves, but not for Shell Bell
+    // Currently no drain moves are multihit, however this covers for it.
+    if (attacker.hasAbility('Parental Bond') || move.hits > 1) {
+      [minD, maxD] = multiDamageRange(damage) as [number[], number[]];
+    }
     const percentHealed = move.drain[0] / move.drain[1];
-    const max = Math.round(defender.maxHP() * percentHealed);
+    const attackerHasBigRoot = attacker.hasItem('Big Root');
+    let maxDrain = Math.round(defender.curHP() * percentHealed);
+    if (attackerHasBigRoot) maxDrain = Math.trunc(maxDrain * 5324 / 4096);
     for (let i = 0; i < minD.length; i++) {
-      recovery[0] += Math.min(Math.round(minD[i] * move.hits * percentHealed), max);
-      recovery[1] += Math.min(Math.round(maxD[i] * move.hits * percentHealed), max);
+      const range = [minD[i], maxD[i]];
+      for (const j in recovery) {
+        let drained = Math.max(Math.round(range[j] * percentHealed), 1);
+        if (attackerHasBigRoot) drained = Math.trunc(drained * 5324 / 4096);
+        recovery[j] += Math.min(drained, maxDrain);
+      }
     }
   }
 
@@ -141,8 +168,9 @@ export function getRecovery(
 
   const minHealthRecovered = toDisplay(notation, recovery[0], attacker.maxHP());
   const maxHealthRecovered = toDisplay(notation, recovery[1], attacker.maxHP());
+  const change = recovery[0] > 0 ? 'recovered' : 'lost';
+  text = `${minHealthRecovered} - ${maxHealthRecovered}${notation} ${change}`;
 
-  text = `${minHealthRecovered} - ${maxHealthRecovered}${notation} recovered`;
   return {recovery, text};
 }
 
@@ -155,14 +183,12 @@ export function getRecoil(
   damage: Damage,
   notation = '%'
 ) {
-  const [minDamage, maxDamage] = damageRange(damage);
-  const min = (typeof minDamage === 'number' ? minDamage : minDamage[0] + minDamage[1]) * move.hits;
-  const max = (typeof maxDamage === 'number' ? maxDamage : maxDamage[0] + maxDamage[1]) * move.hits;
+  const [min, max] = damageRange(damage);
 
   let recoil: [number, number] | number = [0, 0];
   let text = '';
 
-  const damageOverflow = minDamage > defender.curHP() || maxDamage > defender.curHP();
+  const damageOverflow = min > defender.curHP() || max > defender.curHP();
   if (move.recoil) {
     const mod = (move.recoil[0] / move.recoil[1]) * 100;
     let minRecoilDamage, maxRecoilDamage;
@@ -245,10 +271,10 @@ export function getKOChance(
   defender: Pokemon,
   move: Move,
   field: Field,
-  damage: Damage,
+  damageObj: Damage,
   err = true
 ) {
-  damage = combine(damage);
+  const [damage, approximate] = combine(damageObj);
   if (isNaN(damage[0])) {
     error(err, 'damage[0] must be a number.');
     return {chance: 0, n: 0, text: ''};
@@ -269,15 +295,12 @@ export function getKOChance(
   const hazards = getHazards(gen, defender, field.defenderSide);
   const eot = getEndOfTurn(gen, attacker, defender, move, field);
   const toxicCounter =
-     defender.hasStatus('tox') && !defender.hasAbility('Magic Guard') ? defender.toxicCounter : 0;
+    defender.hasStatus('tox') && !defender.hasAbility('Magic Guard', 'Poison Heal')
+      ? defender.toxicCounter : 0;
 
   // multi-hit moves have too many possibilities for brute-forcing to work, so reduce it
-  // to an approximate distribution
-  let qualifier = '';
-  if (move.hits > 1) {
-    qualifier = 'approx. ';
-    damage = squashMultihit(gen, damage, move.hits, err);
-  }
+  // to an approximate distribution if greater than 3 hits
+  const qualifier = approximate ? 'approx. ' : '';
 
   const hazardsText = hazards.texts.length > 0
     ? ' after ' + serializeText(hazards.texts)
@@ -286,44 +309,91 @@ export function getKOChance(
     hazards.texts.length > 0 || eot.texts.length > 0
       ? ' after ' + serializeText(hazards.texts.concat(eot.texts))
       : '';
+  const afterTextNoHazards = eot.texts.length > 0 ? ' after ' + serializeText(eot.texts) : '';
+
+  function roundChance(chance: number) {
+    // prevent displaying misleading 100% or 0% chances
+    return Math.max(Math.min(Math.round(chance * 1000), 999), 1) / 10;
+  }
+
+  function KOChance(
+    chanceWithoutEot: number | undefined,
+    chanceWithEot: number | undefined,
+    n: number,
+    multipleTurns = false,
+  ) {
+    // chanceWithoutEot and chanceWithEot are calculated separately for OHKOs
+    // because the difference between KOing at start of turn is very important in some cases
+    // for 2HKOs and onward, only chanceWithEot is calculated,
+    // so chanceWithoutEot will be set to 0 for the purposes of this function
+    // all this really does is skip straight to that last else if block
+    // using the number of hits we can determine the type of KO we are checking for
+    // chance is the value that is returned by this function,
+    // and is the higher of the two chance parameters
+    const KOTurnText = n === 1 ? 'OHKO'
+      : (multipleTurns ? `KO in ${n} turns` : `${n}HKO`);
+    let text = qualifier;
+    let chance = undefined;
+    if (chanceWithoutEot === undefined || chanceWithEot === undefined) {
+      text += `possible ${KOTurnText}`;
+      // not a KO
+    } else if (chanceWithoutEot + chanceWithEot === 0) {
+      chance = 0;
+      text += 'not a KO';
+      // if the move OHKOing is guaranteed even without end of turn damage
+    } else if (chanceWithoutEot === 1) {
+      chance = chanceWithoutEot;
+      text = 'guaranteed ';
+      text += `OHKO${hazardsText}`;
+    } else if (chanceWithoutEot > 0) {
+      chance = chanceWithEot;
+      // if the move OHKOing is possible, but eot damage guarantees the OHKO
+      // I have it so that the text specifies the chance of the OHKO without eot damage,
+      // because it might matter in some scenarios
+      // eg. if your opponent has a move that can OHKO you but you're faster,
+      // it might be important to get the OKKO before they can move
+      if (chanceWithEot === 1) {
+        text += `${roundChance(chanceWithoutEot)}% chance to ${KOTurnText}${hazardsText} ` +
+          `(guaranteed ${KOTurnText}${afterTextNoHazards})`;
+        // if the move OHKOing is possible, and eot damage increases the odds of the KO
+      } else if (chanceWithEot > chanceWithoutEot) {
+        text += `${roundChance(chanceWithoutEot)}% chance to ${KOTurnText}${hazardsText} ` +
+          `(${qualifier}${roundChance(chanceWithEot)}% chance to ` +
+          `${KOTurnText}${afterTextNoHazards})`;
+        // if the move KOing is possible, and eot damage does not increase the odds of the KO
+      } else if (chanceWithoutEot > 0) {
+        text += `${roundChance(chanceWithoutEot)}% chance to ${KOTurnText}${hazardsText}`;
+      }
+    } else if (chanceWithoutEot === 0) {
+      chance = chanceWithEot;
+      // if the move KOing is not possible, but eot damage guarantees the OHKO
+      if (chanceWithEot === 1) {
+        text = 'guaranteed ';
+        text += `${KOTurnText}${afterText}`;
+        // if the move KOing is not possible, but eot damage might KO
+      } else if (chanceWithEot > 0) {
+        text += `${roundChance(chanceWithEot)}% chance to ${KOTurnText}${afterText}`;
+      }
+    }
+    return {chance, n, text};
+  }
 
   if ((move.timesUsed === 1 && move.timesUsedWithMetronome === 1) || move.isZ) {
     const chance = computeKOChance(
-      damage, defender.curHP() - hazards.damage, 0, 1, 1, defender.maxHP(), toxicCounter
+      damage, defender.curHP() - hazards.damage, 0, 1, 1, defender.maxHP(), 0
     );
-    if (chance === 1) {
-      return {chance, n: 1, text: `guaranteed OHKO${hazardsText}`}; // eot wasn't considered
-    } else if (chance > 0) {
-      // note: still not accounting for EOT due to poor eot damage handling
-      return {
-        chance,
-        n: 1,
-        text: qualifier + Math.round(chance * 1000) / 10 + `% chance to OHKO${hazardsText}`,
-      };
-    }
+    const chanceWithEot = computeKOChance(
+      damage, defender.curHP() - hazards.damage, eot.damage, 1, 1, defender.maxHP(), toxicCounter
+    );
 
-    // Parental Bond's combined first + second hit only is accurate for chance to OHKO, for
-    // multihit KOs its only approximated. We should be doing squashMultihit here instead of
-    // pretending we ar emore accurate than we are, but just throwing on an qualifer should be
-    // sufficient.
-    if (damage.length === 256) {
-      qualifier = 'approx. ';
-      // damage = squashMultihit(gen, damage, move.hits, err);
-    }
+    // checks if either chance is greater than 0
+    if (chance + chanceWithEot > 0) return KOChance(chance, chanceWithEot, 1);
 
     for (let i = 2; i <= 4; i++) {
       const chance = computeKOChance(
         damage, defender.curHP() - hazards.damage, eot.damage, i, 1, defender.maxHP(), toxicCounter
       );
-      if (chance === 1) {
-        return {chance, n: i, text: `${qualifier || 'guaranteed '}${i}HKO${afterText}`};
-      } else if (chance > 0) {
-        return {
-          chance,
-          n: i,
-          text: qualifier + Math.round(chance * 1000) / 10 + `% chance to ${i}HKO${afterText}`,
-        };
-      }
+      if (chance > 0) return KOChance(0, chance, i);
     }
 
     for (let i = 5; i <= 9; i++) {
@@ -331,12 +401,13 @@ export function getKOChance(
         predictTotal(damage[0], eot.damage, i, 1, toxicCounter, defender.maxHP()) >=
         defender.curHP() - hazards.damage
       ) {
-        return {chance: 1, n: i, text: `${qualifier || 'guaranteed '}${i}HKO${afterText}`};
+        return KOChance(0, 1, i);
       } else if (
         predictTotal(damage[damage.length - 1], eot.damage, i, 1, toxicCounter, defender.maxHP()) >=
         defender.curHP() - hazards.damage
       ) {
-        return {n: i, text: qualifier + `possible ${i}HKO${afterText}`};
+        // possible but no concrete chance
+        return KOChance(undefined, undefined, i);
       }
     }
   } else {
@@ -348,81 +419,92 @@ export function getKOChance(
       defender.maxHP(),
       toxicCounter
     );
-    if (chance === 1) {
-      return {
-        chance,
-        n: move.timesUsed,
-        text: `${qualifier || 'guaranteed '}KO in ${move.timesUsed} turns${afterText}`,
-      };
-    } else if (chance > 0) {
-      return {
-        chance,
-        n: move.timesUsed,
-        text:
-          qualifier +
-          Math.round(chance * 1000) / 10 +
-          `% chance to ${move.timesUsed}HKO${afterText}`,
-      };
-    }
+    if (chance > 0) return KOChance(0, chance, move.timesUsed, chance === 1);
 
     if (predictTotal(
       damage[0],
       eot.damage,
-      move.hits,
+      1,
       move.timesUsed,
       toxicCounter,
       defender.maxHP()
     ) >=
       defender.curHP() - hazards.damage
     ) {
-      return {
-        chance: 1,
-        n: move.timesUsed,
-        text: `${qualifier || 'guaranteed '}KO in ${move.timesUsed} turns${afterText}`,
-      };
+      return KOChance(0, 1, move.timesUsed, true);
     } else if (
       predictTotal(
         damage[damage.length - 1],
         eot.damage,
-        move.hits,
+        1,
         move.timesUsed,
         toxicCounter,
         defender.maxHP()
       ) >=
       defender.curHP() - hazards.damage
     ) {
-      return {
-        n: move.timesUsed,
-        text: qualifier + `possible KO in ${move.timesUsed} turns${afterText}`,
-      };
+      // possible but no real idea
+      return KOChance(undefined, undefined, move.timesUsed, true);
     }
-    return {n: move.timesUsed, text: qualifier + 'not a KO'};
+    return KOChance(0, 0, move.timesUsed);
   }
 
   return {chance: 0, n: 0, text: ''};
 }
 
-function combine(damage: Damage) {
+function combine(damage: Damage): [number[], boolean] {
   // Fixed Damage
-  if (typeof damage === 'number') return [damage];
-  // Standard Damage
-  if (damage.length > 2) {
-    if (damage[0] > damage[damage.length - 1]) damage = damage.slice().sort() as number[];
-    return damage as number[];
+  if (typeof damage === 'number') return [[damage], false];
+
+  // Standard Damage (16 or 39 rolls)
+  if (damage.length >= 16 && typeof damage[0] === 'number') {
+    return [damage as number[], false];
   }
-  // Fixed Parental Bond Damage
+  // Fixed Multi-hit Damage (currently only parental bond)
   if (typeof damage[0] === 'number' && typeof damage[1] === 'number') {
-    return [damage[0] + damage[1]];
+    return [[damage[0] + damage[1]], false];
   }
-  // Parental Bond Damage
-  const d = damage as [number[], number[]];
-  const combined = [];
-  for (let i = 0; i < d[0].length; i++) { // eslint-disable-line
-    for (let j = 0; j < d[1].length; j++) { // eslint-disable-line
-      combined.push(d[0][i] + d[1][j]);
+  // Multi-hit Damage
+
+  // Reduce Distribution to be at most 256 elements, maintains min and max
+  function reduce(dist: number[], scaleValue: number): number[] {
+    // should always be 16^2 or 39^2
+    const new_length = dist.length / scaleValue;
+    const reduced = [];
+    reduced[0] = dist[0];
+    reduced[new_length - 1] = dist[dist.length - 1];
+    for (let i = 1; i < new_length - 1; i++) {
+      reduced[i] = dist[Math.round(i * scaleValue + scaleValue / 2)];
     }
+    return reduced;
   }
-  return combined.sort();
+
+  function combineTwo(dist1: number[], dist2: number[]): number[] {
+    const combined = dist1.flatMap(val1 => dist2.map(val2 => val1 + val2)).sort((a, b) => a - b);
+    return combined;
+  }
+
+  // Combine n distributions to return an approximation of sum
+  // Perfectly accurate for <= 3 hits, within 1% otherwise (Max 0.5% off for 7 hits)
+  function combineDistributions(dists: number[][]): [number[], boolean] {
+    let combined = [0];
+    const numRolls = dists[0].length;
+    // Usually returns numRolls^2 values, but allow for perfect accuracy for exactly 3 hits
+    const numAccuracy = (numRolls === 16 && dists.length === 3) ? 3 : 2;
+    let approximate = false;
+    for (let i = 0; i < dists.length; i++) {
+      const distribution = dists[i];
+      combined = combineTwo(combined, distribution);
+      if (i >= numAccuracy) {
+        combined = reduce(combined, distribution.length);
+        approximate = true;
+      }
+    }
+    return [combined, approximate];
+  }
+
+  const d = damage as number[][];
+  return combineDistributions(d);
 }
 
 const TRAPPING = [
@@ -440,16 +522,20 @@ function getHazards(gen: Generation, defender: Pokemon, defenderSide: Side) {
   if (defenderSide.isSR && !defender.hasAbility('Magic Guard', 'Mountaineer')) {
     const rockType = gen.types.get('rock' as ID)!;
     const effectiveness =
-      rockType.effectiveness[defender.types[0]]! *
-      (defender.types[1] ? rockType.effectiveness[defender.types[1]]! : 1);
+      defender.teraType && defender.teraType !== 'Stellar'
+        ? rockType.effectiveness[defender.teraType]!
+        : rockType.effectiveness[defender.types[0]]! *
+          (defender.types[1] ? rockType.effectiveness[defender.types[1]]! : 1);
     damage += Math.floor((effectiveness * defender.maxHP()) / 8);
     texts.push('Stealth Rock');
   }
   if (defenderSide.steelsurge && !defender.hasAbility('Magic Guard', 'Mountaineer')) {
     const steelType = gen.types.get('steel' as ID)!;
     const effectiveness =
-      steelType.effectiveness[defender.types[0]]! *
-      (defender.types[1] ? steelType.effectiveness[defender.types[1]]! : 1);
+      defender.teraType && defender.teraType !== 'Stellar'
+        ? steelType.effectiveness[defender.teraType]!
+        : steelType.effectiveness[defender.types[0]]! *
+          (defender.types[1] ? steelType.effectiveness[defender.types[1]]! : 1);
     damage += Math.floor((effectiveness * defender.maxHP()) / 8);
     texts.push('Steelsurge');
   }
@@ -491,12 +577,22 @@ function getEndOfTurn(
   let damage = 0;
   const texts = [];
 
+  const loseItem = move.named('Knock Off') && !defender.hasAbility('Sticky Hold');
+  // psychic noise should suppress all recovery effects
+  const healBlock = move.named('Psychic Noise') &&
+    !(
+      // suppression conditions
+      attacker.hasAbility('Sheer Force') ||
+      defender.hasItem('Covert Cloak') ||
+      defender.hasAbility('Shield Dust', 'Aroma Veil')
+    );
+
   if (field.hasWeather('Sun', 'Harsh Sunshine')) {
     if (defender.hasAbility('Dry Skin', 'Solar Power')) {
       damage -= Math.floor(defender.maxHP() / 8);
       texts.push(defender.ability + ' damage');
     }
-  } else if (field.hasWeather('Rain', 'Heavy Rain')) {
+  } else if (field.hasWeather('Rain', 'Heavy Rain') && !healBlock) {
     if (defender.hasAbility('Dry Skin')) {
       damage += Math.floor(defender.maxHP() / 8);
       texts.push('Dry Skin recovery');
@@ -514,7 +610,7 @@ function getEndOfTurn(
       texts.push('sandstorm damage');
     }
   } else if (field.hasWeather('Hail', 'Snow')) {
-    if (defender.hasAbility('Ice Body')) {
+    if (defender.hasAbility('Ice Body') && !healBlock) {
       damage += Math.floor(defender.maxHP() / 16);
       texts.push('Ice Body recovery');
     } else if (
@@ -528,19 +624,21 @@ function getEndOfTurn(
     }
   }
 
-  const loseItem = move.named('Knock Off') && !defender.hasAbility('Sticky Hold');
-  if (defender.hasItem('Leftovers') && !loseItem) {
+  if (defender.hasItem('Leftovers') && !loseItem && !healBlock) {
     damage += Math.floor(defender.maxHP() / 16);
     texts.push('Leftovers recovery');
   } else if (defender.hasItem('Black Sludge') && !loseItem) {
     if (defender.hasType('Poison')) {
-      damage += Math.floor(defender.maxHP() / 16);
-      texts.push('Black Sludge recovery');
+      if (!healBlock) {
+        damage += Math.floor(defender.maxHP() / 16);
+        texts.push('Black Sludge recovery');
+      }
     } else if (!defender.hasAbility('Magic Guard', 'Klutz')) {
       damage -= Math.floor(defender.maxHP() / 8);
       texts.push('Black Sludge damage');
     }
-  } else if (defender.hasItem('Sticky Barb')) {
+  } else if (defender.hasItem('Sticky Barb') && !loseItem &&
+    !defender.hasAbility('Magic Guard', 'Klutz')) {
     damage -= Math.floor(defender.maxHP() / 8);
     texts.push('Sticky Barb damage');
   }
@@ -554,17 +652,19 @@ function getEndOfTurn(
   }
 
   if (field.attackerSide.isSeeded && !attacker.hasAbility('Magic Guard')) {
+    let recovery = Math.floor(attacker.maxHP() / (gen.num >= 2 ? 8 : 16));
+    if (defender.hasItem('Big Root')) recovery = Math.trunc(recovery * 5324 / 4096);
     if (attacker.hasAbility('Liquid Ooze')) {
-      damage -= Math.floor(attacker.maxHP() / (gen.num >= 2 ? 8 : 16));
+      damage -= recovery;
       texts.push('Liquid Ooze damage');
-    } else {
-      damage += Math.floor(attacker.maxHP() / (gen.num >= 2 ? 8 : 16));
+    } else if (!healBlock) {
+      damage += recovery;
       texts.push('Leech Seed recovery');
     }
   }
 
   if (field.hasTerrain('Grassy')) {
-    if (isGrounded(defender, field)) {
+    if (isGrounded(defender, field) && !healBlock) {
       damage += Math.floor(defender.maxHP() / 16);
       texts.push('Grassy Terrain recovery');
     }
@@ -572,16 +672,20 @@ function getEndOfTurn(
 
   if (defender.hasStatus('psn')) {
     if (defender.hasAbility('Poison Heal')) {
-      damage += Math.floor(defender.maxHP() / 8);
-      texts.push('Poison Heal');
+      if (!healBlock) {
+        damage += Math.floor(defender.maxHP() / 8);
+        texts.push('Poison Heal');
+      }
     } else if (!defender.hasAbility('Magic Guard')) {
       damage -= Math.floor(defender.maxHP() / (gen.num === 1 ? 16 : 8));
       texts.push('poison damage');
     }
   } else if (defender.hasStatus('tox')) {
     if (defender.hasAbility('Poison Heal')) {
-      damage += Math.floor(defender.maxHP() / 8);
-      texts.push('Poison Heal');
+      if (!healBlock) {
+        damage += Math.floor(defender.maxHP() / 8);
+        texts.push('Poison Heal');
+      }
     } else if (!defender.hasAbility('Magic Guard')) {
       texts.push('toxic damage');
     }
@@ -595,14 +699,14 @@ function getEndOfTurn(
     }
   } else if (
     (defender.hasStatus('slp') || defender.hasAbility('Comatose')) &&
-    attacker.hasAbility('isBadDreams') &&
+    attacker.hasAbility('Bad Dreams') &&
     !defender.hasAbility('Magic Guard')
   ) {
     damage -= Math.floor(defender.maxHP() / 8);
     texts.push('Bad Dreams');
   }
 
-  if (!defender.hasAbility('Magic Guard') && TRAPPING.includes(move.name)) {
+  if (!defender.hasAbility('Magic Guard') && TRAPPING.includes(move.name) && gen.num > 1) {
     if (attacker.hasItem('Binding Band')) {
       damage -= gen.num > 5 ? Math.floor(defender.maxHP() / 6) : Math.floor(defender.maxHP() / 8);
       texts.push('trapping damage');
@@ -611,9 +715,8 @@ function getEndOfTurn(
       texts.push('trapping damage');
     }
   }
-  if (defender.isSaltCure && !defender.hasAbility('Magic Guard')) {
-    const isWaterOrSteel = defender.hasType('Water', 'Steel') ||
-      (defender.teraType && ['Water', 'Steel'].includes(defender.teraType));
+  if (field.defenderSide.isSaltCured && !defender.hasAbility('Magic Guard')) {
+    const isWaterOrSteel = defender.hasType('Water', 'Steel');
     damage -= Math.floor(defender.maxHP() / (isWaterOrSteel ? 4 : 8));
     texts.push('Salt Cure');
   }
@@ -659,20 +762,29 @@ function computeKOChance(
   maxHP: number,
   toxicCounter: number
 ) {
-  const n = damage.length;
-  if (hits === 1) {
-    for (let i = 0; i < n; i++) {
-      if (damage[n - 1] < hp) return 0;
-      if (damage[i] >= hp) {
-        return (n - i) / n;
-      }
-    }
-  }
   let toxicDamage = 0;
   if (toxicCounter > 0) {
     toxicDamage = Math.floor((toxicCounter * maxHP) / 16);
     toxicCounter++;
   }
+  const n = damage.length;
+  if (hits === 1) {
+    // ignore end of turn healing for the hit that KOs
+    // so that the pokemon doesnt "revive" from being KO'd
+    // since recovery happens before toxic damage (and therefore always reduces toxic damage),
+    // if the net healing is greater than zero, toxicDamage should also be set to zero.
+    if (eot - toxicDamage > 0) {
+      eot = 0;
+      toxicDamage = 0;
+    }
+    for (let i = 0; i < n; i++) {
+      if (damage[n - 1] - eot + toxicDamage < hp) return 0;
+      if (damage[i] - eot + toxicDamage >= hp) {
+        return (n - i) / n;
+      }
+    }
+  }
+
   let sum = 0;
   let lastc = 0;
   for (let i = 0; i < n; i++) {
@@ -710,10 +822,18 @@ function predictTotal(
   maxHP: number
 ) {
   let toxicDamage = 0;
+  // hits - 1 is used in this for loop, as well as in the total = ...  calcs later
+  // the last turn of eot damage is calculated separately
+  // since if the damage is less than 0 (healing)
+  // we want to exclude that from the calculations
+  // since on the last turn the pokemon has been ko'd by the attack
+  // and should not be able to heal after fainting
+  let lastTurnEot = eot;
   if (toxicCounter > 0) {
     for (let i = 0; i < hits - 1; i++) {
       toxicDamage += Math.floor(((toxicCounter + i) * maxHP) / 16);
     }
+    lastTurnEot -= Math.floor(((toxicCounter + (hits - 1)) * maxHP) / 16);
   }
   let total = 0;
   if (hits > 1 && timesUsed === 1) {
@@ -721,6 +841,8 @@ function predictTotal(
   } else {
     total = damage - eot * (hits - 1) + toxicDamage;
   }
+  // if the net eot health gain is negative for the last turn, include it in the total
+  if (lastTurnEot < 0) total -= lastTurnEot;
   return total;
 }
 
@@ -856,6 +978,11 @@ function buildDescription(description: RawDesc, attacker: Pokemon, defender: Pok
   if (description.attackerTera) {
     output += `Tera ${description.attackerTera} `;
   }
+
+  if (description.isStellarFirstUse) {
+    output += '(First Use) ';
+  }
+
   if (description.isBeadsOfRuin) {
     output += 'Beads of Ruin ';
   }
@@ -867,16 +994,22 @@ function buildDescription(description: RawDesc, attacker: Pokemon, defender: Pok
     output += 'Helping Hand ';
   }
   if (description.isFlowerGiftAttacker) {
-    output += ' with an ally\'s Flower Gift ';
+    output += 'with an ally\'s Flower Gift ';
+  }
+  if (description.isPowerTrickAttacker) {
+    output += 'with Power Trick ';
+  }
+  if (description.isSteelySpiritAttacker) {
+    output += 'with an ally\'s Steely Spirit ';
   }
   if (description.isBattery) {
-    output += ' Battery boosted ';
+    output += 'Battery boosted ';
   }
   if (description.isPowerSpot) {
-    output += ' Power Spot boosted ';
+    output += 'Power Spot boosted ';
   }
   if (description.isSwitching) {
-    output += ' switching boosted ';
+    output += 'switching boosted ';
   }
   output += description.moveName + ' ';
   if (description.moveBP && description.moveType) {
@@ -921,7 +1054,7 @@ function buildDescription(description: RawDesc, attacker: Pokemon, defender: Pok
   }
   output += description.defenderName;
   if (description.weather && description.terrain) {
-    // do nothing
+    output += ' in ' + description.weather + ' and ' + description.terrain + ' Terrain';
   } else if (description.weather) {
     output += ' in ' + description.weather;
   } else if (description.terrain) {
@@ -934,6 +1067,9 @@ function buildDescription(description: RawDesc, attacker: Pokemon, defender: Pok
   }
   if (description.isFlowerGiftDefender) {
     output += ' with an ally\'s Flower Gift';
+  }
+  if (description.isPowerTrickDefender) {
+    output += ' with Power Trick';
   }
   if (description.isFriendGuard) {
     output += ' with an ally\'s Friend Guard';

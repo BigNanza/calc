@@ -1,5 +1,5 @@
-import { State } from './state';
-import { GameType, Weather, Terrain } from './data/interface';
+import type { State } from './state';
+import type { GameType, Weather, Terrain } from './data/interface';
 export declare class Field implements State.Field {
     gameType: GameType;
     weather?: Weather;
@@ -34,14 +34,17 @@ export declare class Side implements State.Side {
     isLightScreen: boolean;
     isProtected: boolean;
     isSeeded: boolean;
+    isSaltCured: boolean;
     isForesight: boolean;
     isTailwind: boolean;
     isHelpingHand: boolean;
     isFlowerGift: boolean;
+    isPowerTrick?: boolean;
     isFriendGuard: boolean;
     isAuroraVeil: boolean;
     isBattery: boolean;
     isPowerSpot: boolean;
+    isSteelySpirit: boolean;
     isSwitching?: 'out' | 'in';
     constructor(side?: State.Side);
     clone(): Side;

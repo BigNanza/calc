@@ -1,5 +1,7 @@
-import * as I from './interface';
+import type * as I from './interface';
 export declare const MEGA_STONES: {
+    [species: string]: string;
+} & {
     [species: string]: string;
 };
 export declare const ITEMS: string[][];

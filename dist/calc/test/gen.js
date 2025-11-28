@@ -271,6 +271,8 @@ var Move = (function () {
         }
         if (move.multihit)
             this.multihit = move.multihit;
+        if (move.multiaccuracy)
+            this.multiaccuracy = move.multiaccuracy;
         if (move.drain)
             this.drain = move.drain;
         if (move.willCrit)
@@ -606,6 +608,8 @@ var NATDEX_BANNED = [
 function exists(val, gen) {
     if (!val.exists || val.id === 'noability')
         return false;
+    if (val.kind === 'Species' && val.cosmeticFormes)
+        return false;
     if (gen === 7 && val.isNonstandard === 'LGPE')
         return true;
     if (gen >= 8) {
@@ -622,6 +626,10 @@ function exists(val, gen) {
         if (gen > 8 && 'isZ' in val && val.isZ)
             return false;
         if (gen > 8 && val.isNonstandard === 'Unobtainable')
+            return true;
+        if (gen > 8 && val.isNonstandard === 'Future')
+            return true;
+        if (gen > 8 && ['ramnarokradiant'].includes(val.id))
             return true;
     }
     if (gen >= 6 && ['floetteeternal'].includes(val.id))

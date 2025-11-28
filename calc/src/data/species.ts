@@ -1,5 +1,5 @@
-﻿import * as I from './interface';
-import {toID, extend, DeepPartial, assignWithout} from '../util';
+import type * as I from './interface';
+import {type DeepPartial, toID, extend, assignWithout} from '../util';
 
 export interface SpeciesData {
   readonly types: [I.TypeName] | [I.TypeName, I.TypeName];
@@ -964,7 +964,7 @@ const GSC_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
   Azumarill: {
     types: ['Water'],
-    bs: {hp: 100, at: 65, df: 80, sa: 50, sd: 80, sp: 50},
+    bs: {hp: 100, at: 50, df: 80, sa: 50, sd: 80, sp: 50},
     weightkg: 28.5,
   },
   Bayleef: {
@@ -3510,7 +3510,7 @@ const DPP_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     types: ['Ghost', 'Fighting'],
     bs: {hp: 90, at: 105, df: 90, sa: 65, sd: 110, sp: 65},
     weightkg: 44,
-    abilities: {0: 'Shed Skin'},
+    abilities: {0: 'Air Lock'},
   },
   Rhyperior: {
     types: ['Ground', 'Rock'],
@@ -5026,7 +5026,7 @@ const XY_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   Altaria: {otherFormes: ['Altaria-Mega']},
   Ampharos: {bs: {df: 85}, otherFormes: ['Ampharos-Mega']},
   Audino: {otherFormes: ['Audino-Mega']},
-  Azumarill: {types: ['Water', 'Fairy'], bs: {sa: 90}},
+  Azumarill: {types: ['Water', 'Fairy'], bs: {sa: 60}},
   Azurill: {types: ['Normal', 'Fairy']},
   Banette: {otherFormes: ['Banette-Mega']},
   Beautifly: {bs: {sa: 100}},
@@ -5274,7 +5274,7 @@ const XY_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
   Diggersby: {
     types: ['Normal', 'Ground'],
-    bs: {hp: 85, at: 71, df: 77, sa: 50, sd: 77, sp: 78},
+    bs: {hp: 85, at: 56, df: 77, sa: 50, sd: 77, sp: 78},
     weightkg: 42.4,
     abilities: {0: 'Pickup'},
   },
@@ -6202,7 +6202,7 @@ const SM_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   Geodude: {otherFormes: ['Geodude-Alola']},
   Golem: {otherFormes: ['Golem-Alola']},
   Graveler: {otherFormes: ['Graveler-Alola']},
-  Greninja: {otherFormes: ['Greninja-Ash']},
+  Greninja: {otherFormes: ['Greninja-Ash', 'Greninja-Bond']},
   Grimer: {otherFormes: ['Grimer-Alola']},
   Illumise: {bs: {df: 75, sd: 85}},
   Lunatone: {bs: {hp: 90}},
@@ -6495,6 +6495,13 @@ const SM_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   'Greninja-Ash': {
     types: ['Water', 'Dark'],
     bs: {hp: 72, at: 145, df: 67, sa: 153, sd: 71, sp: 132},
+    weightkg: 40,
+    abilities: {0: 'Battle Bond'},
+    baseSpecies: 'Greninja',
+  },
+  'Greninja-Bond': {
+    types: ['Water', 'Dark'],
+    bs: {hp: 72, at: 95, df: 67, sa: 103, sd: 71, sp: 122},
     weightkg: 40,
     abilities: {0: 'Battle Bond'},
     baseSpecies: 'Greninja',
@@ -7031,7 +7038,16 @@ const SM_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 45, at: 65, df: 40, sa: 30, sd: 40, sp: 60},
     weightkg: 9.2,
     nfe: true,
+    otherFormes: ['Rockruff-Dusk'],
     abilities: {0: 'Keen Eye'},
+  },
+  'Rockruff-Dusk': {
+    types: ['Rock'],
+    bs: {hp: 45, at: 65, df: 40, sa: 30, sd: 40, sp: 60},
+    weightkg: 9.2,
+    nfe: true,
+    abilities: {0: 'Own Tempo'},
+    baseSpecies: 'Rockruff',
   },
   Rowlet: {
     types: ['Grass', 'Flying'],
@@ -7982,7 +7998,7 @@ const SS_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   'Farfetch\u2019d-Galar': {
     types: ['Fighting'],
     bs: {hp: 52, at: 95, df: 55, sa: 58, sd: 62, sp: 55},
-    weightkg: 15,
+    weightkg: 42,
     abilities: {0: 'Steadfast'},
     nfe: true,
     baseSpecies: 'Farfetch\u2019d',
@@ -8615,7 +8631,7 @@ const SS_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   'Urshifu-Rapid-Strike-Gmax': {
     types: ['Fighting', 'Water'],
     bs: {hp: 100, at: 130, df: 100, sa: 63, sd: 60, sp: 97},
-    weightkg: 105,
+    weightkg: 0,
     abilities: {0: 'Unseen Fist'},
     baseSpecies: 'Urshifu',
   },
@@ -8744,6 +8760,11 @@ const SS_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
 };
 
+const SS: {[name: string]: SpeciesData} = extend(true, {}, SM, SS_PATCH);
+
+delete SS['Pikachu-Starter'];
+delete SS['Eevee-Starter'];
+
 const PLA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   Arcanine: {otherFormes: ['Arcanine-Hisui']},
   Avalugg: {otherFormes: ['Avalugg-Hisui']},
@@ -8863,7 +8884,7 @@ const PLA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
   Kleavor: {
     types: ['Bug', 'Rock'],
-    bs: {hp: 70, at: 130, df: 95, sa: 45, sd: 75, sp: 85},
+    bs: {hp: 70, at: 135, df: 95, sa: 45, sd: 70, sp: 85},
     weightkg: 89,
     abilities: {0: 'Swarm'},
   },
@@ -8877,7 +8898,7 @@ const PLA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   Overqwil: {
     types: ['Dark', 'Poison'],
     bs: {hp: 85, at: 115, df: 95, sa: 65, sd: 65, sp: 85},
-    weightkg: 3.9,
+    weightkg: 60.5,
     abilities: {0: 'Poison Point'},
   },
   'Palkia-Origin': {
@@ -8970,25 +8991,27 @@ const PLA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
 };
 
-
-const SS: {[name: string]: SpeciesData} = extend(true, {}, SM, SS_PATCH, PLA_PATCH);
-
-delete SS['Pikachu-Starter'];
-delete SS['Eevee-Starter'];
-
-
 const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   Bisharp: {nfe: true},
   Cresselia: {bs: {df: 110, sd: 120}},
   Dunsparce: {nfe: true},
+  Duraludon: {nfe: true},
   Girafarig: {nfe: true},
+  Kitsunoh: {bs: {at: 103, sp: 120}},
   Primeape: {nfe: true},
-  Tauros: {otherFormes: ['Tauros-Paldea', 'Tauros-Paldea-Fire', 'Tauros-Paldea-Water']},
+  Tauros: {otherFormes: ['Tauros-Paldea-Aqua', 'Tauros-Paldea-Blaze', 'Tauros-Paldea-Combat']},
   Wooper: {otherFormes: ['Wooper-Paldea']},
   Zacian: {bs: {at: 120}},
   'Zacian-Crowned': {bs: {at: 150}},
   Zamazenta: {bs: {at: 120}},
   'Zamazenta-Crowned': {bs: {at: 120, df: 140, sd: 140}},
+  Ababo: {
+    types: ['Fairy'],
+    bs: {hp: 42, at: 35, df: 27, sa: 35, sd: 35, sp: 38},
+    weightkg: 3.5,
+    abilities: {0: 'Pixilate'},
+    nfe: true,
+  },
   Annihilape: {
     types: ['Fighting', 'Ghost'],
     bs: {hp: 110, at: 115, df: 80, sa: 50, sd: 90, sp: 90},
@@ -9000,6 +9023,12 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 78, at: 69, df: 90, sa: 125, sd: 109, sp: 39},
     weightkg: 48.2,
     abilities: {0: 'Seed Sower'},
+  },
+  Archaludon: {
+    types: ['Steel', 'Dragon'],
+    bs: {hp: 90, at: 105, df: 130, sa: 125, sd: 65, sp: 85},
+    weightkg: 60,
+    abilities: {0: 'Stamina'},
   },
   Arctibax: {
     types: ['Dragon', 'Ice'],
@@ -9054,7 +9083,7 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
   Capsakid: {
     types: ['Grass'],
-    bs: {hp: 52, at: 62, df: 40, sa: 62, sd: 40, sp: 50},
+    bs: {hp: 50, at: 62, df: 40, sa: 62, sd: 40, sp: 50},
     weightkg: 3,
     abilities: {0: 'Chlorophyll'},
     nfe: true,
@@ -9099,11 +9128,30 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     gender: 'N',
     abilities: {0: 'Sword of Ruin'},
   },
+  Chuggon: {
+    types: ['Dragon', 'Poison'],
+    bs: {hp: 30, at: 23, df: 77, sa: 55, sd: 65, sp: 30},
+    weightkg: 50,
+    abilities: {0: 'Shell Armor'},
+    nfe: true,
+  },
+  Chuggalong: {
+    types: ['Dragon', 'Poison'],
+    bs: {hp: 45, at: 43, df: 117, sa: 120, sd: 110, sp: 108},
+    weightkg: 201.6,
+    abilities: {0: 'Armor Tail'},
+  },
   Clodsire: {
     types: ['Poison', 'Ground'],
     bs: {hp: 130, at: 75, df: 60, sa: 45, sd: 100, sp: 20},
     weightkg: 223,
     abilities: {0: 'Poison Point'},
+  },
+  Cresceidon: {
+    types: ['Water', 'Fairy'],
+    bs: {hp: 80, at: 32, df: 111, sa: 88, sd: 99, sp: 124},
+    weightkg: 999.9,
+    abilities: {0: 'Multiscale'},
   },
   Crocalor: {
     types: ['Fire'],
@@ -9124,6 +9172,13 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     weightkg: 14.9,
     abilities: {0: 'Well-Baked Body'},
   },
+  Dipplin: {
+    types: ['Grass', 'Dragon'],
+    bs: {hp: 80, at: 80, df: 110, sa: 95, sd: 80, sp: 40},
+    weightkg: 4.4,
+    abilities: {0: 'Supersweet Syrup'},
+    nfe: true,
+  },
   Dolliv: {
     types: ['Grass', 'Normal'],
     bs: {hp: 52, at: 53, df: 60, sa: 78, sd: 78, sp: 33},
@@ -9136,6 +9191,13 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 150, at: 100, df: 115, sa: 65, sd: 65, sp: 35},
     weightkg: 220,
     abilities: {0: 'Unaware'},
+  },
+  Draggalong: {
+    types: ['Dragon', 'Poison'],
+    bs: {hp: 40, at: 33, df: 92, sa: 95, sd: 80, sp: 85},
+    weightkg: 110,
+    abilities: {0: 'Armor Tail'},
+    nfe: true,
   },
   Dudunsparce: {
     types: ['Normal'],
@@ -9163,6 +9225,12 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     weightkg: 160,
     abilities: {0: 'Cud Chew'},
   },
+  Fezandipiti: {
+    types: ['Poison', 'Fairy'],
+    bs: {hp: 88, at: 91, df: 82, sa: 70, sd: 125, sp: 99},
+    weightkg: 30.1,
+    abilities: {0: 'Toxic Chain'},
+  },
   Fidough: {
     types: ['Fairy'],
     bs: {hp: 37, at: 55, df: 70, sa: 30, sd: 55, sp: 65},
@@ -9185,7 +9253,7 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
   Flittle: {
     types: ['Psychic'],
-    bs: {hp: 30, at: 35, df: 30, sa: 55, sd: 40, sp: 75},
+    bs: {hp: 30, at: 35, df: 30, sa: 55, sd: 30, sp: 75},
     weightkg: 1.5,
     abilities: {0: 'Anticipation'},
     nfe: true,
@@ -9238,6 +9306,16 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     gender: 'N',
     abilities: {0: 'Rattled'},
     nfe: true,
+    otherFormes: ['Gimmighoul-Roaming'],
+  },
+  'Gimmighoul-Roaming': {
+    types: ['Ghost'],
+    bs: {hp: 45, at: 30, df: 25, sa: 75, sd: 45, sp: 80},
+    weightkg: 0.1,
+    gender: 'N',
+    abilities: {0: 'Run Away'},
+    nfe: true,
+    baseSpecies: 'Gimmighoul',
   },
   Glimmet: {
     types: ['Rock', 'Poison'],
@@ -9251,6 +9329,13 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 83, at: 55, df: 90, sa: 130, sd: 81, sp: 86},
     weightkg: 45,
     abilities: {0: 'Toxic Debris'},
+  },
+  'Gouging Fire': {
+    types: ['Fire', 'Dragon'],
+    bs: {hp: 105, at: 115, df: 121, sa: 65, sd: 93, sp: 91},
+    weightkg: 590,
+    gender: 'N',
+    abilities: {0: 'Protosynthesis'},
   },
   Grafaiai: {
     types: ['Poison', 'Normal'],
@@ -9272,16 +9357,42 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     abilities: {0: 'Pickup'},
     nfe: true,
   },
+  Hemogoblin: {
+    types: ['Fairy', 'Fire'],
+    bs: {hp: 90, at: 96, df: 87, sa: 96, sd: 89, sp: 55},
+    weightkg: 85,
+    abilities: {0: 'Pixilate'},
+  },
   Houndstone: {
     types: ['Ghost'],
     bs: {hp: 72, at: 101, df: 100, sa: 50, sd: 97, sp: 68},
     weightkg: 15,
     abilities: {0: 'Sand Rush'},
   },
+  Hydrapple: {
+    types: ['Grass', 'Dragon'],
+    bs: {hp: 106, at: 80, df: 110, sa: 120, sd: 80, sp: 44},
+    weightkg: 93,
+    abilities: {0: 'Supersweet Syrup'},
+  },
   'Iron Bundle': {
     types: ['Ice', 'Water'],
     bs: {hp: 56, at: 80, df: 114, sa: 124, sd: 60, sp: 136},
     weightkg: 11,
+    gender: 'N',
+    abilities: {0: 'Quark Drive'},
+  },
+  'Iron Boulder': {
+    types: ['Rock', 'Psychic'],
+    bs: {hp: 90, at: 120, df: 80, sa: 68, sd: 108, sp: 124},
+    weightkg: 162.5,
+    gender: 'N',
+    abilities: {0: 'Quark Drive'},
+  },
+  'Iron Crown': {
+    types: ['Steel', 'Psychic'],
+    bs: {hp: 90, at: 72, df: 100, sa: 122, sd: 108, sp: 98},
+    weightkg: 156,
     gender: 'N',
     abilities: {0: 'Quark Drive'},
   },
@@ -9296,6 +9407,13 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     types: ['Dark', 'Flying'],
     bs: {hp: 94, at: 80, df: 86, sa: 122, sd: 80, sp: 108},
     weightkg: 111,
+    gender: 'N',
+    abilities: {0: 'Quark Drive'},
+  },
+  'Iron Leaves': {
+    types: ['Grass', 'Psychic'],
+    bs: {hp: 90, at: 130, df: 88, sa: 70, sd: 108, sp: 104},
+    weightkg: 125,
     gender: 'N',
     abilities: {0: 'Quark Drive'},
   },
@@ -9407,6 +9525,12 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     gender: 'N',
     abilities: {0: 'Hadron Engine'},
   },
+  Munkidori: {
+    types: ['Poison', 'Psychic'],
+    bs: {hp: 88, at: 75, df: 66, sa: 130, sd: 90, sp: 106},
+    weightkg: 12.2,
+    abilities: {0: 'Toxic Chain'},
+  },
   Nacli: {
     types: ['Rock'],
     bs: {hp: 55, at: 55, df: 75, sa: 35, sd: 35, sp: 25},
@@ -9428,6 +9552,67 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     abilities: {0: 'Swarm'},
     nfe: true,
   },
+  Ogerpon: {
+    types: ['Grass'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Defiant'},
+    weightkg: 39.8,
+    otherFormes: [
+      'Ogerpon-Cornerstone', 'Ogerpon-Cornerstone-Tera',
+      'Ogerpon-Hearthflame', 'Ogerpon-Hearthflame-Tera',
+      'Ogerpon-Teal-Tera',
+      'Ogerpon-Wellspring', 'Ogerpon-Wellspring-Tera',
+    ],
+  },
+  'Ogerpon-Wellspring': {
+    types: ['Grass', 'Water'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Water Absorb'},
+    weightkg: 39.8,
+    baseSpecies: 'Ogerpon',
+  },
+  'Ogerpon-Hearthflame': {
+    types: ['Grass', 'Fire'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Mold Breaker'},
+    weightkg: 39.8,
+    baseSpecies: 'Ogerpon',
+  },
+  'Ogerpon-Cornerstone': {
+    types: ['Grass', 'Rock'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Sturdy'},
+    weightkg: 39.8,
+    baseSpecies: 'Ogerpon',
+  },
+  'Ogerpon-Teal-Tera': {
+    types: ['Grass'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Embody Aspect (Teal)'},
+    weightkg: 39.8,
+    baseSpecies: 'Ogerpon',
+  },
+  'Ogerpon-Wellspring-Tera': {
+    types: ['Grass', 'Water'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Embody Aspect (Wellspring)'},
+    weightkg: 39.8,
+    baseSpecies: 'Ogerpon',
+  },
+  'Ogerpon-Hearthflame-Tera': {
+    types: ['Grass', 'Fire'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Embody Aspect (Hearthflame)'},
+    weightkg: 39.8,
+    baseSpecies: 'Ogerpon',
+  },
+  'Ogerpon-Cornerstone-Tera': {
+    types: ['Grass', 'Rock'],
+    bs: {hp: 80, at: 120, df: 84, sa: 60, sd: 96, sp: 110},
+    abilities: {0: 'Embody Aspect (Cornerstone)'},
+    weightkg: 39.8,
+    baseSpecies: 'Ogerpon',
+  },
   Oinkologne: {
     types: ['Normal'],
     bs: {hp: 110, at: 100, df: 75, sa: 59, sd: 80, sp: 65},
@@ -9441,6 +9626,12 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     weightkg: 120,
     abilities: {0: 'Aroma Veil'},
     baseSpecies: 'Oinkologne',
+  },
+  Okidogi: {
+    types: ['Poison', 'Fighting'],
+    bs: {hp: 88, at: 128, df: 115, sa: 58, sd: 86, sp: 80},
+    weightkg: 92,
+    abilities: {0: 'Toxic Chain'},
   },
   Orthworm: {
     types: ['Steel'],
@@ -9482,6 +9673,32 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     weightkg: 41,
     abilities: {0: 'Volt Absorb'},
   },
+  Pecharunt: {
+    types: ['Poison', 'Ghost'],
+    bs: {hp: 88, at: 88, df: 160, sa: 88, sd: 88, sp: 88},
+    weightkg: 0.3,
+    gender: 'N',
+    abilities: {0: 'Poison Puppeteer'},
+  },
+  Poltchageist: {
+    types: ['Grass', 'Ghost'],
+    bs: {hp: 40, at: 45, df: 45, sa: 74, sd: 54, sp: 50},
+    weightkg: 1.1,
+    abilities: {0: 'Hospitality'},
+    nfe: true,
+    otherFormes: ['Poltchageist-Artisan'],
+    gender: 'N',
+  },
+  'Poltchageist-Artisan': {
+    types: ['Grass', 'Ghost'],
+    bs: {hp: 40, at: 45, df: 45, sa: 74, sd: 54, sp: 50},
+    weightkg: 1.1,
+    abilities: {0: 'Hospitality'},
+    nfe: true,
+    gender: 'N',
+    baseSpecies: 'Poltchageist',
+  },
+
   Quaquaval: {
     types: ['Water', 'Fighting'],
     bs: {hp: 85, at: 120, df: 80, sa: 85, sd: 75, sp: 85},
@@ -9507,6 +9724,29 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 75, at: 50, df: 85, sa: 115, sd: 100, sp: 45},
     weightkg: 3.5,
     abilities: {0: 'Synchronize'},
+  },
+  'Raging Bolt': {
+    types: ['Electric', 'Dragon'],
+    bs: {hp: 125, at: 73, df: 91, sa: 137, sd: 89, sp: 75},
+    weightkg: 480,
+    gender: 'N',
+    abilities: {0: 'Protosynthesis'},
+  },
+  Ramnarok: {
+    types: ['Fire', 'Steel'],
+    bs: {hp: 110, at: 56, df: 104, sa: 111, sd: 134, sp: 85},
+    weightkg: 250,
+    abilities: {0: 'No Guard'},
+    otherFormes: ['Ramnarok-Radiant'],
+    gender: 'N',
+  },
+  'Ramnarok-Radiant': {
+    types: ['Fire', 'Ice'],
+    bs: {hp: 110, at: 56, df: 85, sa: 141, sd: 54, sp: 154},
+    weightkg: 182,
+    abilities: {0: 'No Guard'},
+    baseSpecies: 'Ramnarok',
+    gender: 'N',
   },
   Rellor: {
     types: ['Bug'],
@@ -9535,6 +9775,13 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     gender: 'N',
     abilities: {0: 'Protosynthesis'},
   },
+  Scattervein: {
+    types: ['Fairy'],
+    bs: {hp: 75, at: 74, df: 87, sa: 62, sd: 89, sp: 63},
+    weightkg: 25,
+    abilities: {0: 'Pixilate'},
+    nfe: true,
+  },
   Scovillain: {
     types: ['Grass', 'Fire'],
     bs: {hp: 65, at: 108, df: 65, sa: 108, sd: 65, sp: 75},
@@ -9548,12 +9795,34 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     gender: 'N',
     abilities: {0: 'Protosynthesis'},
   },
+  Shox: {
+    types: ['Electric', 'Normal'],
+    bs: {hp: 136, at: 55, df: 87, sa: 108, sd: 108, sp: 56},
+    weightkg: 99.9,
+    abilities: {0: 'Electromorphosis'},
+  },
   Shroodle: {
     types: ['Poison', 'Normal'],
     bs: {hp: 40, at: 65, df: 35, sa: 40, sd: 35, sp: 75},
     weightkg: 0.7,
     abilities: {0: 'Unburden'},
     nfe: true,
+  },
+  'Sinistcha': {
+    types: ['Grass', 'Ghost'],
+    bs: {hp: 71, at: 60, df: 106, sa: 121, sd: 80, sp: 70},
+    weightkg: 2.2,
+    abilities: {0: 'Hospitality'},
+    otherFormes: ['Sinistcha-Masterpiece'],
+    gender: 'N',
+  },
+  'Sinistcha-Masterpiece': {
+    types: ['Grass', 'Ghost'],
+    bs: {hp: 71, at: 60, df: 106, sa: 121, sd: 80, sp: 70},
+    weightkg: 2.2,
+    abilities: {0: 'Hospitality'},
+    gender: 'N',
+    baseSpecies: 'Sinistcha',
   },
   Skeledirge: {
     types: ['Fire', 'Ghost'],
@@ -9644,26 +9913,50 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     weightkg: 8,
     abilities: {0: 'Commander'},
   },
-  'Tauros-Paldea': {
-    types: ['Fighting'],
-    bs: {hp: 75, at: 110, df: 105, sa: 30, sd: 70, sp: 100},
-    weightkg: 88.4,
-    abilities: {0: 'Intimidate'},
-    baseSpecies: 'Tauros',
-  },
-  'Tauros-Paldea-Fire': {
-    types: ['Fighting', 'Fire'],
-    bs: {hp: 75, at: 110, df: 105, sa: 30, sd: 70, sp: 100},
-    weightkg: 88.4,
-    abilities: {0: 'Intimidate'},
-    baseSpecies: 'Tauros',
-  },
-  'Tauros-Paldea-Water': {
+  'Tauros-Paldea-Aqua': {
     types: ['Fighting', 'Water'],
     bs: {hp: 75, at: 110, df: 105, sa: 30, sd: 70, sp: 100},
-    weightkg: 88.4,
+    weightkg: 110,
     abilities: {0: 'Intimidate'},
     baseSpecies: 'Tauros',
+  },
+  'Tauros-Paldea-Blaze': {
+    types: ['Fighting', 'Fire'],
+    bs: {hp: 75, at: 110, df: 105, sa: 30, sd: 70, sp: 100},
+    weightkg: 85,
+    abilities: {0: 'Intimidate'},
+    baseSpecies: 'Tauros',
+  },
+  'Tauros-Paldea-Combat': {
+    types: ['Fighting'],
+    bs: {hp: 75, at: 110, df: 105, sa: 30, sd: 70, sp: 100},
+    weightkg: 115,
+    abilities: {0: 'Intimidate'},
+    baseSpecies: 'Tauros',
+  },
+  'Terapagos': {
+    types: ['Normal'],
+    bs: {hp: 90, at: 65, df: 85, sa: 65, sd: 85, sp: 60},
+    weightkg: 6.5,
+    abilities: {0: 'Tera Shift'},
+    // baseSpecies: 'Terapagos',
+    otherFormes: ['Terapagos-Stellar', 'Terapagos-Terastal'],
+  },
+  'Terapagos-Stellar': {
+    types: ['Normal'],
+    bs: {hp: 160, at: 105, df: 110, sa: 130, sd: 110, sp: 85},
+    weightkg: 77,
+    abilities: {0: 'Teraform Zero'},
+    baseSpecies: 'Terapagos',
+    // otherFormes: ['Terapagos', 'Terapagos-Terastal'],
+  },
+  'Terapagos-Terastal': {
+    types: ['Normal'],
+    bs: {hp: 95, at: 95, df: 110, sa: 105, sd: 110, sp: 85},
+    weightkg: 16,
+    abilities: {0: 'Tera Shell'},
+    baseSpecies: 'Terapagos',
+    // otherFormes: ['Terapagos-Stellar', 'Terapagos'],
   },
   'Ting-Lu': {
     types: ['Dark', 'Ground'],
@@ -9705,6 +9998,16 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     weightkg: 58,
     abilities: {0: 'Mycelium Might'},
   },
+  'Ursaluna': {
+    otherFormes: ['Ursaluna-Bloodmoon'],
+  },
+  'Ursaluna-Bloodmoon': {
+    types: ['Ground', 'Normal'],
+    bs: {hp: 113, at: 70, df: 120, sa: 135, sd: 65, sp: 52},
+    weightkg: 333,
+    abilities: {0: 'Mind\'s Eye'},
+    baseSpecies: 'Ursaluna',
+  },
   Varoom: {
     types: ['Steel', 'Poison'],
     bs: {hp: 45, at: 70, df: 63, sa: 30, sd: 45, sp: 47},
@@ -9717,6 +10020,13 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
     bs: {hp: 90, at: 102, df: 73, sa: 78, sd: 65, sp: 70},
     weightkg: 90,
     abilities: {0: 'Mold Breaker'},
+  },
+  'Walking Wake': {
+    types: ['Water', 'Dragon'],
+    bs: {hp: 99, at: 83, df: 91, sa: 125, sd: 83, sp: 109},
+    weightkg: 280,
+    gender: 'N',
+    abilities: {0: 'Protosynthesis'},
   },
   Wattrel: {
     types: ['Electric', 'Flying'],
@@ -9742,7 +10052,7 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   'Wooper-Paldea': {
     types: ['Poison', 'Ground'],
     bs: {hp: 55, at: 45, df: 45, sa: 25, sd: 25, sp: 15},
-    weightkg: 8.5,
+    weightkg: 11,
     abilities: {0: 'Poison Point'},
     baseSpecies: 'Wooper',
     nfe: true,
@@ -9755,7 +10065,531 @@ const SV_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
   },
 };
 
-const SV: {[name: string]: SpeciesData} = extend(true, {}, SS, SV_PATCH, PLA_PATCH);
+const ZA_PATCH: {[name: string]: DeepPartial<SpeciesData>} = {
+  Barbaracle: {otherFormes: ['Barbaracle-Mega']},
+  Chandelure: {otherFormes: ['Chandelure-Mega']},
+  Chesnaught: {otherFormes: ['Chesnaught-Mega']},
+  Clefable: {otherFormes: ['Clefable-Mega']},
+  Delphox: {otherFormes: ['Delphox-Mega']},
+  Dragalge: {otherFormes: ['Dragalge-Mega']},
+  Dragonite: {otherFormes: ['Dragonite-Mega']},
+  Drampa: {otherFormes: ['Drampa-Mega']},
+  Eelektross: {otherFormes: ['Eelektross-Mega']},
+  Emboar: {otherFormes: ['Emboar-Mega']},
+  Excadrill: {otherFormes: ['Excadrill-Mega']},
+  Falinks: {otherFormes: ['Falinks-Mega']},
+  Feraligatr: {otherFormes: ['Feraligatr-Mega']},
+  Floette: {otherFormes: ['Floette-Eternal', 'Floette-Mega']},
+  Froslass: {otherFormes: ['Froslass-Mega']},
+  Greninja: {otherFormes: ['Greninja-Ash', 'Greninja-Bond', 'Greninja-Mega']},
+  Hawlucha: {otherFormes: ['Hawlucha-Mega']},
+  Malamar: {otherFormes: ['Malamar-Mega']},
+  Meganium: {otherFormes: ['Meganium-Mega']},
+  Pyroar: {otherFormes: ['Pyroar-Mega']},
+  Scolipede: {otherFormes: ['Scolipede-Mega']},
+  Scrafty: {otherFormes: ['Scrafty-Mega']},
+  Skarmory: {otherFormes: ['Skarmory-Mega']},
+  Starmie: {otherFormes: ['Starmie-Mega']},
+  Victreebel: {otherFormes: ['Victreebel-Mega']},
+  Zygarde: {otherFormes: ['Zygarde-10%', 'Zygarde-Complete', 'Zygarde-Mega']},
+  'Barbaracle-Mega': {
+    types: [
+      'Rock',
+      'Fighting',
+    ],
+    bs: {
+      hp: 72,
+      at: 140,
+      df: 130,
+      sa: 64,
+      sd: 106,
+      sp: 88,
+    },
+    weightkg: 100.0,
+    abilities: {
+      '0': 'Tough Claws',
+    },
+    baseSpecies: 'Barbaracle',
+  },
+  'Chandelure-Mega': {
+    types: [
+      'Ghost',
+      'Fire',
+    ],
+    bs: {
+      hp: 60,
+      at: 75,
+      df: 110,
+      sa: 175,
+      sd: 110,
+      sp: 90,
+    },
+    weightkg: 69.6,
+    abilities: {
+      '0': 'Flash Fire',
+    },
+    baseSpecies: 'Chandelure',
+  },
+  'Chesnaught-Mega': {
+    types: [
+      'Grass',
+      'Fighting',
+    ],
+    bs: {
+      hp: 88,
+      at: 137,
+      df: 172,
+      sa: 74,
+      sd: 115,
+      sp: 44,
+    },
+    weightkg: 90.0,
+    abilities: {
+      '0': 'Overgrow',
+    },
+    baseSpecies: 'Chesnaught',
+  },
+  'Clefable-Mega': {
+    types: [
+      'Fairy',
+      'Flying',
+    ],
+    bs: {
+      hp: 95,
+      at: 80,
+      df: 93,
+      sa: 135,
+      sd: 110,
+      sp: 70,
+    },
+    weightkg: 42.3,
+    abilities: {
+      '0': 'Cute Charm',
+    },
+    baseSpecies: 'Clefable',
+  },
+  'Delphox-Mega': {
+    types: [
+      'Fire',
+      'Psychic',
+    ],
+    bs: {
+      hp: 75,
+      at: 69,
+      df: 72,
+      sa: 159,
+      sd: 125,
+      sp: 134,
+    },
+    weightkg: 39.0,
+    abilities: {
+      '0': 'Blaze',
+    },
+    baseSpecies: 'Delphox',
+  },
+  'Dragalge-Mega': {
+    types: [
+      'Poison',
+      'Dragon',
+    ],
+    bs: {
+      hp: 65,
+      at: 85,
+      df: 105,
+      sa: 132,
+      sd: 163,
+      sp: 44,
+    },
+    weightkg: 100.3,
+    abilities: {
+      '0': 'Poison Point',
+    },
+    baseSpecies: 'Dragalge',
+  },
+  'Dragonite-Mega': {
+    types: [
+      'Dragon',
+      'Flying',
+    ],
+    bs: {
+      hp: 91,
+      at: 124,
+      df: 115,
+      sa: 145,
+      sd: 125,
+      sp: 100,
+    },
+    weightkg: 290.0,
+    abilities: {
+      '0': 'Inner Focus',
+    },
+    baseSpecies: 'Dragonite',
+  },
+  'Drampa-Mega': {
+    types: [
+      'Normal',
+      'Dragon',
+    ],
+    bs: {
+      hp: 78,
+      at: 85,
+      df: 110,
+      sa: 160,
+      sd: 116,
+      sp: 36,
+    },
+    weightkg: 185,
+    abilities: {
+      '0': 'Berserk',
+    },
+    baseSpecies: 'Drampa',
+  },
+  'Eelektross-Mega': {
+    types: [
+      'Electric',
+    ],
+    bs: {
+      hp: 85,
+      at: 145,
+      df: 80,
+      sa: 135,
+      sd: 90,
+      sp: 80,
+    },
+    weightkg: 160.0,
+    abilities: {
+      '0': 'Levitate',
+    },
+    baseSpecies: 'Eelektross',
+  },
+  'Emboar-Mega': {
+    types: [
+      'Fire',
+      'Fighting',
+    ],
+    bs: {
+      hp: 110,
+      at: 148,
+      df: 75,
+      sa: 110,
+      sd: 110,
+      sp: 75,
+    },
+    weightkg: 180.3,
+    abilities: {
+      '0': 'Blaze',
+    },
+    baseSpecies: 'Emboar',
+  },
+  'Excadrill-Mega': {
+    types: [
+      'Ground',
+      'Steel',
+    ],
+    bs: {
+      hp: 110,
+      at: 165,
+      df: 100,
+      sa: 65,
+      sd: 65,
+      sp: 103,
+    },
+    weightkg: 60.0,
+    abilities: {
+      '0': 'Sand Rush',
+    },
+    baseSpecies: 'Excadrill',
+  },
+  'Falinks-Mega': {
+    types: [
+      'Fighting',
+    ],
+    bs: {
+      hp: 65,
+      at: 135,
+      df: 135,
+      sa: 70,
+      sd: 65,
+      sp: 100,
+    },
+    weightkg: 99.0,
+    abilities: {
+      '0': 'Battle Armor',
+    },
+    gender: 'N',
+    baseSpecies: 'Falinks',
+  },
+  'Feraligatr-Mega': {
+    types: [
+      'Water',
+      'Dragon',
+    ],
+    bs: {
+      hp: 85,
+      at: 160,
+      df: 125,
+      sa: 89,
+      sd: 93,
+      sp: 78,
+    },
+    weightkg: 108.8,
+    abilities: {
+      '0': 'Torrent',
+    },
+    baseSpecies: 'Feraligatr',
+  },
+  'Floette-Eternal': {bs: {hp: 74, at: 65, df: 67, sa: 125, sd: 128, sp: 92}},
+  'Floette-Mega': {
+    types: [
+      'Fairy',
+    ],
+    bs: {
+      hp: 74,
+      at: 85,
+      df: 87,
+      sa: 155,
+      sd: 148,
+      sp: 102,
+    },
+    weightkg: 100.8,
+    abilities: {
+      '0': 'Flower Veil',
+    },
+    baseSpecies: 'Floette',
+  },
+  'Froslass-Mega': {
+    types: [
+      'Ice',
+      'Ghost',
+    ],
+    bs: {
+      hp: 70,
+      at: 80,
+      df: 70,
+      sa: 140,
+      sd: 100,
+      sp: 120,
+    },
+    weightkg: 29.6,
+    abilities: {
+      '0': 'Snow Cloak',
+    },
+    baseSpecies: 'Froslass',
+  },
+  'Greninja-Mega': {
+    types: [
+      'Water',
+      'Dark',
+    ],
+    bs: {
+      hp: 72,
+      at: 125,
+      df: 77,
+      sa: 133,
+      sd: 81,
+      sp: 142,
+    },
+    weightkg: 40.0,
+    abilities: {
+      '0': 'Torrent',
+    },
+    baseSpecies: 'Greninja',
+  },
+  'Hawlucha-Mega': {
+    types: [
+      'Fighting',
+      'Flying',
+    ],
+    bs: {
+      hp: 78,
+      at: 137,
+      df: 100,
+      sa: 74,
+      sd: 93,
+      sp: 118,
+    },
+    weightkg: 25.0,
+    abilities: {
+      '0': 'Limber',
+    },
+    baseSpecies: 'Hawlucha',
+  },
+  'Malamar-Mega': {
+    types: [
+      'Dark',
+      'Psychic',
+    ],
+    bs: {
+      hp: 86,
+      at: 102,
+      df: 88,
+      sa: 98,
+      sd: 120,
+      sp: 88,
+    },
+    weightkg: 69.8,
+    abilities: {
+      '0': 'Contrary',
+    },
+    baseSpecies: 'Malamar',
+  },
+  'Meganium-Mega': {
+    types: [
+      'Grass',
+      'Fairy',
+    ],
+    bs: {
+      hp: 80,
+      at: 92,
+      df: 115,
+      sa: 143,
+      sd: 115,
+      sp: 80,
+    },
+    weightkg: 201.0,
+    abilities: {
+      '0': 'Overgrow',
+    },
+    baseSpecies: 'Meganium',
+  },
+  'Pyroar-Mega': {
+    types: [
+      'Fire',
+      'Normal',
+    ],
+    bs: {
+      hp: 86,
+      at: 88,
+      df: 92,
+      sa: 129,
+      sd: 86,
+      sp: 126,
+    },
+    weightkg: 93.3,
+    abilities: {
+      '0': 'Rivalry',
+    },
+    baseSpecies: 'Pyroar',
+  },
+  'Scolipede-Mega': {
+    types: [
+      'Bug',
+      'Poison',
+    ],
+    bs: {
+      hp: 60,
+      at: 140,
+      df: 149,
+      sa: 75,
+      sd: 99,
+      sp: 62,
+    },
+    weightkg: 230.5,
+    abilities: {
+      '0': 'Poison Point',
+    },
+    baseSpecies: 'Scolipede',
+  },
+  'Scrafty-Mega': {
+    types: [
+      'Dark',
+      'Fighting',
+    ],
+    bs: {
+      hp: 65,
+      at: 130,
+      df: 135,
+      sa: 55,
+      sd: 135,
+      sp: 68,
+    },
+    weightkg: 31.0,
+    abilities: {
+      '0': 'Shed Skin',
+    },
+    baseSpecies: 'Scrafty',
+  },
+  'Skarmory-Mega': {
+    types: [
+      'Steel',
+      'Flying',
+    ],
+    bs: {
+      hp: 65,
+      at: 140,
+      df: 110,
+      sa: 40,
+      sd: 100,
+      sp: 110,
+    },
+    weightkg: 40.4,
+    abilities: {
+      '0': 'Keen Eye',
+    },
+    baseSpecies: 'Skarmory',
+  },
+  'Starmie-Mega': {
+    types: [
+      'Water',
+      'Psychic',
+    ],
+    bs: {
+      hp: 60,
+      at: 140,
+      df: 105,
+      sa: 130,
+      sd: 105,
+      sp: 120,
+    },
+    weightkg: 80.0,
+    abilities: {
+      '0': 'Illuminate',
+    },
+    gender: 'N',
+    baseSpecies: 'Starmie',
+  },
+  'Victreebel-Mega': {
+    types: [
+      'Grass',
+      'Poison',
+    ],
+    bs: {
+      hp: 80,
+      at: 125,
+      df: 85,
+      sa: 135,
+      sd: 95,
+      sp: 70,
+    },
+    weightkg: 125.5,
+    abilities: {
+      '0': 'Chlorophyll',
+    },
+    baseSpecies: 'Victreebel',
+  },
+  'Zygarde-Mega': {
+    types: [
+      'Dragon',
+      'Ground',
+    ],
+    bs: {
+      hp: 216,
+      at: 70,
+      df: 91,
+      sa: 216,
+      sd: 85,
+      sp: 100,
+    },
+    weightkg: 610,
+    abilities: {
+      '0': 'Aura Break',
+    },
+    gender: 'N',
+    baseSpecies: 'Zygarde',
+  },
+};
+
+const SV: {[name: string]: SpeciesData} = extend(true, {}, SS, SV_PATCH, PLA_PATCH, ZA_PATCH);
 
 export const SPECIES = [{}, RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
 

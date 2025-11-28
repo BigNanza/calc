@@ -42,8 +42,10 @@ var Pokemon = (function () {
         this.ability = options.ability || ((_b = this.species.abilities) === null || _b === void 0 ? void 0 : _b[0]) || undefined;
         this.abilityOn = !!options.abilityOn;
         this.isDynamaxed = !!options.isDynamaxed;
-        this.isSaltCure = !!options.isSaltCure;
+        this.dynamaxLevel = this.isDynamaxed
+            ? (options.dynamaxLevel === undefined ? 10 : options.dynamaxLevel) : undefined;
         this.alliesFainted = options.alliesFainted;
+        this.boostedStat = options.boostedStat;
         this.teraType = options.teraType;
         this.item = options.item;
         this.nature = options.nature || 'Serious';
@@ -86,15 +88,17 @@ var Pokemon = (function () {
     }
     Pokemon.prototype.maxHP = function (original) {
         if (original === void 0) { original = false; }
-        return !original && this.isDynamaxed && this.species.baseStats.hp !== 1
-            ? this.rawStats.hp * 2
-            : this.rawStats.hp;
+        if (!original && this.isDynamaxed && this.species.baseStats.hp !== 1) {
+            return Math.floor((this.rawStats.hp * (150 + 5 * this.dynamaxLevel)) / 100);
+        }
+        return this.rawStats.hp;
     };
     Pokemon.prototype.curHP = function (original) {
         if (original === void 0) { original = false; }
-        return !original && this.isDynamaxed && this.species.baseStats.hp !== 1
-            ? this.originalCurHP * 2
-            : this.originalCurHP;
+        if (!original && this.isDynamaxed && this.species.baseStats.hp !== 1) {
+            return Math.ceil((this.originalCurHP * (150 + 5 * this.dynamaxLevel)) / 100);
+        }
+        return this.originalCurHP;
     };
     Pokemon.prototype.hasAbility = function () {
         var abilities = [];
@@ -126,8 +130,10 @@ var Pokemon = (function () {
         try {
             for (var types_1 = __values(types), types_1_1 = types_1.next(); !types_1_1.done; types_1_1 = types_1.next()) {
                 var type = types_1_1.value;
-                if (this.teraType ? this.teraType === type : this.types.includes(type))
+                if (this.teraType && this.teraType !== 'Stellar'
+                    ? this.teraType === type : this.types.includes(type)) {
                     return true;
+                }
             }
         }
         catch (e_2_1) { e_2 = { error: e_2_1 }; }
@@ -174,8 +180,9 @@ var Pokemon = (function () {
             ability: this.ability,
             abilityOn: this.abilityOn,
             isDynamaxed: this.isDynamaxed,
-            isSaltCure: this.isSaltCure,
+            dynamaxLevel: this.dynamaxLevel,
             alliesFainted: this.alliesFainted,
+            boostedStat: this.boostedStat,
             item: this.item,
             gender: this.gender,
             nature: this.nature,

@@ -1,4 +1,4 @@
-import {Natures, Generation, TypeName, StatID, StatsTable} from './data/interface';
+import type {Natures, Generation, TypeName, StatID, StatsTable} from './data/interface';
 import {toID} from './util';
 
 const RBY: Array<StatID | 'spc'> = ['hp', 'atk', 'def', 'spc', 'spe'];
@@ -14,7 +14,7 @@ const SV: StatID[] = GSC;
 export const STATS: Array<Array<StatID | 'spc'> | StatID[]> =
   [[], RBY, GSC, ADV, DPP, BW, XY, SM, SS, SV];
 
-type HPTypeName = Exclude<TypeName, 'Normal' | 'Fairy' | '???'>;
+type HPTypeName = Exclude<TypeName, 'Normal' | 'Fairy' | 'Stellar' | '???'>;
 
 const HP_TYPES = [
   'Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel',

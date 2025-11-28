@@ -1,5 +1,5 @@
-import {State} from './state';
-import {GameType, Weather, Terrain} from './data/interface';
+import type {State} from './state';
+import type {GameType, Weather, Terrain} from './data/interface';
 
 export class Field implements State.Field {
   gameType: GameType;
@@ -83,14 +83,17 @@ export class Side implements State.Side {
   isLightScreen: boolean;
   isProtected: boolean;
   isSeeded: boolean;
+  isSaltCured: boolean;
   isForesight: boolean;
   isTailwind: boolean;
   isHelpingHand: boolean;
   isFlowerGift: boolean;
+  isPowerTrick?: boolean;
   isFriendGuard: boolean;
   isAuroraVeil: boolean;
   isBattery: boolean;
   isPowerSpot: boolean;
+  isSteelySpirit: boolean;
   isSwitching?: 'out' | 'in';
 
   constructor(side: State.Side = {}) {
@@ -105,14 +108,17 @@ export class Side implements State.Side {
     this.isLightScreen = !!side.isLightScreen;
     this.isProtected = !!side.isProtected;
     this.isSeeded = !!side.isSeeded;
+    this.isSaltCured = !!side.isSaltCured;
     this.isForesight = !!side.isForesight;
     this.isTailwind = !!side.isTailwind;
     this.isHelpingHand = !!side.isHelpingHand;
     this.isFlowerGift = !!side.isFlowerGift;
+    this.isPowerTrick = !!side.isPowerTrick;
     this.isFriendGuard = !!side.isFriendGuard;
     this.isAuroraVeil = !!side.isAuroraVeil;
     this.isBattery = !!side.isBattery;
     this.isPowerSpot = !!side.isPowerSpot;
+    this.isSteelySpirit = !!side.isSteelySpirit;
     this.isSwitching = side.isSwitching;
   }
 
